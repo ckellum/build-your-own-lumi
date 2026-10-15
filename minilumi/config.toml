@@ -1,0 +1,57 @@
+# Pick a preset with:  minilumi run --preset laptop
+default_preset = "laptop"
+event_dir = "example-event"
+
+# Workstation: every model runs as its own local server that speaks the OpenAI API
+# (llama.cpp's llama-server, a Whisper or Parakeet server, Kokoro-FastAPI).
+[presets.workstation.hear]
+kind = "openai"
+model = "whisper-1"
+base_url = "http://127.0.0.1:8084/v1"
+
+[presets.workstation.think]
+kind = "openai"
+model = "local"
+base_url = "http://127.0.0.1:8080/v1"
+
+[presets.workstation.speak]
+kind = "openai"
+model = "kokoro"
+voice = "af_heart"
+base_url = "http://127.0.0.1:8083/v1"
+
+# Laptop (32 GB RAM, or an 8-12 GB GPU): speech runs inside minilumi,
+# the language model runs in Ollama (or llama.cpp's llama-server).
+[presets.laptop.hear]
+kind = "whisper-local"
+model = "base.en"
+
+[presets.laptop.think]
+kind = "openai"
+model = "qwen3:8b"
+base_url = "http://127.0.0.1:11434/v1"
+
+[presets.laptop.speak]
+kind = "kokoro-local"
+model = "kokoro-v1.0"
+voice = "af_heart"
+
+# Cloud (no GPU): Claude thinks; any OpenAI-compatible service hears and speaks.
+# Keys come from environment variables, never from this file.
+[presets.cloud.hear]
+kind = "openai"
+model = "whisper-1"
+base_url = "https://api.openai.com/v1"
+api_key_env = "OPENAI_API_KEY"
+
+[presets.cloud.think]
+kind = "anthropic"
+model = "claude-haiku-5-5"
+api_key_env = "ANTHROPIC_API_KEY"
+
+[presets.cloud.speak]
+kind = "openai"
+model = "gpt-4o-mini-tts"
+voice = "alloy"
+base_url = "https://api.openai.com/v1"
+api_key_env = "OPENAI_API_KEY"

@@ -1,0 +1,28 @@
+[project]
+name = "minilumi"
+version = "0.1.0"
+description = "A small voice concierge you can run on your own computer."
+readme = "README.md"
+license = "MIT"
+requires-python = ">=3.11"
+dependencies = [
+    "numpy>=1.26",
+    "sounddevice>=0.4.6",
+    "anthropic>=0.40",
+]
+
+[project.optional-dependencies]
+local = ["faster-whisper>=1.0", "kokoro-onnx>=0.4", "soundfile>=0.12"]
+
+[project.scripts]
+minilumi = "minilumi.cli:main"
+
+[dependency-groups]
+dev = ["pytest>=8"]
+
+[build-system]
+requires = ["hatchling"]
+build-backend = "hatchling.build"
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
