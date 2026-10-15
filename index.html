@@ -34,6 +34,7 @@
         <span class="chip">Can run fully offline</span>
         <span class="chip">macOS · Windows · Linux</span>
         <span class="chip">~1,000 lines of Python</span>
+        <span class="chip">Events, home, front desk, help desk…</span>
       </div>
     </div>
     <div class="avatar-stage" data-hero>
@@ -162,7 +163,7 @@
       <p>Set the <b>Detail</b> switch to Beginner for the idea, Intermediate for how it works, or Expert for what bit us.</p>
     </div>
     <div class="steps-nav" aria-label="Jump to a step">
-      <a href="#s0">0 Setup</a><a href="#s1">1 Hear</a><a href="#s2">2 Think</a><a href="#s3">3 Speak</a><a href="#s4">4 Turn-taking</a><a href="#s5">5 Face</a><a href="#s6">6 Your event</a><a href="#s7">7 Make it yours</a><a href="#s8">8 Kiosk-proof</a>
+      <a href="#s0">0 Setup</a><a href="#s1">1 Hear</a><a href="#s2">2 Think</a><a href="#s3">3 Speak</a><a href="#s4">4 Turn-taking</a><a href="#s5">5 Face</a><a href="#s6">6 Your event</a><a href="#s7">7 Make it yours</a><a href="#s8">8 Kiosk-proof</a><a href="#uses">Other uses</a>
     </div>
 
     <!-- 0 -->
@@ -190,7 +191,7 @@ cd build-your-own-lumi/minilumi</code></pre>
         <div data-tier-only="workstation cloud">
 <pre><code>uv sync</code></pre></div>
         <p>On Linux, also install the audio library: <code>sudo apt install libportaudio2</code></p>
-        <div class="check"><b>Check it works:</b> <code>uv run pytest -q</code> ends with <code>59 passed</code>.</div>
+        <div class="check"><b>Check it works:</b> <code>uv run pytest -q</code> ends with <code>62 passed</code>.</div>
         <div class="watch"><b>Watch out for</b><ul>
           <li>On Windows, open a <i>new</i> terminal after installing uv so it's on your PATH.</li>
           <li data-tier-only="laptop">The first local run downloads the speech models (a few hundred MB), once.</li>
@@ -398,6 +399,36 @@ goto loop</code></pre>
         </ul></div>
       </div>
     </article>
+  </div>
+</section>
+
+<!-- ============ USES ============ -->
+<section id="uses">
+  <div class="wrap">
+    <div class="section-head" data-reveal>
+      <span class="eyebrow">Not just events</span>
+      <h2>It's a voice assistant. Point it at anything.</h2>
+      <p>Lumi only knows what's in four small files plus a personality. Swap them and she becomes something else. The kit ships a made-up example of a personal assistant you can try right now.</p>
+    </div>
+    <div class="uses-try" data-reveal>
+      <h3>Try it: your personal assistant</h3>
+      <p class="muted"><code>examples/my-day/</code> is a made-up household: today's calendar (times without a date mean <i>today</i>), places, the Wi-Fi password, trash day, the grocery list, a quick dinner recipe, and a <code>persona.txt</code> that makes her a kitchen-counter assistant. Set it in <code>config.toml</code>:</p>
+<pre><code>event_dir = "examples/my-day"</code></pre>
+<pre><code>uv run minilumi run --preset <span data-tier-only="laptop">laptop</span><span data-tier-only="workstation">workstation</span><span data-tier-only="cloud">cloud</span> --input samples/my-day.wav --badge ME --mute --no-screen</code></pre>
+      <div class="check"><b>What we got:</b> “Hi Alex! Next up for you: Focus time: quarterly report at 10:00 AM, Home Office.” Then, asked about the afternoon and dinner: “This afternoon you have a dentist appointment with Dr. Osei at 3:00 PM at the Maple Street Clinic. For dinner, try the garlic pasta.”</div>
+    </div>
+    <div class="uses">
+      <article class="use" data-reveal><span class="use-kicker">Your day</span><h3>Personal assistant</h3><p>Calendar in <code>sessions.csv</code> (export it from your calendar app), places in <code>rooms.csv</code>, the household's facts in <code>event.txt</code>. Badge in with a key-ring QR code, or just press Enter.</p></article>
+      <article class="use" data-reveal><span class="use-kicker">Reception</span><h3>Front desk</h3><p>Visitors scan in; <code>attendees.csv</code> says who they're meeting and <code>rooms.csv</code> how to get there. A receptionist persona, and an after-hours message in <code>event.txt</code>.</p></article>
+      <article class="use" data-reveal><span class="use-kicker">Support</span><h3>IT help desk</h3><p>Put the top twenty questions and their fixes in <code>event.txt</code>: resetting a password, joining the Wi-Fi, the printer. Rooms become “where to pick up a loaner laptop”.</p></article>
+      <article class="use" data-reveal><span class="use-kicker">Guide</span><h3>Museum or store</h3><p>Galleries or aisles in <code>rooms.csv</code> with spoken directions, exhibit or product facts in <code>event.txt</code>, guided tours as sessions.</p></article>
+      <article class="use" data-reveal><span class="use-kicker">Hands busy</span><h3>Kitchen or workshop</h3><p>Recipes, checklists or machine procedures in <code>event.txt</code>, read out step by step while your hands are full. (Check safety-critical steps yourself.)</p></article>
+      <article class="use" data-reveal><span class="use-kicker">Access</span><h3>A kiosk anyone can use</h3><p>For people who can't read a screen or use a touchscreen: everything works by voice, and the screen is a bonus.</p></article>
+      <article class="use" data-reveal><span class="use-kicker">Learning</span><h3>Study buddy</h3><p>Class schedule as sessions, course notes in <code>event.txt</code>, and a persona that quizzes you instead of answering.</p></article>
+      <article class="use" data-reveal><span class="use-kicker">Languages</span><h3>Conversation partner</h3><p>One line in <code>persona.txt</code>: “Always answer in simple Spanish.” Pick a matching Kokoro voice.</p></article>
+    </div>
+    <div class="level" data-level-only="expert"><span class="level-tag">Going further</span>
+      <p>The data is static on purpose: easy to read, easy to trust. To make her <i>do</i> things (set a timer, add to the grocery list, turn on a light), add a small tool step in <code>visit.py</code>: ask the model to emit a tag like <code>[timer:10]</code>, act on it in Python, and strip it before speaking. The original Lumi drives its screen exactly this way.</p></div>
   </div>
 </section>
 

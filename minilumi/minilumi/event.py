@@ -5,7 +5,7 @@ from __future__ import annotations
 import csv
 import io
 from dataclasses import dataclass
-from datetime import datetime
+from datetime import date, datetime, time
 from pathlib import Path
 
 from .config import ConfigError
@@ -54,6 +54,7 @@ class Event:
     rooms: tuple[Room, ...]
     sessions: tuple[Session, ...]
     attendees: dict[str, Attendee]
+    persona: str = PERSONA          # a folder's persona.txt replaces it (e.g. a personal assistant)
 
     def attendee(self, badge: str) -> Attendee | None:
         return self.attendees.get(_badge(badge))
@@ -69,7 +70,7 @@ class Event:
             f"- {s.title}: {spoken_time(s.start)} to {spoken_time(s.end)}, {s.room}"
             + (f", with {s.speaker}" if s.speaker else "")
             for s in sorted(self.sessions, key=lambda s: s.start))
-        return f"{PERSONA}\n\nAbout the event:\n{self.about}\n\nRooms:\n{rooms}\n\nSessions:\n{sessions}\n"
+        return f"{self.persona}\n\nFacts:\n{self.about}\n\nRooms and places:\n{rooms}\n\nSchedule:\n{sessions}\n"
 
 
 def _read_text(path: Path) -> str:
@@ -100,10 +101,14 @@ def _rows(path: Path, columns: tuple[str, ...]) -> list[tuple[int, dict[str, str
 
 
 def _time(path: Path, number: int, row: dict[str, str], column: str) -> datetime:
+    value = row[column]
     try:
-        return datetime.fromisoformat(row[column])
+        if len(value) <= 5:                 # "08:30": a daily routine, so it means today
+            return datetime.combine(date.today(), time.fromisoformat(value.zfill(5)))
+        return datetime.fromisoformat(value)
     except ValueError:
-        raise ConfigError(f"{path.name} row {number}: {column} must look like 2030-05-14 10:00, not {row[column]!r}") from None
+        raise ConfigError(f"{path.name} row {number}: {column} must look like 2030-05-14 10:00 (or 10:00 for today), "
+                          f"not {value!r}") from None
 
 
 def load_event(directory: Path) -> Event:
@@ -122,4 +127,6 @@ def load_event(directory: Path) -> Event:
         about = _read_text(directory / "event.txt").strip()
     except FileNotFoundError:
         raise ConfigError(f"{directory / 'event.txt'} is missing") from None
-    return Event(about, rooms, sessions, attendees)
+    persona_file = directory / "persona.txt"
+    persona = _read_text(persona_file).strip() if persona_file.exists() else PERSONA
+    return Event(about, rooms, sessions, attendees, persona)

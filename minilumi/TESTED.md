@@ -8,6 +8,7 @@ appearing to Lumi's first spoken sentence being ready.
 |---|---|---|---|---|---|---|---|
 | workstation | NVIDIA DGX Spark (128 GB unified memory) | Parakeet server (OpenAI API) | Qwen3.8 Flash-Next via llama.cpp | Kokoro server (OpenAI API) | ≈ 1.3 s | ✓ correct room and directions | 2026-10-15 |
 | laptop | same machine, CPU-only speech (stand-in for a laptop) | faster-whisper `base.en` (CPU) | Qwen3 1.7B Q8 via llama.cpp | kokoro-onnx (CPU) | ≈ 1.5 s | ✓ correct room | 2026-10-15 |
+| workstation, `examples/my-day` | NVIDIA DGX Spark | Parakeet server | Qwen3.8 Flash-Next via llama.cpp | Kokoro server | — | ✓ calendar + dinner answer | 2026-10-15 |
 | cloud | — | — | — | — | — | not tested | — |
 
 The laptop preset points at Ollama by default; we ran the same model through llama.cpp's

@@ -75,6 +75,19 @@ Copy `example-event/` to `my-event/` (git-ignored, so real data stays out of git
 Excel works: a CSV saved on Windows is read correctly, and a mistake names the file and row.
 Lumi's personality is the `PERSONA` line at the top of `minilumi/event.py`.
 
+## Not just events
+
+`examples/my-day/` turns Lumi into a personal assistant for a made-up household (today's
+calendar, places, house facts, its own `persona.txt`). Try it:
+
+```bash
+# in config.toml: event_dir = "examples/my-day"
+uv run minilumi run --preset laptop --input samples/my-day.wav --badge ME --mute --no-screen
+```
+
+Any folder can include a `persona.txt` to replace Lumi's personality, and schedule times written
+as just `09:30` mean today, so a daily routine never goes stale.
+
 ## Troubleshooting
 
 - **"No microphone found (or permission denied)"**: on macOS, allow your terminal in

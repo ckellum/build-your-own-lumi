@@ -71,3 +71,23 @@ def test_missing_column_is_named(tmp_path):
     d = broken(tmp_path, "attendees.csv", "badge,sessions\nEX-1,Talk\n")
     with pytest.raises(ConfigError, match=r"attendees\.csv.*name"):
         load_event(d)
+
+
+def test_a_folder_can_bring_its_own_persona(tmp_path):
+    d = tmp_path / "ev"
+    shutil.copytree(SRC, d)
+    (d / "persona.txt").write_text("You are Lumi, a personal assistant at home.\n")
+    p = load_event(d).system_prompt()
+    assert p.startswith("You are Lumi, a personal assistant at home.") and "voice concierge at an event" not in p
+
+
+def test_the_my_day_example_loads():
+    ev = load_event(Path(__file__).resolve().parents[1] / "examples" / "my-day")
+    assert "personal" in ev.system_prompt().lower() and ev.sessions and ev.attendee("ME")
+
+
+def test_time_only_entries_mean_today(tmp_path):
+    from datetime import date
+    d = broken(tmp_path, "sessions.csv", "title,room,start,end,speaker\nStandup,Maple Room,09:30,09:45,\n")
+    s = load_event(d).sessions[0]
+    assert s.start.date() == date.today() and (s.start.hour, s.start.minute) == (9, 30)

@@ -65,9 +65,9 @@ class Visit:
         first = person.name.split()[0]
         upcoming = self.event.next_sessions(self.now(), person.badge, limit=1)
         if not upcoming:
-            return f"Hi {first}! You're all done with your sessions. What can I help with?", person.name
+            return f"Hi {first}! Nothing else on your schedule today. What can I help with?", person.name
         s = upcoming[0]
-        return (f"Hi {first}! Your next session is {s.title} at {spoken_time(s.start)} in the {s.room}. "
+        return (f"Hi {first}! Next up for you: {s.title} at {spoken_time(s.start)}, {s.room}. "
                 f"What can I help with?"), person.name
 
     def _context(self, name: str | None, badge: str | None) -> str:
