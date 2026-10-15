@@ -16,6 +16,7 @@ before making them, and prefer teaching over doing everything silently.
     `event.py`: loads the event files and builds the system prompt. `cli.py`: `check` and `run`.
   - `example-event/`: made-up "Example Con" data. `examples/my-day/`: a made-up personal assistant.
   - `samples/hello.wav`, `samples/my-day.wav`: recorded questions for testing with no microphone.
+    `hello.wav` asks "Hi Lumi, where's Voice Interfaces 101?", a session in `example-event/` only.
 - `index.html`, `css/`, `js/`: the guide website (GitHub Pages). `talk/`: the slides.
 - `tools/leak-check.py`: a pre-push check that keeps private data out of the repo.
 

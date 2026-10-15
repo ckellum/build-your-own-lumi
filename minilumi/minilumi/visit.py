@@ -8,7 +8,7 @@ from dataclasses import dataclass
 from datetime import datetime
 
 from .audio import envelope
-from .event import Event, spoken_time
+from .event import Event, spoken_day, spoken_time
 from .listen import FRAME_MS, Endpointer
 
 GOODBYE = re.compile(r"\b(bye|goodbye|that's all|that is all|see you)\b", re.I)
@@ -67,14 +67,20 @@ class Visit:
         if not upcoming:
             return f"Hi {first}! Nothing else on your schedule today. What can I help with?", person.name
         s = upcoming[0]
-        return (f"Hi {first}! Next up for you: {s.title} at {spoken_time(s.start)}, {s.room}. "
+        return (f"Hi {first}! Next up for you: {s.title} {self._when(s)}, {s.room}. "
                 f"What can I help with?"), person.name
+
+    def _when(self, s) -> str:
+        """"at 10:00 AM" today, "on Tuesday, May 14 at 10:00 AM" any other day."""
+        when = f"at {spoken_time(s.start)}"
+        return when if s.start.date() == self.now().date() else f"on {spoken_day(s.start)} {when}"
 
     def _context(self, name: str | None, badge: str | None) -> str:
         upcoming = self.event.next_sessions(self.now(), badge if name else None)
-        listed = "; ".join(f"{s.title} at {spoken_time(s.start)} in the {s.room}" for s in upcoming) or "none"
+        listed = "; ".join(f"{s.title} {self._when(s)} in the {s.room}" for s in upcoming) or "none"
         who = f"Visitor: {name}." if name else "Visitor: not signed in."
-        return f"[{who} Now: {spoken_time(self.now())}. Their next sessions: {listed}.]\n"
+        now = self.now()
+        return f"[{who} Now: {spoken_day(now)}, {now.year}, {spoken_time(now)}. Their next sessions: {listed}.]\n"
 
     def run(self, badge: str | None, source) -> list[dict]:
         conversation: list[dict] = []

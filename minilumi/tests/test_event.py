@@ -34,6 +34,17 @@ def test_system_prompt_has_rooms_and_sessions_but_no_attendees():
     assert "Ada Park" not in p
 
 
+def test_a_one_day_schedule_has_no_dates_but_a_longer_one_names_each_day(tmp_path):
+    assert "Tuesday, May 14: " not in EV.system_prompt()
+    shutil.copytree(SRC, tmp_path / "ev")
+    sessions = tmp_path / "ev" / "sessions.csv"
+    sessions.write_text(sessions.read_text(encoding="utf-8")
+                        + "Day Two Breakfast,Main Hall,2030-05-15 08:00,2030-05-15 09:00,\n", encoding="utf-8")
+    p = load_event(tmp_path / "ev").system_prompt()
+    assert "Tuesday, May 14: Voice Interfaces 101" in p.replace("- ", "")
+    assert "Wednesday, May 15: Day Two Breakfast" in p.replace("- ", "")
+
+
 import shutil
 
 import pytest

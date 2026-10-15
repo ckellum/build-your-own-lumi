@@ -31,9 +31,14 @@ def test_missing_key_is_named(tmp_path):
         load_config(p)
 
 
-def test_event_dir_is_relative_to_the_config_file():
-    cfg = load_config(ROOT / "config.toml")
-    assert cfg.event_dir == ROOT / "example-event"
+def test_event_dir_is_relative_to_the_config_file(tmp_path):
+    # Not the real config.toml: people point event_dir at their own folder (step 6), and that
+    # must not turn a test red.
+    real = (ROOT / "config.toml").read_text(encoding="utf-8")
+    (tmp_path / "config.toml").write_text(real.replace('event_dir = "example-event"', 'event_dir = "my-event"'),
+                                          encoding="utf-8")
+    cfg = load_config(tmp_path / "config.toml")
+    assert cfg.event_dir == tmp_path / "my-event"
 
 
 def test_cloud_think_uses_anthropic_key_env():

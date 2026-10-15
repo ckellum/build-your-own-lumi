@@ -22,4 +22,7 @@ copy, an email, a web page, notes) or to describe the event.
 6. Check that every session's room exists and every attendee's session titles match exactly, and
    list any that don't.
 7. Show the user a short summary (counts and two or three sample rows, not the whole attendee list)
-   and how to try it: the step 4 command from the site with one of their badge IDs.
+   and how to try it: `uv run minilumi run --preset <preset> --input samples/hello.wav --badge <one of
+   their badges> --mute --no-screen`. The greeting should name that person's next session (and its day,
+   if it isn't today). The recording itself asks about "Voice Interfaces 101" from the example event,
+   so tell them not to expect a real answer to it; for that, run live and ask about their own sessions.

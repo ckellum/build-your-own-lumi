@@ -48,6 +48,11 @@ def spoken_time(t: datetime) -> str:
     return t.strftime("%I:%M %p").lstrip("0")
 
 
+def spoken_day(t: datetime | date) -> str:
+    """"Tuesday, May 14": how a day is said aloud (and how the model is told which day it is)."""
+    return f"{t:%A, %B} {t.day}"
+
+
 @dataclass(frozen=True)
 class Event:
     about: str
@@ -66,8 +71,10 @@ class Event:
 
     def system_prompt(self) -> str:
         rooms = "\n".join(f"- {r.name} (floor {r.floor}): {r.directions}" for r in self.rooms)
+        several_days = len({s.start.date() for s in self.sessions}) > 1      # then each line says which day
         sessions = "\n".join(
-            f"- {s.title}: {spoken_time(s.start)} to {spoken_time(s.end)}, {s.room}"
+            f"- {spoken_day(s.start) + ': ' if several_days else ''}{s.title}: "
+            f"{spoken_time(s.start)} to {spoken_time(s.end)}, {s.room}"
             + (f", with {s.speaker}" if s.speaker else "")
             for s in sorted(self.sessions, key=lambda s: s.start))
         return f"{self.persona}\n\nFacts:\n{self.about}\n\nRooms and places:\n{rooms}\n\nSchedule:\n{sessions}\n"

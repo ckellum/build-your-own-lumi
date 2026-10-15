@@ -63,6 +63,27 @@ def test_first_question_carries_who_and_when_but_the_system_prompt_does_not():
     visit.run("EX-0001", ListSource(frames_for(1.0, 1.0)))
     first = thoughts[0][0]["content"]
     assert "Ada Park" in first and "9:50 AM" in first and "where is my session" in first
+    assert "Tuesday, May 14, 2030" in first          # the date too: an event next month isn't "over" at 3:47 PM
+
+
+def test_greeting_names_the_day_when_the_next_session_is_not_today():
+    visit, said, _ = make(["goodbye"])
+    visit.now = lambda: datetime(2030, 5, 13, 15, 47)
+    visit.run("EX-0001", ListSource(frames_for(1.0)))
+    assert "Voice Interfaces 101 on Tuesday, May 14 at 10:00 AM" in said[0]
+
+
+def test_the_model_hears_which_day_a_later_session_is_on():
+    visit, _, thoughts = make(["where is my session", "goodbye"])
+    visit.now = lambda: datetime(2030, 5, 13, 15, 47)
+    visit.run("EX-0001", ListSource(frames_for(1.0, 1.0)))
+    assert "Voice Interfaces 101 on Tuesday, May 14 at 10:00 AM" in thoughts[0][0]["content"]
+
+
+def test_greeting_leaves_the_day_out_when_it_is_today():
+    visit, said, _ = make(["goodbye"])
+    visit.run("EX-0001", ListSource(frames_for(1.0)))
+    assert "Tuesday" not in said[0]
 
 
 def test_unknown_badge_still_gets_a_visit():

@@ -60,3 +60,13 @@ test("CLAUDE.md tells Claude Code how to test and what never to commit", () => {
   assert.match(guide, /my-event\//);
   assert.match(guide, /config\.toml/);
 });
+
+test("the commands handle what a real run showed: a renamed Lumi, and a sample question from Example Con", () => {
+  const persona = read(".claude/commands/make-it-yours.md");
+  assert.match(persona, /UNKNOWN_GREETING/);                 // the one fixed line that says "I'm Lumi"
+  assert.match(persona, /calls? you Lumi/);                   // the recordings say "Hi Lumi"
+  for (const name of ["make-it-yours", "my-event"]) {
+    assert.match(read(`.claude/commands/${name}.md`), /Voice Interfaces 101/, `/${name} should explain the sample question`);
+  }
+  assert.match(read("CLAUDE.md"), /Voice Interfaces 101/);
+});
