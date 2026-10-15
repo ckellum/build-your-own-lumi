@@ -7,7 +7,7 @@ from conftest import FastPlayer, ListScreen, ListSource
 
 from minilumi.event import load_event
 from minilumi.listen import FRAME_MS, SAMPLE_RATE
-from minilumi.visit import Visit
+from minilumi.visit import UNKNOWN_GREETING, Visit
 
 EV = load_event(Path(__file__).resolve().parents[1] / "example-event")
 N = SAMPLE_RATE * FRAME_MS // 1000
@@ -89,7 +89,7 @@ def test_greeting_leaves_the_day_out_when_it_is_today():
 def test_unknown_badge_still_gets_a_visit():
     visit, said, _ = make(["goodbye"])
     visit.run("NOPE-1", ListSource(frames_for(1.0)))
-    assert said[0] == "Hi there! I'm Lumi. Ask me about sessions, rooms, or lunch."
+    assert said[0] == UNKNOWN_GREETING             # not the words: people rename her (/make-it-yours)
 
 
 def test_silence_asks_still_there_then_ends():
