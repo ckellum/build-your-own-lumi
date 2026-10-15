@@ -7,9 +7,10 @@ ask a question out loud, and Lumi answers out loud, with a talking face.
 
 - `minilumi/`: the starter kit (Python). Start with [minilumi/README.md](minilumi/README.md).
 - `index.html`, `css/`, `js/`: the guide site (plain HTML, no build step).
+- `talk/`: the slides from the talk, with made-up demo data (open `talk/index.html`, arrows to move, F for full screen).
 - `tools/leak-check.py`: the pre-push check that keeps private data out of this repo.
 
 Three ways to run it: **workstation** (big local models), **laptop** (32 GB RAM or a mid-range GPU),
 or **cloud** (no GPU, API keys). See [minilumi/TESTED.md](minilumi/TESTED.md) for what we actually ran.
 
-Built with [Claude Code](https://claude.com/claude-code). MIT licensed.
+Built with [Claude Code](https://claude.com/claude-code). MIT licensed, except the third-party files in `vendor/` and `talk/vendor/` (see [vendor/NOTICE.md](vendor/NOTICE.md)).

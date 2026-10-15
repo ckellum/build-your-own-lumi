@@ -13,6 +13,8 @@ from .listen import FRAME_MS, Endpointer
 
 GOODBYE = re.compile(r"\b(bye|goodbye|that's all|that is all|see you)\b", re.I)
 SENTENCE_END = re.compile(r"(?<=[.!?])\s+")
+# "Dr." or "a.m." end in a dot but don't end the sentence.
+ABBREVIATIONS = re.compile(r"(?:\b(?:Dr|Mr|Mrs|Ms|St|vs|etc|e\.g|i\.e)|\b[ap]\.m)\.$", re.I)
 UNKNOWN_GREETING = "Hi there! I'm Lumi. Ask me about sessions, rooms, or lunch."
 ASK_AGAIN = "Sorry, could you ask that again?"
 
@@ -23,10 +25,13 @@ def sentences(chunks: Iterator[str]) -> Iterator[str]:
     for chunk in chunks:
         buffer += chunk
         parts = SENTENCE_END.split(buffer)
+        pending = ""
         for done in parts[:-1]:
-            if done.strip():
-                yield done.strip()
-        buffer = parts[-1]
+            pending = f"{pending} {done}".strip() if pending else done.strip()
+            if pending and not ABBREVIATIONS.search(pending):
+                yield pending
+                pending = ""
+        buffer = f"{pending} {parts[-1]}" if pending else parts[-1]
     if buffer.strip():
         yield buffer.strip()
 
@@ -82,6 +87,9 @@ class Visit:
         for frame in source.frames():
             utterance = endpointer.feed(frame)
             if utterance is None:
+                if endpointer.speaking:          # someone is mid-sentence: not silence
+                    quiet_frames = 0
+                    continue
                 quiet_frames += 1
                 waited = quiet_frames * FRAME_MS / 1000
                 if not asked and waited >= self.still_there_s:

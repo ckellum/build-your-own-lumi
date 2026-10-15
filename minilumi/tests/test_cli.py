@@ -108,3 +108,10 @@ def test_check_survives_a_non_utf8_console(fake, tmp_path, monkeypatch):
 def test_mic_hint_names_the_shipped_sample():
     from minilumi.audio import NO_MIC
     assert "samples/hello.wav" in NO_MIC and "uv run" in NO_MIC
+
+
+def test_ctrl_c_exits_130_so_restart_loops_can_stop(monkeypatch):
+    def interrupted(*a, **k):
+        raise KeyboardInterrupt
+    monkeypatch.setattr(cli, "_run", interrupted)
+    assert cli.main(["run", "--preset", "workstation"]) == 130

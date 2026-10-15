@@ -45,7 +45,7 @@ class Screen:
                             data = None
                         self.wfile.write(b": ping\n\n" if data is None else f"data: {data}\n\n".encode())
                         self.wfile.flush()
-                except (BrokenPipeError, ConnectionResetError):
+                except (ConnectionError, OSError):    # browser tab closed (Windows raises ConnectionAbortedError)
                     pass
                 finally:
                     with screen._lock:

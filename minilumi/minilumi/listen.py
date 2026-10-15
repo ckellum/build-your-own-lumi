@@ -50,6 +50,11 @@ class Endpointer:
         self._peak = 0
         self._room_level = 0.0
 
+    @property
+    def speaking(self) -> bool:
+        """True while an utterance is being collected."""
+        return self._speaking
+
     def room_level(self) -> float:
         return float(np.percentile(self._room, 20)) if self._room else 0.0
 

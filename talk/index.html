@@ -1,0 +1,429 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Lumi: The Art of the Possible (public deck)</title>
+<link rel="stylesheet" href="deck.css">
+</head>
+<body>
+<div id="viewport"><div id="stage">
+
+<!-- 0 · TITLE -->
+<section class="slide" data-title="Title" data-notes="(Before starting: deck full screen with F; presenter view with P.)
+Welcome. For the next 40 minutes: Lumi, a voice concierge built for a company event.
+Everything I show you is also on the site on this QR code. Scan it now or at the end.">
+  <div class="title-grid">
+    <div>
+      <span class="kicker" data-a>The Art of the Possible</span>
+      <h1 data-a>Meet <span class="grad">Lumi</span></h1>
+      <p class="big" data-a>How one person and AI built a voice concierge in four weeks, and how you can build your own.</p>
+      <div class="qr-row" data-a>
+        <div class="qr"><img src="img/qr-repo.png" alt="QR code for the repo"></div>
+        <div><p>Follow along:</p><span class="url">github.com/ckellum/<br>build-your-own-lumi</span></div>
+      </div>
+    </div>
+    <div data-a><svg class="lumi-svg" role="img" aria-label="Lumi" viewBox="0 0 400 440" aria-hidden="true">
+    <defs>
+      <radialGradient id="pearl-1" cx="36%" cy="28%" r="78%">
+        <stop offset="0" stop-color="#ffffff"/><stop offset=".55" stop-color="#e9f1fb"/><stop offset="1" stop-color="#a9bfd8"/>
+      </radialGradient>
+      <radialGradient id="pearl-body-1" cx="40%" cy="20%" r="85%">
+        <stop offset="0" stop-color="#ffffff"/><stop offset=".6" stop-color="#dfe9f6"/><stop offset="1" stop-color="#9fb6d0"/>
+      </radialGradient>
+      <linearGradient id="visor-1" x1="0" y1="0" x2="0" y2="1">
+        <stop offset="0" stop-color="#0d1a33"/><stop offset="1" stop-color="#040913"/>
+      </linearGradient>
+      <radialGradient id="visor-glow-1" cx="50%" cy="60%" r="60%">
+        <stop offset="0" stop-color="#1d6fd6" stop-opacity=".35"/><stop offset="1" stop-color="#1d6fd6" stop-opacity="0"/>
+      </radialGradient>
+      <radialGradient id="pod-1" cx="40%" cy="35%" r="70%">
+        <stop offset="0" stop-color="#ffffff"/><stop offset="1" stop-color="#b3c6dc"/>
+      </radialGradient>
+      <filter id="light-1" x="-50%" y="-50%" width="200%" height="200%">
+        <feGaussianBlur stdDeviation="5" result="b"/>
+        <feMerge><feMergeNode in="b"/><feMergeNode in="b"/><feMergeNode in="SourceGraphic"/></feMerge>
+      </filter>
+      <filter id="soft-1" x="-30%" y="-30%" width="160%" height="160%"><feGaussianBlur stdDeviation="10"/></filter>
+    </defs>
+    <g class="float">
+      <!-- body and chest light -->
+      <path class="torso" d="M128 330 C128 300 160 286 200 286 C240 286 272 300 272 330 L268 392 C266 410 240 420 200 420 C160 420 134 410 132 392 Z" fill="url(#pearl-body-1)"/>
+      <ellipse class="ring" cx="200" cy="368" rx="26" ry="9" fill="#7fe3ff" filter="url(#light-1)"/>
+      <ellipse cx="200" cy="292" rx="70" ry="10" fill="#6d86a6" opacity=".35" filter="url(#soft-1)"/>
+      <!-- ear pods with light rings -->
+      <ellipse cx="58" cy="190" rx="30" ry="40" fill="url(#pod-1)"/>
+      <ellipse class="ear" cx="54" cy="190" rx="13" ry="22" fill="none" stroke="#3fa9ff" stroke-width="5" filter="url(#light-1)"/>
+      <ellipse cx="342" cy="190" rx="30" ry="40" fill="url(#pod-1)"/>
+      <ellipse class="ear" cx="346" cy="190" rx="13" ry="22" fill="none" stroke="#3fa9ff" stroke-width="5" filter="url(#light-1)"/>
+      <!-- pearl helmet and glass visor -->
+      <path class="helmet" d="M200 52 C300 52 352 112 352 190 C352 270 300 300 200 300 C100 300 48 270 48 190 C48 112 100 52 200 52 Z" fill="url(#pearl-1)"/>
+      <path class="visor" d="M200 98 C286 98 318 140 318 192 C318 248 286 268 200 268 C114 268 82 248 82 192 C82 140 114 98 200 98 Z" fill="url(#visor-1)"/>
+      <path d="M200 98 C286 98 318 140 318 192 C318 248 286 268 200 268 C114 268 82 248 82 192 C82 140 114 98 200 98 Z" fill="url(#visor-glow-1)"/>
+      <path d="M118 140 C140 112 180 104 222 106" fill="none" stroke="#ffffff" stroke-opacity=".22" stroke-width="6" stroke-linecap="round"/>
+      <ellipse cx="132" cy="96" rx="58" ry="22" fill="#ffffff" opacity=".55" filter="url(#soft-1)"/>
+      <!-- face: light, not features -->
+      <g class="eyes" filter="url(#light-1)">
+        <path class="eye" d="M134 196 Q156 168 178 196" fill="none" stroke="#9cecff" stroke-width="11" stroke-linecap="round"/>
+        <path class="eye" d="M222 196 Q244 168 266 196" fill="none" stroke="#9cecff" stroke-width="11" stroke-linecap="round"/>
+      </g>
+      <g filter="url(#light-1)">
+        <path class="mouth" d="M178 228 Q200 246 222 228" fill="none" stroke="#9cecff" stroke-width="8" stroke-linecap="round"/>
+      </g>
+    </g>
+  </svg></div>
+  </div>
+</section>
+
+
+<!-- 2 · THE PROBLEM -->
+<section class="slide" data-section="1 · Why Lumi" data-title="The problem" data-notes="[2:00–5:00] The problem. Two floors, rooms with names nobody knows, a schedule that changes, and nobody reads the PDF.
+Ask the room: who got lost at least once this week?">
+  <h2 data-a>A big event in a building<br>most people have never been in.</h2>
+  <div class="cols four" style="margin-top:70px">
+    <div class="stat" data-a><b class="grad">~200</b><span>attendees</span></div>
+    <div class="stat" data-a><b class="grad">2</b><span>floors</span></div>
+    <div class="stat" data-a><b class="grad">30</b><span>rooms and spaces</span></div>
+    <div class="stat" data-a><b class="grad">80</b><span>schedule items over 3 days</span></div>
+  </div>
+  <p class="big" style="margin-top:80px" data-a>“Where is my next session?” gets asked a thousand times.</p>
+</section>
+
+<!-- 3 · THE IDEA -->
+<section class="slide" data-section="1 · Why Lumi" data-title="The idea" data-notes="The idea in one line: a concierge you just talk to. Scan your badge, she knows who you are and what's next for you.">
+  <h2 data-a>The idea: a concierge<br>you just <span class="grad">talk to</span>.</h2>
+  <div class="cols three" style="margin-top:60px">
+    <div class="card top" data-a><span class="kicker">1 · Scan</span><h3>Your badge</h3><p>She greets you by name, and knows your next session.</p></div>
+    <div class="card top" data-a><span class="kicker">2 · Ask</span><h3>Out loud</h3><p>“Where's lunch?” “What's on at two?” “Where's the Maple Room?”</p></div>
+    <div class="card top" data-a><span class="kicker">3 · Go</span><h3>She shows you</h3><p>A 3D hologram route to the room, from right where you're standing.</p></div>
+  </div>
+  <p class="big" style="margin-top:60px" data-a>No app. No login. No typing.</p>
+</section>
+
+<!-- 4 · THE RULES -->
+<section class="slide" data-section="1 · Why Lumi" data-title="The rules" data-notes="The rules I set on day one. These shaped every technical decision later. Privacy first: the mic is only open during a visit, and nothing leaves the box.">
+  <h2 data-a>Four rules from day one.</h2>
+  <div class="cols two" style="margin-top:40px">
+    <div class="card" data-a><span class="kicker">Voice only</span><h3>The screen is display-only.</h3><p>No touchscreen. Your voice drives everything.</p></div>
+    <div class="card" data-a><span class="kicker">Listens only in a visit</span><h3>The mic opens at your scan.</h3><p>It closes at goodbye. Nothing is captured while she's idle.</p></div>
+    <div class="card" data-a><span class="kicker">Everything local</span><h3>One box. No cloud.</h3><p>Every model runs on the computer next to her. Your voice never left the building.</p></div>
+    <div class="card" data-a><span class="kicker">Remembers with permission</span><h3>Only if you say yes.</h3><p>She asks before remembering you, and keeps a short summary, never a recording.</p></div>
+  </div>
+</section>
+
+<!-- 5 · VISIT VIDEO -->
+<section class="slide" data-section="2 · Meet her" data-title="A real visit (video)" data-notes="[5:00–10:00] A real visit, recorded end to end with Lumi's real software, against a made-up event (Example Con, Harbor Hall) so no real data or floor plans appear. Badge scan, greeting, a question, lunch, directions, goodbye. About a minute. Let it play.">
+  <div class="video-full media">
+    <video preload="auto" poster="media/lumi-visit-poster.jpg" playsinline><source src="media/lumi-visit.mp4" type="video/mp4"></video>
+    <div class="video-missing">A real visit<br><span class="dim">media/lumi-visit.mp4</span></div>
+  </div>
+</section>
+
+<!-- 6 · WHAT JUST HAPPENED -->
+<section class="slide" data-section="2 · Meet her" data-title="What just happened" data-notes="Walk through the three moments. Point out: the greeting used the badge to know the person AND their next session; the panels change because the model tags its answer; the route is a 3D model of this building.">
+  <h2 data-a>What just happened.</h2>
+  <div class="shots">
+    <figure data-a><div class="media" style="aspect-ratio:16/9"><img src="img/visit-1.jpg" alt=""></div><figcaption>Scan → greeted by name<span>Badge ID → roster → next session</span></figcaption></figure>
+    <figure data-a><div class="media" style="aspect-ratio:16/9"><img src="img/visit-2.jpg" alt=""></div><figcaption>A question, answered<span>Speech → model → voice, with a panel</span></figcaption></figure>
+    <figure data-a><div class="media" style="aspect-ratio:16/9"><img src="img/visit-3.jpg" alt=""></div><figcaption>“Show me the way”<span>A 3D route, drawn live</span></figcaption></figure>
+  </div>
+</section>
+
+<!-- 7 · PIPELINE -->
+<section class="slide" data-section="3 · How she works" data-anim="pipeline" data-title="The pipeline" data-notes="[10:00–18:00] The whole system on one slide. Let the pulse travel. Beginners: it's a relay race. Each runner does one job and hands off.
+Scanner → microphone → Parakeet turns speech into text → a local language model writes the answer → Kokoro turns it into a voice → the screen shows her face, captions and maps.">
+  <h2 data-a>Six steps, one relay race.</h2>
+  <svg class="pipe" viewBox="0 0 1640 520" data-a>
+    <defs><linearGradient id="dpg" x1="0" x2="1"><stop offset="0" stop-color="#3ef0ff"/><stop offset=".6" stop-color="#9a6bff"/><stop offset="1" stop-color="#ff5fd2"/></linearGradient></defs>
+    <path class="track" d="M110,200 C250,200 250,330 390,330 C530,330 530,200 670,200 C810,200 810,330 950,330 C1090,330 1090,200 1230,200 C1370,200 1370,330 1510,330"/>
+    <path class="glow" d="M110,200 C250,200 250,330 390,330 C530,330 530,200 670,200 C810,200 810,330 950,330 C1090,330 1090,200 1230,200 C1370,200 1370,330 1510,330"/>
+    <g class="node" data-x="110" transform="translate(110 200)"><circle r="70"/><path class="icon" d="M-24,-16 h48 v32 h-48 z M-14,-6 h16 M-14,6 h28"/><text class="label" y="-100">Badge</text><text class="sub" y="118">QR scanner</text></g>
+    <g class="node" data-x="390" transform="translate(390 330)"><circle r="70"/><path class="icon" d="M-10,-28 a10,10 0 0 1 20,0 v24 a10,10 0 0 1 -20,0 z M-20,-4 a20,20 0 0 0 40,0 M0,16 v14"/><text class="label" y="118">Hear</text><text class="sub" y="152">shotgun mic</text></g>
+    <g class="node" data-x="670" transform="translate(670 200)"><circle r="70"/><path class="icon" d="M-26,0 h8 l6,-18 l10,36 l10,-30 l6,12 h12"/><text class="label" y="-100">Parakeet</text><text class="sub" y="118">speech → text</text></g>
+    <g class="node" data-x="950" transform="translate(950 330)"><circle r="70"/><path class="icon" d="M-20,-20 h40 v40 h-40 z M-10,-30 v10 M10,-30 v10 M-10,20 v10 M10,20 v10 M-30,-10 h10 M-30,10 h10 M20,-10 h10 M20,10 h10"/><text class="label" y="118">Think</text><text class="sub" y="152">Qwen · llama.cpp</text></g>
+    <g class="node" data-x="1230" transform="translate(1230 200)"><circle r="70"/><path class="icon" d="M-24,-10 h12 l14,-14 v48 l-14,-14 h-12 z M12,-10 a14,14 0 0 1 0,20 M20,-18 a24,24 0 0 1 0,36"/><text class="label" y="-100">Kokoro</text><text class="sub" y="118">text → voice</text></g>
+    <g class="node" data-x="1510" transform="translate(1510 330)"><circle r="70"/><path class="icon" d="M-28,-20 h56 v34 h-56 z M-10,24 h20 M0,14 v10"/><text class="label" y="118">Show</text><text class="sub" y="152">Chrome kiosk</text></g>
+    <circle class="pulse" r="12" cx="110" cy="200"/>
+  </svg>
+</section>
+
+<!-- 8 · HARDWARE -->
+<section class="slide" data-section="3 · How she works" data-title="The hardware" data-notes="The hardware. The key point: one box runs everything. The mic choice mattered more than any model choice. More on that in 'what broke'.">
+  <h2 data-a>The hardware: one box, no cloud.</h2>
+  <div class="cols two" style="grid-template-columns:1.2fr 1fr">
+    <div class="card top" data-a><span class="kicker">The brain</span><h3>NVIDIA DGX Spark</h3><p>GB10 chip, 128 GB of unified memory. Runs speech-to-text, the language model and the voice, all at once.</p></div>
+    <ul class="clean" data-a>
+      <li><b style="color:var(--ink)">Shotgun mic</b>, aimed at the visitor, back to the crowd</li>
+      <li><b style="color:var(--ink)">Speakerphone</b> as her speaker</li>
+      <li><b style="color:var(--ink)">USB QR scanner</b>: it types like a keyboard</li>
+      <li><b style="color:var(--ink)">A big screen</b> running Chrome in kiosk mode</li>
+    </ul>
+  </div>
+  <div class="levels">
+    <div class="card lvl-b" data-a><span class="kicker">Beginner</span><p>Everything you saw ran on that one computer.</p></div>
+    <div class="card lvl-i" data-a><span class="kicker">Intermediate</span><p>Three model servers, each speaking the OpenAI API, on one machine.</p></div>
+    <div class="card lvl-e" data-a><span class="kicker">Expert</span><p>The kiosk app is stdlib-only Python: no numpy, no evdev library, nothing to break.</p></div>
+  </div>
+</section>
+
+<!-- 9 · HEARING -->
+<section class="slide" data-section="3 · How she works" data-title="Hearing" data-notes="Hearing is the hardest part. Not recognising words; knowing WHEN someone is talking to her, in a busy hallway.">
+  <h2 data-a>Hearing: <span class="grad">when</span> is harder than <span class="grad">what</span>.</h2>
+  <p class="big" data-a>Parakeet turns speech into text very well. Knowing when a visitor has <i>finished</i>, in a crowd, is the hard part.</p>
+  <div class="levels">
+    <div class="card lvl-b" data-a><span class="kicker">Beginner</span><p>She listens to how loud the room is, all the time. You have to be clearly louder than the room.</p></div>
+    <div class="card lvl-i" data-a><span class="kicker">Intermediate</span><p>Start at 4× the room level, keep going above 2×, stop after a short silence. “Hi Lumi” also starts a visit.</p></div>
+    <div class="card lvl-e" data-a><span class="kicker">Expert</span><p>Room level = 20th percentile of the last 1.5 s, re-measured continuously; a turn must peak above a fixed floor, too.</p></div>
+  </div>
+</section>
+
+<!-- 10 · THINKING -->
+<section class="slide" data-section="3 · How she works" data-title="Thinking" data-notes="Thinking. The model gets a cheat sheet. Rooms, sessions, food, the building. And her personality. The visitor's details go in their first message, which keeps the cheat sheet identical for everyone. That's what makes her fast.">
+  <h2 data-a>Thinking: a cheat sheet and a personality.</h2>
+  <div class="cols two">
+    <div class="card" data-a><span class="kicker">The system prompt (same for everyone)</span><p>Persona, event facts, every room, every session, lunch menus, the building, nearby restaurants.</p></div>
+    <div class="card" data-a><span class="kicker">The first message (just you)</span><p>Your name, the time, your next sessions, and what you talked about last time, if you said yes.</p></div>
+  </div>
+  <div class="levels">
+    <div class="card lvl-b" data-a><span class="kicker">Beginner</span><p>The AI only knows what we tell it. So we tell it everything about this event.</p></div>
+    <div class="card lvl-i" data-a><span class="kicker">Intermediate</span><p>She adds little tags to her answers, like <span class="mono">[show:route:R102]</span>, that tell the screen what to show.</p></div>
+    <div class="card lvl-e" data-a><span class="kicker">Expert</span><p>Identical system prompt = reusable prompt cache. Per-visitor data in the system prompt would make every visitor wait.</p></div>
+  </div>
+</section>
+
+<!-- 11 · SHOWING THE WAY -->
+<section class="slide" data-section="3 · How she works" data-title="Showing the way" data-notes="The 3D directions (the building on screen is the made-up demo one). I didn't have CAD files. I took phone photos of the fire-exit maps on the walls, and we traced a 3D model of both floors from those. Every named room has a route from the kiosk.">
+  <h2 data-a>Showing the way, in 3D.</h2>
+  <div class="cols two" style="align-items:center">
+    <div class="media" style="aspect-ratio:16/9" data-a><img src="img/visit-map.jpg" alt=""></div>
+    <div>
+      <p class="big" data-a>No CAD files. Just phone photos of the fire-exit maps on the walls.</p>
+      <p class="dim" data-a style="font-size:24px">Shown here: the made-up demo building. The real floor plans stay private.</p>
+      <ul class="clean" data-a>
+        <li>Both floors traced into a 3D model</li>
+        <li>A route to every named room, plus restrooms</li>
+        <li>Drawn live as a blue hologram</li>
+      </ul>
+    </div>
+  </div>
+</section>
+
+<!-- 12 · BUILT WITH AI: WORKFLOW -->
+<section class="slide" data-section="4 · Built with AI" data-title="How it was built" data-notes="[18:00–26:00] This is the 'art of the possible' part. I'm not a team. I worked with an AI coding agent, Claude Code, and a disciplined workflow: think first, write it down, plan it, test it, review it.">
+  <h2 data-a>How it was built: think, write, plan, test, review.</h2>
+  <div class="flow">
+    <div class="card top" data-a><div class="step grad">1</div><h3>Brainstorm</h3><p>AI asks questions, one at a time, until the idea is clear.</p></div>
+    <div class="card top" data-a><div class="step grad">2</div><h3>Spec</h3><p>A written design I approve. Sep 15.</p></div>
+    <div class="card top" data-a><div class="step grad">3</div><h3>Plans</h3><p>Four plans: foundation, visit engine, screen, 3D directions.</p></div>
+    <div class="card top" data-a><div class="step grad">4</div><h3>Test first</h3><p>Every feature starts as a failing test.</p></div>
+    <div class="card top" data-a><div class="step grad">5</div><h3>Review</h3><p>Fresh-eyes reviews per task and for the whole branch.</p></div>
+  </div>
+  <p class="big" style="margin-top:56px" data-a>Then: rehearse on the real hardware. Fix. Repeat.</p>
+</section>
+
+<!-- 13 · NUMBERS -->
+<section class="slide center" data-section="4 · Built with AI" data-title="The numbers" data-notes="The numbers. Four weeks, from the first spec on September 15 to the last commit on October 13. 866 automated tests, which is why I could keep changing her right up to the event.">
+  <div class="cols four" style="width:1640px">
+    <div class="stat" data-a><b class="grad">4</b><span>weeks<br>Sep 15 → Oct 13</span></div>
+    <div class="stat" data-a><b class="grad">191</b><span>commits</span></div>
+    <div class="stat" data-a><b class="grad">866</b><span>automated tests</span></div>
+    <div class="stat" data-a><b class="grad">1</b><span>person<br>+ an AI coding agent</span></div>
+  </div>
+</section>
+
+<!-- 14 · WHO DID WHAT -->
+<section class="slide" data-section="4 · Built with AI" data-title="Who did what" data-notes="The most important slide for beginners. AI wrote the code. I made every decision that needed taste, judgement or a person. That split is the art of the possible.">
+  <h2 data-a>Who did what.</h2>
+  <div class="split who">
+    <div class="card top" data-a><span class="kicker">I decided</span><h3>Taste, people, the real world</h3>
+      <ul class="clean"><li>The rules: voice only, local only, opt-in memory</li><li>Her personality and voice</li><li>Who gets a surprise, and what it says</li><li>Room photos, the maps, the hardware, the mic</li><li>Every “ship it”</li></ul></div>
+    <div class="card top" data-a><span class="kicker">AI did</span><h3>The heavy lifting</h3>
+      <ul class="clean"><li>Wrote the code and all 866 tests</li><li>Drafted the specs and plans for me to approve</li><li>Reviewed its own work with fresh eyes</li><li>Built test benches (crowd noise, timing)</li><li>Badge labels, recordings, these slides</li></ul></div>
+  </div>
+</section>
+
+<!-- 15–20 · WHAT BROKE -->
+<section class="slide" data-section="5 · What broke" data-title="Story 1: the 21-second hello" data-notes="[26:00–33:00] Six stories. Experts, this is for you.
+1: The first answer took 21.6 seconds. The model was re-reading a huge prompt for every visitor. Fix: identical prompt, warm it at startup, and save cache checkpoints at the right place. First answers went to about half a second.">
+  <div class="story">
+    <div><div class="num grad" data-a>01</div><h2 data-a>The 21-second hello</h2><p class="big" data-a>Nobody waits 21 seconds at a kiosk.</p></div>
+    <div class="before-after">
+      <div class="ba bad" data-a><span class="kicker">What happened</span><p>21.6 s to the first word: the model re-read thousands of tokens of event data for every visitor.</p></div>
+      <div class="ba good" data-a><span class="kicker">The fix</span><p>One identical prompt, warmed at startup, with cache checkpoints in the right place: ~0.5 s.</p></div>
+    </div>
+  </div>
+</section>
+
+<section class="slide" data-section="5 · What broke" data-title="Story 2: eleven reviews" data-notes="2: Lip sync broke for every reply longer than one sentence, and the bug survived eleven separate task reviews. A clamp treated 'audio starts in 8 seconds' as an error. Only the final whole-branch review caught it. Lesson: review the whole, not just the parts.">
+  <div class="story">
+    <div><div class="num grad" data-a>02</div><h2 data-a>The bug that passed eleven reviews</h2><p class="big" data-a>Lip sync broke on every multi-sentence reply.</p></div>
+    <div class="before-after">
+      <div class="ba bad" data-a><span class="kicker">What happened</span><p>Queued sentences start in the future. A symmetric “sanity” clamp threw their timing away.</p></div>
+      <div class="ba good" data-a><span class="kicker">The fix</span><p>Asymmetric bounds (stale 5 s, ahead 60 s), and a review of the whole branch, not just each task.</p></div>
+    </div>
+  </div>
+</section>
+
+<section class="slide" data-section="5 · What broke" data-title="Story 3: one voice in a crowd" data-notes="3: Quiet room, perfect. Busy hallway, she answered strangers. We recorded 75 seconds of crowd noise and replayed it through the hearing code while tuning. Visitors peak around 6,000 to 19,000; the crowd never above about 1,800. Plus a shotgun mic aimed at the visitor.">
+  <div class="story">
+    <div><div class="num grad" data-a>03</div><h2 data-a>One voice in a crowd</h2><p class="big" data-a>Quiet room: perfect. Hallway: she answered strangers.</p></div>
+    <div class="before-after">
+      <div class="ba bad" data-a><span class="kicker">What happened</span><p>Fixed loudness thresholds. The crowd kept starting turns.</p></div>
+      <div class="ba good" data-a><span class="kicker">The fix</span><p>Replayed 75 s of real crowd noise while tuning. Visitor peaks 6,000–19,000 vs. crowd ≤ 1,833. Shotgun mic, back to the crowd.</p></div>
+    </div>
+  </div>
+</section>
+
+<section class="slide" data-section="5 · What broke" data-title="Story 4: power-offs" data-notes="4: Twice, under heavy load, the whole computer simply powered off. No logs, nothing. Fix: cap the GPU clock at boot, and keep test load to one request at a time. Hardware is part of the system.">
+  <div class="story">
+    <div><div class="num grad" data-a>04</div><h2 data-a>The computer that turned itself off</h2><p class="big" data-a>Twice. No logs. No warning.</p></div>
+    <div class="before-after">
+      <div class="ba bad" data-a><span class="kicker">What happened</span><p>Sustained AI load caused power spikes on older firmware. Hard power-off.</p></div>
+      <div class="ba good" data-a><span class="kicker">The fix</span><p>GPU clock capped at boot by a service; test load kept to one request at a time.</p></div>
+    </div>
+  </div>
+</section>
+
+<section class="slide" data-section="5 · What broke" data-title="Story 5: QR codes vs screens" data-notes="5: QR badges on a phone or laptop screen scanned badly: glare and refresh. Printed, matte, about 5 cm, high error correction: instant.">
+  <div class="story">
+    <div><div class="num grad" data-a>05</div><h2 data-a>QR codes vs. screens</h2><p class="big" data-a>Badges on a screen took forever to scan.</p></div>
+    <div class="before-after">
+      <div class="ba bad" data-a><span class="kicker">What happened</span><p>Glare and screen refresh confuse the scanner.</p></div>
+      <div class="ba good" data-a><span class="kicker">The fix</span><p>Printed on matte labels, ~5 cm, highest error correction. Instant reads.</p></div>
+    </div>
+  </div>
+</section>
+
+<section class="slide" data-section="5 · What broke" data-title="Story 6: the silent speaker" data-notes="6: The first full rehearsal: everything worked, and nobody could hear her. The speaker came up at 0% after every reboot. Fix: set volume at startup, and a self-check that fails loudly when muted. That rehearsal found two bugs that 252 tests didn't.">
+  <div class="story">
+    <div><div class="num grad" data-a>06</div><h2 data-a>The silent speaker</h2><p class="big" data-a>She was talking. Nobody could hear her.</p></div>
+    <div class="before-after">
+      <div class="ba bad" data-a><span class="kicker">What happened</span><p>The USB speaker came up at 0% volume after every reboot.</p></div>
+      <div class="ba good" data-a><span class="kicker">The fix</span><p>Volume set at startup, plus a self-check that fails on a muted speaker. Rehearse on real hardware.</p></div>
+    </div>
+  </div>
+</section>
+
+<!-- 21 · SMALL TOUCHES -->
+<section class="slide" data-section="6 · Personality" data-title="Small touches" data-notes="[33:00–36:00] Personality is what people remember. Pronunciation fixes, playful greetings people asked for on their name tags, and titles like 'Your Grace' used naturally, not on every sentence.">
+  <h2 data-a>Personality is in the small touches.</h2>
+  <div class="cols three">
+    <div class="card top" data-a><span class="kicker">Say names right</span><h3>A pronunciation list</h3><p>“Nguyen” → “Win”. And some phrases just don't work: “Uh oh” was misread, “Oh no” wasn't.</p></div>
+    <div class="card top" data-a><span class="kicker">Name tags</span><h3>Greetings people chose</h3><p>Nicknames and a playful hail, once a day per badge, from what people put on their name tags.</p></div>
+    <div class="card top" data-a><span class="kicker">Titles</span><h3>“Your Grace”</h3><p>Used naturally in conversation, not stapled onto every sentence. We tried that. It was worse.</p></div>
+  </div>
+</section>
+
+
+<!-- SHOWS (no names) -->
+<section class="slide" data-section="6 · Personality" data-title="First-visit shows" data-notes="Five people got a scripted show the first time they scanned their badge: a Wright-brothers flight about shipping small and often, an Iron Throne where Lumi keeps the crown, a game show where the visitor is the grand prize, a magic carpet ride, and a confetti grenade. Scripted, no AI improvising, played exactly once.">
+  <h2 data-a>First-visit shows: scripted, once, unforgettable.</h2>
+  <div class="cols three">
+    <div class="card top" data-a><span class="kicker">Flight</span><h3>The Wright brothers</h3><p>Test small, fly again: a lesson in shipping often.</p></div>
+    <div class="card top" data-a><span class="kicker">Throne</span><h3>The Iron Throne</h3><p>It rises behind Lumi. She keeps the crown.</p></div>
+    <div class="card top" data-a><span class="kicker">Game show</span><h3>The grand prize</h3><p>The final question's answer is the visitor.</p></div>
+    <div class="card top" data-a><span class="kicker">Carpet</span><h3>A magic carpet</h3><p>Lumi flies in, a little dizzy.</p></div>
+    <div class="card top" data-a><span class="kicker">Confetti</span><h3>“The Grenade”</h3><p>A countdown, then confetti.</p></div>
+    <div class="card" data-a style="display:grid;place-content:center"><p class="big" style="margin:0">No AI improvising.<br><span class="dim">Every word reviewed.</span></p></div>
+  </div>
+</section>
+
+<!-- 23 · THREE TIERS -->
+<section class="slide" data-section="7 · Build your own" data-title="Three ways to build one" data-notes="[36:00–40:00] Now: you. You don't need a DGX Spark. Three tiers. The laptop path is tested: about a second and a half from question to answer. Cloud works with API keys if you have no GPU.">
+  <h2 data-a>Build your own, on what you have.</h2>
+  <div class="cols three tiers">
+    <div class="card top" data-a><span class="kicker">All local, biggest models</span><div class="tier-name">Workstation</div><p>64 GB+ unified memory or a 24 GB GPU</p>
+      <dl><dt>Hear</dt><dd>Whisper / Parakeet server</dd><dt>Think</dt><dd>llama.cpp</dd><dt>Speak</dt><dd>Kokoro server</dd></dl></div>
+    <div class="card top" data-a><span class="kicker">Start here</span><div class="tier-name">Laptop</div><p>32 GB RAM or an 8–12 GB GPU</p>
+      <dl><dt>Hear</dt><dd>faster-whisper</dd><dt>Think</dt><dd>Ollama, small model</dd><dt>Speak</dt><dd>Kokoro on CPU</dd></dl></div>
+    <div class="card top" data-a><span class="kicker">No GPU</span><div class="tier-name">Cloud</div><p>Any computer, API keys</p>
+      <dl><dt>Hear</dt><dd>Cloud speech-to-text</dd><dt>Think</dt><dd>Claude</dd><dt>Speak</dt><dd>Cloud voice</dd></dl></div>
+  </div>
+  <p style="margin-top:40px" data-a>Tested end to end: workstation ≈ 1.3 s, laptop ≈ 1.5 s from question to answer.</p>
+</section>
+
+<!-- 24 · THE SITE -->
+<section class="slide" data-section="7 · Build your own" data-title="The site" data-notes="The site walks you through it in nine steps. Pick your hardware at the top and every command changes. Pick Beginner, Intermediate or Expert and the explanations change. The starter kit is about a thousand lines of Python you can read in an afternoon.">
+  <div class="cols two" style="align-items:center;grid-template-columns:1.1fr .9fr">
+    <div class="media" style="aspect-ratio:16/10" data-a><img src="img/site.png" alt=""></div>
+    <div>
+      <h2 data-a style="font-size:72px">Nine steps.<br>Your hardware.<br>Your depth.</h2>
+      <ul class="clean" data-a>
+        <li>Pick workstation, laptop or cloud: every command changes</li>
+        <li>Beginner, intermediate or expert explanations</li>
+        <li>A starter kit: ~1,000 lines of Python</li>
+        <li>Every lesson from this talk</li>
+      </ul>
+    </div>
+  </div>
+</section>
+
+<!-- 25 · CLOSE -->
+<section class="slide" data-title="Thank you + QR" data-notes="Thank you. Scan the code. It's all there, and it'll stay there after today. Questions?">
+  <div class="title-grid">
+    <div>
+      <span class="kicker" data-a>Build your own Lumi</span>
+      <h1 data-a style="font-size:130px">Thank <span class="grad">you</span>.</h1>
+      <div class="qr-row" data-a>
+        <div class="qr" style="width:320px;height:320px"><img src="img/qr-repo.png" alt="QR code for the repo"></div>
+        <div><span class="url">github.com/ckellum/<br>build-your-own-lumi</span><p style="margin-top:20px">Site, starter kit, and every lesson.</p><p class="big" style="margin-top:30px">Questions?</p></div>
+      </div>
+    </div>
+    <div data-a><svg class="lumi-svg" role="img" aria-label="Lumi" viewBox="0 0 400 440" aria-hidden="true">
+    <defs>
+      <radialGradient id="pearl-2" cx="36%" cy="28%" r="78%">
+        <stop offset="0" stop-color="#ffffff"/><stop offset=".55" stop-color="#e9f1fb"/><stop offset="1" stop-color="#a9bfd8"/>
+      </radialGradient>
+      <radialGradient id="pearl-body-2" cx="40%" cy="20%" r="85%">
+        <stop offset="0" stop-color="#ffffff"/><stop offset=".6" stop-color="#dfe9f6"/><stop offset="1" stop-color="#9fb6d0"/>
+      </radialGradient>
+      <linearGradient id="visor-2" x1="0" y1="0" x2="0" y2="1">
+        <stop offset="0" stop-color="#0d1a33"/><stop offset="1" stop-color="#040913"/>
+      </linearGradient>
+      <radialGradient id="visor-glow-2" cx="50%" cy="60%" r="60%">
+        <stop offset="0" stop-color="#1d6fd6" stop-opacity=".35"/><stop offset="1" stop-color="#1d6fd6" stop-opacity="0"/>
+      </radialGradient>
+      <radialGradient id="pod-2" cx="40%" cy="35%" r="70%">
+        <stop offset="0" stop-color="#ffffff"/><stop offset="1" stop-color="#b3c6dc"/>
+      </radialGradient>
+      <filter id="light-2" x="-50%" y="-50%" width="200%" height="200%">
+        <feGaussianBlur stdDeviation="5" result="b"/>
+        <feMerge><feMergeNode in="b"/><feMergeNode in="b"/><feMergeNode in="SourceGraphic"/></feMerge>
+      </filter>
+      <filter id="soft-2" x="-30%" y="-30%" width="160%" height="160%"><feGaussianBlur stdDeviation="10"/></filter>
+    </defs>
+    <g class="float">
+      <!-- body and chest light -->
+      <path class="torso" d="M128 330 C128 300 160 286 200 286 C240 286 272 300 272 330 L268 392 C266 410 240 420 200 420 C160 420 134 410 132 392 Z" fill="url(#pearl-body-2)"/>
+      <ellipse class="ring" cx="200" cy="368" rx="26" ry="9" fill="#7fe3ff" filter="url(#light-2)"/>
+      <ellipse cx="200" cy="292" rx="70" ry="10" fill="#6d86a6" opacity=".35" filter="url(#soft-2)"/>
+      <!-- ear pods with light rings -->
+      <ellipse cx="58" cy="190" rx="30" ry="40" fill="url(#pod-2)"/>
+      <ellipse class="ear" cx="54" cy="190" rx="13" ry="22" fill="none" stroke="#3fa9ff" stroke-width="5" filter="url(#light-2)"/>
+      <ellipse cx="342" cy="190" rx="30" ry="40" fill="url(#pod-2)"/>
+      <ellipse class="ear" cx="346" cy="190" rx="13" ry="22" fill="none" stroke="#3fa9ff" stroke-width="5" filter="url(#light-2)"/>
+      <!-- pearl helmet and glass visor -->
+      <path class="helmet" d="M200 52 C300 52 352 112 352 190 C352 270 300 300 200 300 C100 300 48 270 48 190 C48 112 100 52 200 52 Z" fill="url(#pearl-2)"/>
+      <path class="visor" d="M200 98 C286 98 318 140 318 192 C318 248 286 268 200 268 C114 268 82 248 82 192 C82 140 114 98 200 98 Z" fill="url(#visor-2)"/>
+      <path d="M200 98 C286 98 318 140 318 192 C318 248 286 268 200 268 C114 268 82 248 82 192 C82 140 114 98 200 98 Z" fill="url(#visor-glow-2)"/>
+      <path d="M118 140 C140 112 180 104 222 106" fill="none" stroke="#ffffff" stroke-opacity=".22" stroke-width="6" stroke-linecap="round"/>
+      <ellipse cx="132" cy="96" rx="58" ry="22" fill="#ffffff" opacity=".55" filter="url(#soft-2)"/>
+      <!-- face: light, not features -->
+      <g class="eyes" filter="url(#light-2)">
+        <path class="eye" d="M134 196 Q156 168 178 196" fill="none" stroke="#9cecff" stroke-width="11" stroke-linecap="round"/>
+        <path class="eye" d="M222 196 Q244 168 266 196" fill="none" stroke="#9cecff" stroke-width="11" stroke-linecap="round"/>
+      </g>
+      <g filter="url(#light-2)">
+        <path class="mouth" d="M178 228 Q200 246 222 228" fill="none" stroke="#9cecff" stroke-width="8" stroke-linecap="round"/>
+      </g>
+    </g>
+  </svg></div>
+  </div>
+</section>
+
+</div></div>
+<div id="presenter"></div>
+<script src="vendor/gsap.min.js"></script>
+<script src="deck.js"></script>
+</body>
+</html>

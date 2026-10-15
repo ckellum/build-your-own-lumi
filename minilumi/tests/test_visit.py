@@ -99,3 +99,15 @@ def test_empty_reply_asks_again_and_is_not_remembered():
     convo = visit.run("EX-0001", ListSource(frames_for(1.0, 1.0)))
     assert "Sorry, could you ask that again?" in said
     assert convo == []
+
+
+def test_abbreviations_do_not_split_sentences():
+    from minilumi.visit import sentences
+    got = list(sentences(iter(["See Dr. Smith in the Maple Room at 10 a.m. sharp. ", "Then lunch."])))
+    assert got == ["See Dr. Smith in the Maple Room at 10 a.m. sharp.", "Then lunch."]
+
+
+def test_a_long_question_does_not_trigger_still_there():
+    visit, said, _ = make(["tell me everything about the event", "goodbye"])
+    visit.run("EX-0001", ListSource(frames_for(35.0, 1.0)))
+    assert "Still there?" not in said

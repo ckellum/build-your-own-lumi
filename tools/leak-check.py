@@ -14,6 +14,7 @@ import os
 import re
 import subprocess
 import sys
+import zlib
 from pathlib import Path
 
 DEFAULT_DENYLIST = Path.home() / "Desktop" / "Lumi-talk" / "denylist.txt"
@@ -39,12 +40,38 @@ def mask(term: str) -> str:
     return term[0] + "***"
 
 
+def png_text(data: bytes) -> bytes:
+    """Decompressed zTXt/iTXt chunks of a PNG (plain tEXt is already readable as bytes)."""
+    if not data.startswith(b"\x89PNG\r\n\x1a\n"):
+        return b""
+    out, at = [], 8
+    while at + 8 <= len(data):
+        length = int.from_bytes(data[at:at + 4], "big")
+        kind, body = data[at + 4:at + 8], data[at + 8:at + 8 + length]
+        try:
+            if kind == b"zTXt":
+                out.append(zlib.decompress(body.split(b"\0", 1)[1][1:]))
+            elif kind == b"iTXt":
+                key, rest = body.split(b"\0", 1)
+                compressed, text = rest[0], rest[2:].split(b"\0", 2)[-1]
+                out.append(zlib.decompress(text) if compressed else text)
+        except (IndexError, zlib.error):
+            pass
+        at += 12 + length
+    return b"\n".join(out)
+
+
 def scan(name: str, data: bytes, denied, allowed) -> list[str]:
-    text = data.decode("latin-1")          # every byte maps to a char: binaries' embedded text is scanned too
+    text = (data + b"\n" + png_text(data)).decode("latin-1")   # every byte maps to a char: binaries' embedded text too
     for pattern in allowed:
         text = pattern.sub(lambda m: " " * len(m.group()), text)
     hits = []
+    clean_name = name
+    for pattern in allowed:
+        clean_name = pattern.sub(lambda m: " " * len(m.group()), clean_name)
     for term, pattern in denied:
+        if pattern.search(clean_name.replace("-", " ").replace("_", " ")):
+            hits.append(f"{name} (file name): {mask(term)}")
         for m in pattern.finditer(text):
             line = text.count("\n", 0, m.start()) + 1
             hits.append(f"{name}:{line}: {mask(term)}")
@@ -62,6 +89,8 @@ def tracked(repo: Path):
 
 
 def history(repo: Path):
+    for tag in git(repo, "for-each-ref", "--format=%(refname)", "refs/tags").decode().split():
+        yield f"tag {tag}", git(repo, "cat-file", "-p", tag)
     for commit in git(repo, "rev-list", "--all").decode().split():
         meta = git(repo, "log", "-1", "--format=%an <%ae>%n%cn <%ce>%n%B", commit)
         yield f"commit {commit[:7]} (author/message)", meta

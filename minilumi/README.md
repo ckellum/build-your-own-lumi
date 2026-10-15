@@ -35,7 +35,7 @@ Presets live in `config.toml`. Each one says what hears, what thinks and what sp
 For **laptop**, install [Ollama](https://ollama.com) and pull the model named in `config.toml`:
 
 ```bash
-ollama pull qwen3:1.7b     # or qwen3:8b for better answers if you have 32 GB
+ollama pull qwen3:1.7b
 ```
 
 For **cloud**, set your keys as environment variables (never in the file):
@@ -44,6 +44,9 @@ For **cloud**, set your keys as environment variables (never in the file):
 export ANTHROPIC_API_KEY=...
 export OPENAI_API_KEY=...
 ```
+
+More RAM? `ollama pull qwen3:8b` gives better answers; set `model` under
+`[presets.laptop.think]` to match.
 
 ## Run
 
@@ -66,8 +69,10 @@ uv run minilumi run --preset laptop --input samples/hello.wav --badge EX-0001
 
 ## Make it yours
 
-Edit the files in `example-event/`: `event.txt` (anything Lumi should know), `rooms.csv`
-(with spoken directions), `sessions.csv` and `attendees.csv` (badge, name, sessions).
+Copy `example-event/` to `my-event/` (git-ignored, so real data stays out of git) and set
+`event_dir = "my-event"` in `config.toml`. Then edit `event.txt` (anything Lumi should know),
+`rooms.csv` (with spoken directions), `sessions.csv` and `attendees.csv` (badge, name, sessions).
+Excel works: a CSV saved on Windows is read correctly, and a mistake names the file and row.
 Lumi's personality is the `PERSONA` line at the top of `minilumi/event.py`.
 
 ## Troubleshooting

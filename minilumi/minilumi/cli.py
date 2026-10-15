@@ -116,7 +116,7 @@ def main(argv: list[str] | None = None, stdin=None) -> int:
         print(f"minilumi: {exc}", file=sys.stderr)
         return 2
     except KeyboardInterrupt:
-        return 0
+        return 130          # the usual "stopped by Ctrl-C" code, so a restart loop can tell and stop too
 
 
 if __name__ == "__main__":

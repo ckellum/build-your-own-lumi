@@ -26,11 +26,12 @@
       <div class="cta" data-hero>
         <a class="btn primary" href="#steps">Start building →</a>
         <a class="btn" href="#how">See how it works</a>
+        <a class="btn" href="talk/">The talk</a>
         <a class="btn" href="https://github.com/ckellum/build-your-own-lumi">GitHub</a>
       </div>
       <div class="chips" data-hero>
         <span class="chip">MIT licensed</span>
-        <span class="chip">Runs fully offline</span>
+        <span class="chip">Can run fully offline</span>
         <span class="chip">macOS · Windows · Linux</span>
         <span class="chip">~1,000 lines of Python</span>
       </div>
@@ -189,7 +190,7 @@ cd build-your-own-lumi/minilumi</code></pre>
         <div data-tier-only="workstation cloud">
 <pre><code>uv sync</code></pre></div>
         <p>On Linux, also install the audio library: <code>sudo apt install libportaudio2</code></p>
-        <div class="check"><b>Check it works:</b> <code>uv run pytest -q</code> ends with <code>55 passed</code>.</div>
+        <div class="check"><b>Check it works:</b> <code>uv run pytest -q</code> ends with <code>59 passed</code>.</div>
         <div class="watch"><b>Watch out for</b><ul>
           <li>On Windows, open a <i>new</i> terminal after installing uv so it's on your PATH.</li>
           <li data-tier-only="laptop">The first local run downloads the speech models (a few hundred MB), once.</li>
@@ -216,10 +217,10 @@ kind = "openai"
 model = "whisper-1"
 base_url = "http://127.0.0.1:8084/v1"</code></pre></div>
         <div data-tier-only="cloud">
-<pre><code># macOS / Linux
-export OPENAI_API_KEY=sk-...
-# Windows (PowerShell)
-$env:OPENAI_API_KEY="sk-..."</code></pre></div>
+<p>macOS / Linux:</p>
+<pre><code>export OPENAI_API_KEY=sk-...</code></pre>
+<p>Windows (PowerShell):</p>
+<pre><code>$env:OPENAI_API_KEY="sk-..."</code></pre></div>
         <div class="check"><b>Check it works:</b> <code>uv run minilumi check --preset <span data-tier-only="laptop">laptop</span><span data-tier-only="workstation">workstation</span><span data-tier-only="cloud">cloud</span></code> prints <code>✓ hear</code>.</div>
         <div class="watch"><b>Watch out for</b><ul>
           <li>Lumi must not hear herself. minilumi throws away whatever the mic caught while she was speaking; a headset or directional mic helps more.</li>
@@ -241,18 +242,18 @@ $env:OPENAI_API_KEY="sk-..."</code></pre></div>
         <div class="level" data-level-only="expert"><span class="level-tag">What we learned</span>
           <p>Keep the system prompt <b>byte-for-byte identical</b> for every visitor. Then the model server can reuse its prompt cache and skip re-reading thousands of tokens. Anything per-person in the system prompt breaks the cache for everyone. Small models sometimes "think out loud" in <code>&lt;think&gt;</code> tags; minilumi asks the server not to, and strips any that slip through.</p></div>
         <div data-tier-only="laptop"><p>Install <a href="https://ollama.com">Ollama</a>, then download a model:</p>
-<pre><code>ollama pull qwen3:1.7b
-# more RAM? better answers:
-ollama pull qwen3:8b</code></pre>
+<pre><code>ollama pull qwen3:1.7b</code></pre>
+          <p>More RAM? An 8B model gives better answers (a much bigger download):</p>
+<pre><code>ollama pull qwen3:8b</code></pre>
           <p>If you pull the 8B model, change <code>model</code> under <code>[presets.laptop.think]</code> in <code>config.toml</code> to <code>qwen3:8b</code>.</p>
           <p class="muted">Honest note: we tested this preset with the same model served by llama.cpp's <code>llama-server</code> (any OpenAI-compatible server works: set <code>base_url</code> to it), not through Ollama itself.</p></div>
         <div data-tier-only="workstation"><p>Serve a model with llama.cpp's OpenAI-compatible server:</p>
 <pre><code>llama-server -m your-model.gguf --host 127.0.0.1 --port 8080</code></pre></div>
         <div data-tier-only="cloud">
-<pre><code># macOS / Linux
-export ANTHROPIC_API_KEY=sk-ant-...
-# Windows (PowerShell)
-$env:ANTHROPIC_API_KEY="sk-ant-..."</code></pre>
+<p>macOS / Linux:</p>
+<pre><code>export ANTHROPIC_API_KEY=sk-ant-...</code></pre>
+<p>Windows (PowerShell):</p>
+<pre><code>$env:ANTHROPIC_API_KEY="sk-ant-..."</code></pre>
           <p>The <code>cloud</code> preset uses Claude Haiku: fast and inexpensive for short spoken answers.</p></div>
         <div class="check"><b>Check it works:</b> <code>uv run minilumi check --preset <span data-tier-only="laptop">laptop</span><span data-tier-only="workstation">workstation</span><span data-tier-only="cloud">cloud</span></code> prints <code>✓ think</code>.</div>
         <div class="watch"><b>Watch out for</b><ul>
@@ -324,7 +325,6 @@ $env:ANTHROPIC_API_KEY="sk-ant-..."</code></pre>
         <div class="check"><b>Check it works:</b> press Enter in the terminal; the face says hello and the mouth moves with the voice.</div>
         <div class="watch"><b>Watch out for</b><ul>
           <li>For a real kiosk, open the page full screen: <code>google-chrome --kiosk http://127.0.0.1:8765/</code></li>
-          <li>3D in Chrome on Linux may fall back to slow software rendering; <code>--ignore-gpu-blocklist</code> can help.</li>
         </ul></div>
       </div>
     </article>
@@ -336,14 +336,14 @@ $env:ANTHROPIC_API_KEY="sk-ant-..."</code></pre>
         <h3>Teach her about your event</h3>
         <p class="what">Four small files are everything Lumi knows.</p>
         <div class="level" data-level-only="beginner"><span class="level-tag">The idea</span>
-          <p>Open <code>example-event/</code> in a spreadsheet or text editor and replace the made-up "Example Con" with your own event: rooms with spoken directions, sessions, attendees, and any facts in <code>event.txt</code>.</p></div>
+          <p>Copy <code>example-event/</code> to <code>my-event/</code>, open the copy in a spreadsheet or text editor, and replace the made-up "Example Con" with your own event: rooms with spoken directions, sessions, attendees, and any facts in <code>event.txt</code>. Then set <code>event_dir = "my-event"</code> in <code>config.toml</code>. (<code>my-event/</code> is git-ignored, so your real data stays out of git.)</p></div>
         <div class="level" data-level-only="intermediate"><span class="level-tag">How it works</span>
           <p><code>rooms.csv</code>: name, floor, directions. <code>sessions.csv</code>: title, room, start, end, speaker. <code>attendees.csv</code>: badge, name, and their sessions separated by <code>;</code>. A scanned badge greets that person with their next session.</p></div>
         <div class="level" data-level-only="expert"><span class="level-tag">What we learned</span>
           <p>Build a "pretend it's 8 AM on day one" clock for rehearsals, so you can test what Lumi says at every point of the event. In minilumi that's the <code>now=</code> argument of <code>Visit</code>. And keep the last good copy of the data: a half-saved CSV at the wrong moment shouldn't leave Lumi knowing nothing.</p></div>
         <div class="check"><b>Check it works:</b> run the step 4 command with your own badge ID; the greeting names your next session.</div>
         <div class="watch"><b>Watch out for</b><ul>
-          <li>Badge IDs are matched without regard to case or spaces, so <code>ex-0001</code> works.</li>
+          <li>Badge IDs ignore upper/lower case and spaces around them, so <code>ex-0001</code> works.</li>
           <li>Never put private data in a public repo. Keep your real CSVs out of git.</li>
         </ul></div>
       </div>
@@ -358,7 +358,7 @@ $env:ANTHROPIC_API_KEY="sk-ant-..."</code></pre>
         <div class="level" data-level-only="beginner"><span class="level-tag">The idea</span>
           <p>Change her name, tone and voice. Have her greet people by nickname. The original had a pronunciation list, playful greetings, and a few surprise "shows" for specific badges.</p></div>
         <div class="level" data-level-only="intermediate"><span class="level-tag">How it works</span>
-          <p>Personality is the <code>PERSONA</code> line at the top of <code>event.py</code>. For nicknames, add a column to <code>attendees.csv</code> and use it in <code>Visit._greeting</code>.</p></div>
+          <p>Personality is the <code>PERSONA</code> line at the top of <code>event.py</code>. For nicknames, add a column to <code>attendees.csv</code>, read it in <code>load_event</code> (<code>event.py</code>), and use it in <code>Visit._greeting</code>.</p></div>
         <div class="level" data-level-only="expert"><span class="level-tag">What we learned</span>
           <p>Scripted moments should <b>skip the language model</b>: match the badge before calling it, then play pre-written lines with pre-rendered audio and a scripted animation. Every word is reviewed in advance, and nothing can improvise its way into an awkward moment in front of a crowd.</p></div>
         <div class="watch"><b>Watch out for</b><ul>
@@ -380,10 +380,12 @@ $env:ANTHROPIC_API_KEY="sk-ant-..."</code></pre>
         <div class="level" data-level-only="expert"><span class="level-tag">What we learned</span>
           <p>On Linux, the original read the scanner directly (evdev, with a udev rule for permissions), so focus didn't matter. It also had a self-check command that failed on a muted speaker, kept transcripts out of logs entirely, and capped the GPU clock after the machine powered itself off under sustained load.</p></div>
         <p>A restart loop (macOS / Linux):</p>
-<pre><code>cd ~/build-your-own-lumi/minilumi
+<pre><code># change this to wherever you cloned the repo
+cd ~/build-your-own-lumi/minilumi
 while true; do uv run minilumi run --preset <span data-tier-only="laptop">laptop</span><span data-tier-only="workstation">workstation</span><span data-tier-only="cloud">cloud</span>; sleep 2; done</code></pre>
         <p>Windows (save as <code>lumi.bat</code> and put a shortcut in <code>shell:startup</code>):</p>
-<pre><code>cd %USERPROFILE%\build-your-own-lumi\minilumi
+<pre><code>rem change this to wherever you cloned the repo
+cd %USERPROFILE%\build-your-own-lumi\minilumi
 :loop
 uv run minilumi run --preset <span data-tier-only="laptop">laptop</span><span data-tier-only="workstation">workstation</span><span data-tier-only="cloud">cloud</span>
 timeout /t 2
@@ -468,7 +470,7 @@ goto loop</code></pre>
 <footer>
   <div class="wrap">
     <span>Built with <a href="https://claude.com/claude-code">Claude Code</a>. MIT licensed.</span>
-    <span><a href="https://github.com/ckellum/build-your-own-lumi">github.com/ckellum/build-your-own-lumi</a></span>
+    <span><a href="talk/">The talk (slides)</a> · <a href="https://github.com/ckellum/build-your-own-lumi">github.com/ckellum/build-your-own-lumi</a></span>
   </div>
 </footer>
 

@@ -15,3 +15,13 @@ def test_real_room_noise_passes_through():
     noise = (np.random.default_rng(0).normal(0, 30, 320)).astype("<i2").tobytes()
     frames = [ZERO] * 10 + [noise] * 60
     assert len(list(guard_silence(iter(frames)))) == 70
+
+
+def test_truncated_stereo_wav_still_reads(tmp_path):
+    import wave
+    from minilumi.audio import WavSource
+    p = tmp_path / "s.wav"
+    with wave.open(str(p), "wb") as w:
+        w.setnchannels(2); w.setsampwidth(2); w.setframerate(16000)
+        w.writeframes(b"\x01\x00" * 3201)            # odd number of samples: last frame cut in half
+    assert len(list(WavSource(p).frames())) > 0

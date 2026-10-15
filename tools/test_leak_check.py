@@ -102,3 +102,24 @@ def test_history_scans_commit_messages(repo, denylist):
     commit(repo, "a.txt", "clean\n")
     git(repo, "commit", "--allow-empty", "-qm", "notes from zebraville")
     assert leak_check.main(["--repo", str(repo), "--denylist", str(denylist), "--history"]) == 1
+
+
+def test_file_names_are_scanned(repo, denylist):
+    commit(repo, "zebraville-notes.txt", "clean\n")
+    assert leak_check.main(["--repo", str(repo), "--denylist", str(denylist)]) == 1
+
+
+def test_compressed_png_text_is_scanned(repo, denylist):
+    def chunk(kind, data):
+        return struct.pack(">I", len(data)) + kind + data + struct.pack(">I", zlib.crc32(kind + data))
+    ztxt = b"Comment\x00\x00" + zlib.compress(b"shot in Zebraville")
+    png = (b"\x89PNG\r\n\x1a\n" + chunk(b"IHDR", struct.pack(">IIBBBBB", 1, 1, 8, 0, 0, 0, 0))
+           + chunk(b"zTXt", ztxt) + chunk(b"IDAT", zlib.compress(b"\x00\x00")) + chunk(b"IEND", b""))
+    commit(repo, "pic.png", png)
+    assert leak_check.main(["--repo", str(repo), "--denylist", str(denylist)]) == 1
+
+
+def test_annotated_tag_messages_are_scanned(repo, denylist):
+    commit(repo, "a.txt", "clean\n")
+    git(repo, "tag", "-a", "v1", "-m", "release from zebraville")
+    assert leak_check.main(["--repo", str(repo), "--denylist", str(denylist), "--history"]) == 1
