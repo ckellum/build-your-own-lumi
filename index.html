@@ -1,0 +1,478 @@
+<!doctype html>
+<html lang="en" data-tier="laptop" data-level="beginner">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Build Your Own Lumi</title>
+<meta name="description" content="Build a voice concierge kiosk on the computer you already have: speech in, a language model, speech out, and a talking face. Step by step, for beginners to experts.">
+<meta name="theme-color" content="#05080f">
+<meta property="og:title" content="Build Your Own Lumi">
+<meta property="og:description" content="A voice concierge you can build on your own laptop, workstation, or with cloud models.">
+<link rel="icon" href="img/favicon.svg" type="image/svg+xml">
+<link rel="stylesheet" href="css/site.css">
+</head>
+<body>
+<a class="skip" href="#steps">Skip to the build steps</a>
+<div class="bg-grid" aria-hidden="true"></div>
+<div class="progress" aria-hidden="true"></div>
+
+<!-- ============ HERO ============ -->
+<header class="hero">
+  <div class="wrap hero-grid">
+    <div>
+      <span class="eyebrow" data-hero>Open source · step by step</span>
+      <h1 data-hero>Build your own <span class="grad-text">Lumi</span></h1>
+      <p class="lead" data-hero>A voice concierge that hears a question, thinks, and answers out loud, with a face. Built on the computer you already have.</p>
+      <div class="cta" data-hero>
+        <a class="btn primary" href="#steps">Start building →</a>
+        <a class="btn" href="#how">See how it works</a>
+        <a class="btn" href="https://github.com/ckellum/build-your-own-lumi">GitHub</a>
+      </div>
+      <div class="chips" data-hero>
+        <span class="chip">MIT licensed</span>
+        <span class="chip">Runs fully offline</span>
+        <span class="chip">macOS · Windows · Linux</span>
+        <span class="chip">~1,000 lines of Python</span>
+      </div>
+    </div>
+    <div class="avatar-stage" data-hero>
+      <p class="avatar-caption" aria-live="off"></p>
+    </div>
+  </div>
+  <span class="scroll-hint" aria-hidden="true">SCROLL</span>
+</header>
+
+<!-- ============ PICKER ============ -->
+<nav class="picker" aria-label="Choose your hardware and depth">
+  <div class="wrap">
+    <div class="picker-group">
+      <span class="picker-label" id="tier-label">My hardware</span>
+      <div class="seg" role="group" aria-labelledby="tier-label">
+        <button type="button" data-set-tier="workstation" aria-pressed="false">Workstation</button>
+        <button type="button" data-set-tier="laptop" aria-pressed="true">Laptop</button>
+        <button type="button" data-set-tier="cloud" aria-pressed="false">Cloud</button>
+      </div>
+    </div>
+    <div class="picker-group">
+      <span class="picker-label" id="level-label">Detail</span>
+      <div class="seg" role="group" aria-labelledby="level-label">
+        <button type="button" data-set-level="beginner" aria-pressed="true">Beginner</button>
+        <button type="button" data-set-level="intermediate" aria-pressed="false">Intermediate</button>
+        <button type="button" data-set-level="expert" aria-pressed="false">Expert</button>
+      </div>
+    </div>
+  </div>
+</nav>
+
+<main>
+<!-- ============ STORY ============ -->
+<section id="story">
+  <div class="wrap">
+    <div class="section-head narrow" data-reveal>
+      <span class="eyebrow">Where this comes from</span>
+      <h2>One person, an AI coding partner, and four weeks.</h2>
+      <p>The original Lumi greeted people at an event: scan your badge, ask where your session is, and she tells you out loud and shows you the way. Everything ran on one box in the room, so no visitor's voice ever left it. This site is the recipe, rebuilt small enough to run on your own machine.</p>
+    </div>
+    <div class="stats">
+      <div class="stat" data-reveal><b class="grad-text">4 weeks</b><span>idea to working kiosk</span></div>
+      <div class="stat" data-reveal><b class="grad-text">191</b><span>commits, written with an AI coding agent</span></div>
+      <div class="stat" data-reveal><b class="grad-text">866</b><span>automated tests in the original</span></div>
+      <div class="stat" data-reveal><b class="grad-text">≈1.5 s</b><span>question to answer with this kit (tested)</span></div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ PIPELINE ============ -->
+<section class="pipeline" id="how" aria-label="How Lumi works">
+  <div class="wrap pipe-grid">
+    <div>
+      <span class="eyebrow">What you're building</span>
+      <h2>Five steps, in a loop.</h2>
+      <svg class="pipe-svg" viewBox="0 0 600 420" role="img" aria-label="Wake, hear, think, speak, show">
+        <defs>
+          <linearGradient id="pipeGrad" x1="0" x2="1"><stop offset="0" stop-color="#3ef0ff"/><stop offset=".6" stop-color="#9a6bff"/><stop offset="1" stop-color="#ff5fd2"/></linearGradient>
+        </defs>
+        <path class="track" d="M70,90 L300,90 C440,90 530,120 530,205 C530,290 440,320 300,320 L70,320"/>
+        <path class="glow" d="M70,90 L300,90 C440,90 530,120 530,205 C530,290 440,320 300,320 L70,320"/>
+        <g class="pipe-node" data-x="70" data-y="90" transform="translate(70 90)">
+          <circle r="42"/><path class="icon" d="M-14,-10 h28 v20 h-28 z M-8,-3 h10 M-8,4 h16"/><text y="70">Wake</text>
+        </g>
+        <g class="pipe-node" data-x="300" data-y="90" transform="translate(300 90)">
+          <circle r="42"/><path class="icon" d="M-6,-16 a6,6 0 0 1 12,0 v14 a6,6 0 0 1 -12,0 z M-12,-2 a12,12 0 0 0 24,0 M0,10 v8"/><text y="70">Hear</text>
+        </g>
+        <g class="pipe-node" data-x="530" data-y="205" transform="translate(530 205)">
+          <circle r="42"/><path class="icon" d="M-12,-12 h24 v24 h-24 z M-6,-18 v6 M6,-18 v6 M-6,12 v6 M6,12 v6 M-18,-6 h6 M-18,6 h6 M12,-6 h6 M12,6 h6 M-5,-5 h10 v10 h-10 z"/><text x="-62" y="6" style="text-anchor:end">Think</text>
+        </g>
+        <g class="pipe-node" data-x="300" data-y="320" transform="translate(300 320)">
+          <circle r="42"/><path class="icon" d="M-14,-6 h7 l9,-8 v28 l-9,-8 h-7 z M8,-6 a8,8 0 0 1 0,12 M12,-11 a14,14 0 0 1 0,22"/><text y="70">Speak</text>
+        </g>
+        <g class="pipe-node" data-x="70" data-y="320" transform="translate(70 320)">
+          <circle r="42"/><path class="icon" d="M-16,-12 h32 v20 h-32 z M-6,14 h12 M0,8 v6 M-5,-4 v2 M5,-4 v2 M-5,2 q5,4 10,0"/><text y="70">Show</text>
+        </g>
+        <circle class="pulse" r="7" cx="70" cy="90"/>
+      </svg>
+    </div>
+    <div class="pipe-panel" aria-live="polite">
+      <span class="step-tag">1 · Wake</span>
+      <h3>A badge scan starts a visit</h3>
+      <p>Press Enter or scan a badge.</p>
+      <span class="muted">In minilumi: <code>cli.py</code></span>
+    </div>
+  </div>
+</section>
+
+<!-- ============ TIERS ============ -->
+<section id="hardware">
+  <div class="wrap">
+    <div class="section-head" data-reveal>
+      <span class="eyebrow">Pick your hardware</span>
+      <h2>Same Lumi, three ways to run her.</h2>
+      <p>Choose one. Every command on this page changes to match. You can switch at any time from the bar at the top.</p>
+    </div>
+    <div class="tiers">
+      <button type="button" class="tier" data-set-tier="workstation" aria-pressed="false" data-reveal>
+        <span class="tier-badge">Biggest models, all local</span>
+        <div class="tier-name">Workstation</div>
+        <div class="spec">64 GB+ unified memory, or a GPU with 24 GB+</div>
+        <dl><dt>Hear</dt><dd>Your own Whisper or Parakeet server</dd><dt>Think</dt><dd>A large model in llama.cpp</dd><dt>Speak</dt><dd>Your own Kokoro server</dd></dl>
+      </button>
+      <button type="button" class="tier" data-set-tier="laptop" aria-pressed="true" data-reveal>
+        <span class="tier-badge">Most people start here</span>
+        <div class="tier-name">Laptop</div>
+        <div class="spec">32 GB RAM, or an 8–12 GB GPU. Apple Silicon works.</div>
+        <dl><dt>Hear</dt><dd>faster-whisper, inside minilumi</dd><dt>Think</dt><dd>A small model in Ollama</dd><dt>Speak</dt><dd>Kokoro, inside minilumi</dd></dl>
+      </button>
+      <button type="button" class="tier" data-set-tier="cloud" aria-pressed="false" data-reveal>
+        <span class="tier-badge">No GPU needed</span>
+        <div class="tier-name">Cloud</div>
+        <div class="spec">Any computer. Uses API keys, so audio leaves your machine.</div>
+        <dl><dt>Hear</dt><dd>OpenAI-compatible speech-to-text</dd><dt>Think</dt><dd>Claude</dd><dt>Speak</dt><dd>OpenAI-compatible text-to-speech</dd></dl>
+      </button>
+    </div>
+  </div>
+</section>
+
+<!-- ============ STEPS ============ -->
+<section id="steps">
+  <div class="wrap">
+    <div class="section-head" data-reveal>
+      <span class="eyebrow">Build it</span>
+      <h2>Nine steps. Each one works on its own.</h2>
+      <p>Set the <b>Detail</b> switch to Beginner for the idea, Intermediate for how it works, or Expert for what bit us.</p>
+    </div>
+    <div class="steps-nav" aria-label="Jump to a step">
+      <a href="#s0">0 Setup</a><a href="#s1">1 Hear</a><a href="#s2">2 Think</a><a href="#s3">3 Speak</a><a href="#s4">4 Turn-taking</a><a href="#s5">5 Face</a><a href="#s6">6 Your event</a><a href="#s7">7 Make it yours</a><a href="#s8">8 Kiosk-proof</a>
+    </div>
+
+    <!-- 0 -->
+    <article class="step" id="s0">
+      <div class="step-num grad-text">0<small>Setup</small></div>
+      <div>
+        <h3>Get the code running</h3>
+        <p class="what">Install one tool, download the kit, and run its tests. Five minutes.</p>
+        <div class="level" data-level-only="beginner"><span class="level-tag">The idea</span>
+          <p><b>uv</b> is a tool that installs Python and everything Lumi needs, without touching the rest of your computer. Copy each block into a terminal (Terminal on macOS, PowerShell on Windows).</p></div>
+        <div class="level" data-level-only="intermediate"><span class="level-tag">How it's laid out</span>
+          <p><code>minilumi/</code> is one small Python package: <code>listen.py</code> (when you stop talking), <code>hear.py</code>, <code>think.py</code>, <code>speak.py</code>, <code>visit.py</code> (the conversation loop) and <code>screen.py</code> (the face). <code>config.toml</code> holds three presets: workstation, laptop and cloud.</p></div>
+        <div class="level" data-level-only="expert"><span class="level-tag">Under the hood</span>
+          <p>Python 3.11+. Base dependencies are just <code>numpy</code>, <code>sounddevice</code> and <code>anthropic</code>; local speech is the optional <code>local</code> extra. HTTP to model servers is the standard library, so any OpenAI-compatible server works.</p></div>
+        <p>Install uv:</p>
+<pre><code># macOS / Linux
+curl -LsSf https://astral.sh/uv/install.sh | sh</code></pre>
+<pre><code># Windows (PowerShell)
+powershell -ExecutionPolicy ByPass -c "irm https://astral.sh/uv/install.ps1 | iex"</code></pre>
+        <p>Get the kit:</p>
+<pre><code>git clone https://github.com/ckellum/build-your-own-lumi
+cd build-your-own-lumi/minilumi</code></pre>
+        <div data-tier-only="laptop">
+<pre><code>uv sync --extra local</code></pre></div>
+        <div data-tier-only="workstation cloud">
+<pre><code>uv sync</code></pre></div>
+        <p>On Linux, also install the audio library: <code>sudo apt install libportaudio2</code></p>
+        <div class="check"><b>Check it works:</b> <code>uv run pytest -q</code> ends with <code>42 passed</code>.</div>
+        <div class="watch"><b>Watch out for</b><ul>
+          <li>On Windows, open a <i>new</i> terminal after installing uv so it's on your PATH.</li>
+          <li data-tier-only="laptop">The first local run downloads the speech models (a few hundred MB), once.</li>
+        </ul></div>
+      </div>
+    </article>
+
+    <!-- 1 -->
+    <article class="step" id="s1">
+      <div class="step-num grad-text">1<small>Hear</small></div>
+      <div>
+        <h3>Turn speech into text</h3>
+        <p class="what">A speech-to-text model writes down what the visitor said.</p>
+        <div class="level" data-level-only="beginner"><span class="level-tag">The idea</span>
+          <p>Lumi records you until you stop talking, then hands the recording to a model that turns it into words. Those words are what she "heard".</p></div>
+        <div class="level" data-level-only="intermediate"><span class="level-tag">How it works</span>
+          <p><code>hear.py</code> takes 16 kHz mono audio. With <code>kind = "whisper-local"</code> it runs faster-whisper in-process; with <code>kind = "openai"</code> it posts a WAV to any <code>/v1/audio/transcriptions</code> endpoint.</p></div>
+        <div class="level" data-level-only="expert"><span class="level-tag">What we learned</span>
+          <p>The original used NVIDIA Parakeet behind an OpenAI-style server: fast and accurate for English. Accuracy problems were almost always the <i>microphone</i>, not the model: a directional mic pointed at the visitor beat every software fix.</p></div>
+        <div data-tier-only="laptop"><p>Nothing to install beyond step 0. The <code>laptop</code> preset uses Whisper <code>base.en</code> on your CPU.</p></div>
+        <div data-tier-only="workstation"><p>Run any server with an OpenAI-style transcription endpoint (for example <a href="https://github.com/speaches-ai/speaches">Speaches</a>), then point minilumi at it in <code>config.toml</code>:</p>
+<pre><code>[presets.workstation.hear]
+kind = "openai"
+model = "whisper-1"
+base_url = "http://127.0.0.1:8084/v1"</code></pre></div>
+        <div data-tier-only="cloud">
+<pre><code># macOS / Linux
+export OPENAI_API_KEY=sk-...
+# Windows (PowerShell)
+$env:OPENAI_API_KEY="sk-..."</code></pre></div>
+        <div class="check"><b>Check it works:</b> <code>uv run minilumi check --preset <span data-tier-only="laptop">laptop</span><span data-tier-only="workstation">workstation</span><span data-tier-only="cloud">cloud</span></code> prints <code>✓ hear</code>.</div>
+        <div class="watch"><b>Watch out for</b><ul>
+          <li>Lumi must not hear herself. minilumi throws away whatever the mic caught while she was speaking; a headset or directional mic helps more.</li>
+          <li>macOS asks for microphone permission for your terminal the first time.</li>
+        </ul></div>
+      </div>
+    </article>
+
+    <!-- 2 -->
+    <article class="step" id="s2">
+      <div class="step-num grad-text">2<small>Think</small></div>
+      <div>
+        <h3>Answer with a language model</h3>
+        <p class="what">The model reads the event's facts and the question, and writes a short spoken answer.</p>
+        <div class="level" data-level-only="beginner"><span class="level-tag">The idea</span>
+          <p>A language model is great at conversation but knows nothing about <i>your</i> event. So Lumi gives it a cheat sheet first: the rooms, the sessions, where lunch is. Then it answers using only that.</p></div>
+        <div class="level" data-level-only="intermediate"><span class="level-tag">How it works</span>
+          <p><code>event.py</code> builds the <b>system prompt</b> from your CSV files: persona, event facts, rooms and sessions. The visitor's name, the time and their next sessions go into their <b>first message</b>, not the system prompt. <code>think.py</code> streams the reply back word by word.</p></div>
+        <div class="level" data-level-only="expert"><span class="level-tag">What we learned</span>
+          <p>Keep the system prompt <b>byte-for-byte identical</b> for every visitor. Then the model server can reuse its prompt cache and skip re-reading thousands of tokens. Anything per-person in the system prompt breaks the cache for everyone. Small models sometimes "think out loud" in <code>&lt;think&gt;</code> tags; minilumi asks the server not to, and strips any that slip through.</p></div>
+        <div data-tier-only="laptop"><p>Install <a href="https://ollama.com">Ollama</a>, then download a model:</p>
+<pre><code>ollama pull qwen3:1.7b
+# more RAM? better answers:
+ollama pull qwen3:8b</code></pre>
+          <p>If you pull the 8B model, change <code>model</code> under <code>[presets.laptop.think]</code> in <code>config.toml</code> to <code>qwen3:8b</code>.</p></div>
+        <div data-tier-only="workstation"><p>Serve a model with llama.cpp's OpenAI-compatible server:</p>
+<pre><code>llama-server -m your-model.gguf --host 127.0.0.1 --port 8080</code></pre></div>
+        <div data-tier-only="cloud">
+<pre><code># macOS / Linux
+export ANTHROPIC_API_KEY=sk-ant-...
+# Windows (PowerShell)
+$env:ANTHROPIC_API_KEY="sk-ant-..."</code></pre>
+          <p>The <code>cloud</code> preset uses Claude Haiku: fast and inexpensive for short spoken answers.</p></div>
+        <div class="check"><b>Check it works:</b> <code>uv run minilumi check</code> prints <code>✓ think</code>.</div>
+        <div class="watch"><b>Watch out for</b><ul>
+          <li>The very first answer is slow while the model loads. Later ones are much faster.</li>
+          <li>Ask for "one to three short sentences, no lists". Bullet points sound terrible read aloud.</li>
+        </ul></div>
+      </div>
+    </article>
+
+    <!-- 3 -->
+    <article class="step" id="s3">
+      <div class="step-num grad-text">3<small>Speak</small></div>
+      <div>
+        <h3>Give her a voice</h3>
+        <p class="what">A text-to-speech model turns each sentence into audio.</p>
+        <div class="level" data-level-only="beginner"><span class="level-tag">The idea</span>
+          <p>Lumi doesn't wait for the whole answer. As soon as the first sentence is written, she starts saying it while the model writes the next one. That's why she feels quick.</p></div>
+        <div class="level" data-level-only="intermediate"><span class="level-tag">How it works</span>
+          <p><code>visit.py</code> regroups the streamed text into sentences; <code>speak.py</code> turns each into audio with Kokoro (in-process via kokoro-onnx, or any <code>/v1/audio/speech</code> server that returns WAV).</p></div>
+        <div class="level" data-level-only="expert"><span class="level-tag">What we learned</span>
+          <p>Names are where TTS falls apart. Keep a small pronunciation list (word → respelling) and apply it right before speaking, never to the captions. Some phrases are simply misread ("Uh oh" came out wrong; "Oh no" didn't). Test every scripted line by listening to it.</p></div>
+        <div data-tier-only="laptop"><p>Nothing to install: the <code>laptop</code> preset runs Kokoro on your CPU. Voices are set with <code>voice</code> in <code>config.toml</code> (<code>af_heart</code> is Lumi's).</p></div>
+        <div data-tier-only="workstation"><p>Run a Kokoro server with an OpenAI-style speech endpoint (for example <a href="https://github.com/remsky/Kokoro-FastAPI">Kokoro-FastAPI</a>), and set <code>speak.base_url</code> to it.</p></div>
+        <div data-tier-only="cloud"><p>Uses the same <code>OPENAI_API_KEY</code> as step 1, with the <code>gpt-4o-mini-tts</code> model.</p></div>
+        <div class="check"><b>Check it works:</b> <code>uv run minilumi check</code> prints <code>✓ speak</code>.</div>
+        <div class="watch"><b>Watch out for</b><ul>
+          <li>Times and numbers: write "10:00 AM", not "10:00". The kit formats times for you.</li>
+          <li>Speakers that come up muted after a reboot. Set the volume when Lumi starts.</li>
+        </ul></div>
+      </div>
+    </article>
+
+    <!-- 4 -->
+    <article class="step" id="s4">
+      <div class="step-num grad-text">4<small>Turn-taking</small></div>
+      <div>
+        <h3>Know when someone has finished talking</h3>
+        <p class="what">The hardest part of a voice kiosk isn't the AI. It's knowing when it's Lumi's turn.</p>
+        <div class="level" data-level-only="beginner"><span class="level-tag">The idea</span>
+          <p>Lumi listens to how loud the room is all the time. When someone is clearly louder than the room, she starts recording. When they've been quiet for a moment, she stops and answers.</p></div>
+        <div class="level" data-level-only="intermediate"><span class="level-tag">How it works</span>
+          <p><code>listen.py</code> measures the room as a low percentile of the last 1.5 s of loudness. A turn starts at 4× the room level, continues while it's above 2×, and ends after 0.7 s below that. Anything shorter than 0.25 s, or never really loud, is dropped (coughs, clicks).</p></div>
+        <div class="level" data-level-only="expert"><span class="level-tag">What we learned</span>
+          <p>We recorded 75 seconds of real crowd noise and replayed it through the endpointer over and over while tuning. The room level must be re-measured continuously; one measurement at startup goes stale the moment a crowd walks in. Known limit: someone speaking softly in a loud crowd won't be heard. Lowering the bar let stray "yeah"s from passers-by in. We kept the bar high.</p></div>
+        <div class="check"><b>Check it works:</b> no mic needed:
+<pre><code>uv run minilumi run --preset <span data-tier-only="laptop">laptop</span><span data-tier-only="workstation">workstation</span><span data-tier-only="cloud">cloud</span> --input samples/hello.wav --badge EX-0001 --mute --no-screen</code></pre>
+          prints a <code>You:</code> line with the recorded question, then Lumi's spoken answer as <code>Lumi:</code> lines.</div>
+        <div class="watch"><b>Watch out for</b><ul>
+          <li>After 30 s of silence Lumi asks "Still there?", and ends the visit 15 s later. Tune both in <code>visit.py</code>.</li>
+          <li>Fans and air conditioning raise the room level. Point the mic at the visitor, away from them.</li>
+        </ul></div>
+      </div>
+    </article>
+
+    <!-- 5 -->
+    <article class="step" id="s5">
+      <div class="step-num grad-text">5<small>Face</small></div>
+      <div>
+        <h3>A face that talks</h3>
+        <p class="what">A browser page shows Lumi, her captions, and what she heard.</p>
+        <div class="level" data-level-only="beginner"><span class="level-tag">The idea</span>
+          <p>The face is just a web page. Python tells the page what's happening ("listening", "speaking", "here's the sentence") and the page animates the mouth to match the voice.</p></div>
+        <div class="level" data-level-only="intermediate"><span class="level-tag">How it works</span>
+          <p><code>screen.py</code> serves <code>ui/</code> and pushes messages with Server-Sent Events. Each spoken sentence arrives with its <b>envelope</b>, the loudness of the audio every 20 ms, and the mouth's height follows it.</p></div>
+        <div class="level" data-level-only="expert"><span class="level-tag">What we learned</span>
+          <p>When sentences queue up, a sentence's audio starts <i>in the future</i> (after the ones ahead of it). The original screen guarded against clock skew with a symmetric clamp, which treated "starts in 8 seconds" as an error. Lip sync silently broke for every multi-sentence reply, and that got through eleven separate code reviews. Only a review of the whole branch caught it. Clamp asymmetrically: tolerate a little lateness, a lot of earliness.</p></div>
+<pre><code>uv run minilumi run --preset <span data-tier-only="laptop">laptop</span><span data-tier-only="workstation">workstation</span><span data-tier-only="cloud">cloud</span>
+# then open http://127.0.0.1:8765/</code></pre>
+        <div class="check"><b>Check it works:</b> press Enter in the terminal; the face says hello and the mouth moves with the voice.</div>
+        <div class="watch"><b>Watch out for</b><ul>
+          <li>For a real kiosk, open the page full screen: <code>google-chrome --kiosk http://127.0.0.1:8765/</code></li>
+          <li>3D in Chrome on Linux may fall back to slow software rendering; <code>--ignore-gpu-blocklist</code> can help.</li>
+        </ul></div>
+      </div>
+    </article>
+
+    <!-- 6 -->
+    <article class="step" id="s6">
+      <div class="step-num grad-text">6<small>Your event</small></div>
+      <div>
+        <h3>Teach her about your event</h3>
+        <p class="what">Four small files are everything Lumi knows.</p>
+        <div class="level" data-level-only="beginner"><span class="level-tag">The idea</span>
+          <p>Open <code>example-event/</code> in a spreadsheet or text editor and replace the made-up "Example Con" with your own event: rooms with spoken directions, sessions, attendees, and any facts in <code>event.txt</code>.</p></div>
+        <div class="level" data-level-only="intermediate"><span class="level-tag">How it works</span>
+          <p><code>rooms.csv</code>: name, floor, directions. <code>sessions.csv</code>: title, room, start, end, speaker. <code>attendees.csv</code>: badge, name, and their sessions separated by <code>;</code>. A scanned badge greets that person with their next session.</p></div>
+        <div class="level" data-level-only="expert"><span class="level-tag">What we learned</span>
+          <p>Build a "pretend it's 8 AM on day one" clock for rehearsals, so you can test what Lumi says at every point of the event. In minilumi that's the <code>now=</code> argument of <code>Visit</code>. And keep the last good copy of the data: a half-saved CSV at the wrong moment shouldn't leave Lumi knowing nothing.</p></div>
+        <div class="check"><b>Check it works:</b> run the step 4 command with your own badge ID; the greeting names your next session.</div>
+        <div class="watch"><b>Watch out for</b><ul>
+          <li>Badge IDs are matched without regard to case or spaces, so <code>ex-0001</code> works.</li>
+          <li>Never put private data in a public repo. Keep your real CSVs out of git.</li>
+        </ul></div>
+      </div>
+    </article>
+
+    <!-- 7 -->
+    <article class="step" id="s7">
+      <div class="step-num grad-text">7<small>Make it yours</small></div>
+      <div>
+        <h3>Give her a personality</h3>
+        <p class="what">The difference between a demo and something people talk about.</p>
+        <div class="level" data-level-only="beginner"><span class="level-tag">The idea</span>
+          <p>Change her name, tone and voice. Have her greet people by nickname. The original had a pronunciation list, playful greetings, and a few surprise "shows" for specific badges.</p></div>
+        <div class="level" data-level-only="intermediate"><span class="level-tag">How it works</span>
+          <p>Personality is the <code>PERSONA</code> line at the top of <code>event.py</code>. For nicknames, add a column to <code>attendees.csv</code> and use it in <code>Visit._greeting</code>.</p></div>
+        <div class="level" data-level-only="expert"><span class="level-tag">What we learned</span>
+          <p>Scripted moments should <b>skip the language model</b>: match the badge before calling it, then play pre-written lines with pre-rendered audio and a scripted animation. Every word is reviewed in advance, and nothing can improvise its way into an awkward moment in front of a crowd.</p></div>
+        <div class="watch"><b>Watch out for</b><ul>
+          <li>Make "once only" surprises truly once: remember that they've played on disk, not just in memory.</li>
+        </ul></div>
+      </div>
+    </article>
+
+    <!-- 8 -->
+    <article class="step" id="s8">
+      <div class="step-num grad-text">8<small>Kiosk-proof</small></div>
+      <div>
+        <h3>Make it survive a whole event</h3>
+        <p class="what">Demos run for five minutes. Kiosks run for three days.</p>
+        <div class="level" data-level-only="beginner"><span class="level-tag">The idea</span>
+          <p>Have Lumi start by herself when the computer starts, and restart herself if she ever stops. The simplest way: a terminal that opens at login and runs her in a loop.</p></div>
+        <div class="level" data-level-only="intermediate"><span class="level-tag">How it works</span>
+          <p>A barcode scanner types into whichever window has focus, so Lumi's terminal must keep focus. Wrap the command in a loop so a crash restarts it in two seconds.</p></div>
+        <div class="level" data-level-only="expert"><span class="level-tag">What we learned</span>
+          <p>On Linux, the original read the scanner directly (evdev, with a udev rule for permissions), so focus didn't matter. It also had a self-check command that failed on a muted speaker, kept transcripts out of logs entirely, and capped the GPU clock after the machine powered itself off under sustained load.</p></div>
+        <p>A restart loop (macOS / Linux):</p>
+<pre><code>cd ~/build-your-own-lumi/minilumi
+while true; do uv run minilumi run --preset <span data-tier-only="laptop">laptop</span><span data-tier-only="workstation">workstation</span><span data-tier-only="cloud">cloud</span>; sleep 2; done</code></pre>
+        <p>Windows (save as <code>lumi.bat</code> and put a shortcut in <code>shell:startup</code>):</p>
+<pre><code>cd %USERPROFILE%\build-your-own-lumi\minilumi
+:loop
+uv run minilumi run --preset <span data-tier-only="laptop">laptop</span><span data-tier-only="workstation">workstation</span><span data-tier-only="cloud">cloud</span>
+timeout /t 2
+goto loop</code></pre>
+        <div class="watch"><b>Watch out for</b><ul>
+          <li>Print QR badges on matte paper, about 5 cm, with high error correction. Codes on a phone screen scan badly.</li>
+          <li>Turn off sleep, screen savers and automatic updates on the kiosk machine.</li>
+          <li>Never write what visitors say to a log file. If you must debug, log to the screen only.</li>
+          <li>Rehearse with the real mic, the real speaker and real background noise. Lumi's first full run found two bugs that hundreds of tests didn't.</li>
+        </ul></div>
+      </div>
+    </article>
+  </div>
+</section>
+
+<!-- ============ LESSONS ============ -->
+<section id="lessons">
+  <div class="wrap">
+    <div class="section-head" data-reveal>
+      <span class="eyebrow">Lessons from the build</span>
+      <h2>Six things that broke, so yours won't.</h2>
+      <p>Tap a card for what happened, why, and the fix.</p>
+    </div>
+    <div class="lessons">
+      <details class="lesson" data-reveal>
+        <summary><span class="num">01</span><h3>The 21-second hello</h3><p class="hook">The first answer took 21 seconds. Nobody waits that long at a kiosk.</p><span class="more">What happened →</span></summary>
+        <dl><dt>Why</dt><dd>The model had to read the whole event cheat sheet (thousands of tokens) before saying a word, and nothing told it to keep that work.</dd>
+        <dt>Fix</dt><dd>An identical system prompt for every visitor, a warm-up request at startup, and server settings that save the prompt cache at the right point. First answers dropped to about half a second.</dd></dl>
+      </details>
+      <details class="lesson" data-reveal>
+        <summary><span class="num">02</span><h3>The bug that passed eleven reviews</h3><p class="hook">Lip sync broke for every reply longer than one sentence.</p><span class="more">What happened →</span></summary>
+        <dl><dt>Why</dt><dd>A "sanity" clamp treated audio scheduled to start a few seconds in the future as clock error, and threw the timing away. Each small change looked fine on its own.</dd>
+        <dt>Fix</dt><dd>An asymmetric bound, plus the habit of reviewing the whole branch at the end, not only each piece.</dd></dl>
+      </details>
+      <details class="lesson" data-reveal>
+        <summary><span class="num">03</span><h3>One voice in a crowd</h3><p class="hook">Quiet room: perfect. Busy hallway: she answered strangers.</p><span class="more">What happened →</span></summary>
+        <dl><dt>Why</dt><dd>Fixed loudness thresholds can't work when the background changes minute to minute.</dd>
+        <dt>Fix</dt><dd>Measure the room continuously, require speech to be several times louder than it, and require a real peak. Tuned by replaying recorded crowd noise, with a shotgun mic aimed at the visitor.</dd></dl>
+      </details>
+      <details class="lesson" data-reveal>
+        <summary><span class="num">04</span><h3>The computer that turned itself off</h3><p class="hook">Twice, under heavy load, the whole machine just powered off. No logs.</p><span class="more">What happened →</span></summary>
+        <dl><dt>Why</dt><dd>Sustained AI load caused power spikes on early firmware.</dd>
+        <dt>Fix</dt><dd>Cap the GPU clock at boot and keep test load to one request at a time. Plan for the hardware, not just the software.</dd></dl>
+      </details>
+      <details class="lesson" data-reveal>
+        <summary><span class="num">05</span><h3>QR codes vs. screens</h3><p class="hook">Badges on a phone screen took forever to scan.</p><span class="more">What happened →</span></summary>
+        <dl><dt>Why</dt><dd>Glare and screen refresh confuse the scanner.</dd>
+        <dt>Fix</dt><dd>Printed, matte, about 5 cm, high error correction. They scan instantly.</dd></dl>
+      </details>
+      <details class="lesson" data-reveal>
+        <summary><span class="num">06</span><h3>The silent speaker</h3><p class="hook">After a reboot, Lumi was talking. Nobody could hear her.</p><span class="more">What happened →</span></summary>
+        <dl><dt>Why</dt><dd>The USB speaker came up at 0% volume after every boot.</dd>
+        <dt>Fix</dt><dd>Set the volume when Lumi starts, and a self-check that fails loudly on a muted speaker.</dd></dl>
+      </details>
+    </div>
+  </div>
+</section>
+
+<!-- ============ TESTED ============ -->
+<section id="tested">
+  <div class="wrap">
+    <div class="section-head" data-reveal>
+      <span class="eyebrow">Honest results</span>
+      <h2>What we actually ran.</h2>
+      <p>Each preset was run end to end: a recorded question in, a spoken answer out. "Question to answer" is from the transcript appearing to Lumi's first sentence being ready.</p>
+    </div>
+    <div class="table-wrap" data-reveal>
+      <table>
+        <thead><tr><th>Preset</th><th>Machine</th><th>Hear</th><th>Think</th><th>Speak</th><th>Question to answer</th><th>Result</th></tr></thead>
+        <tbody>
+          <tr><td>workstation</td><td>NVIDIA DGX Spark, 128 GB unified memory</td><td>Parakeet server</td><td>Qwen3.8 Flash-Next, llama.cpp</td><td>Kokoro server</td><td>≈ 1.3 s</td><td class="ok">✓ correct room and directions</td></tr>
+          <tr><td>laptop</td><td>Same machine, speech on the CPU (laptop stand-in)</td><td>faster-whisper base.en</td><td>Qwen3 1.7B, llama.cpp</td><td>kokoro-onnx</td><td>≈ 1.5 s</td><td class="ok">✓ correct room</td></tr>
+          <tr><td>cloud</td><td>—</td><td>—</td><td>—</td><td>—</td><td>—</td><td class="no">not tested yet</td></tr>
+        </tbody>
+      </table>
+    </div>
+    <p class="muted" style="margin-top:16px">macOS and Windows: the automated tests run on both on every push. A full voice run on them is not tested by us yet. Tried it? <a href="https://github.com/ckellum/build-your-own-lumi/issues">Tell us how it went.</a></p>
+  </div>
+</section>
+</main>
+
+<footer>
+  <div class="wrap">
+    <span>Built with <a href="https://claude.com/claude-code">Claude Code</a>. MIT licensed.</span>
+    <span><a href="https://github.com/ckellum/build-your-own-lumi">github.com/ckellum/build-your-own-lumi</a></span>
+  </div>
+</footer>
+
+<script src="vendor/gsap/gsap.min.js"></script>
+<script src="vendor/gsap/ScrollTrigger.min.js"></script>
+<script type="module" src="js/site.js"></script>
+</body>
+</html>
