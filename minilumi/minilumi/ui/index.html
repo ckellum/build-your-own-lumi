@@ -1,0 +1,25 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>minilumi</title>
+<link rel="stylesheet" href="app.css">
+</head>
+<body>
+<main data-state="idle">
+  <div class="lumi" aria-hidden="true">
+    <div class="halo"></div>
+    <div class="face">
+      <span class="eye left"></span><span class="eye right"></span>
+      <span class="mouth"></span>
+    </div>
+  </div>
+  <p class="visitor"></p>
+  <p class="caption" aria-live="polite">Press Enter or scan a badge to start.</p>
+  <p class="heard"></p>
+  <p class="status"><span class="dot"></span><span class="state">idle</span></p>
+</main>
+<script src="app.js"></script>
+</body>
+</html>
