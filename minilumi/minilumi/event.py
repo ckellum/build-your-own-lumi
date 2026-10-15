@@ -3,9 +3,12 @@
 from __future__ import annotations
 
 import csv
+import io
 from dataclasses import dataclass
 from datetime import datetime
 from pathlib import Path
+
+from .config import ConfigError
 
 PERSONA = (
     "You are Lumi, a friendly voice concierge at an event. People talk to you out loud and hear your answers "
@@ -69,21 +72,54 @@ class Event:
         return f"{PERSONA}\n\nAbout the event:\n{self.about}\n\nRooms:\n{rooms}\n\nSessions:\n{sessions}\n"
 
 
-def _rows(path: Path) -> list[dict[str, str]]:
-    with path.open(encoding="utf-8-sig", newline="") as f:
-        return [{k.strip(): (v or "").strip() for k, v in row.items()} for row in csv.DictReader(f)]
+def _read_text(path: Path) -> str:
+    """UTF-8 (with or without BOM), or the Windows encoding Excel uses when it saves CSV."""
+    data = path.read_bytes()
+    try:
+        return data.decode("utf-8-sig")
+    except UnicodeDecodeError:
+        return data.decode("cp1252")
+
+
+def _rows(path: Path, columns: tuple[str, ...]) -> list[tuple[int, dict[str, str]]]:
+    """(row number, row) pairs; row 1 is the header. Mistakes raise ConfigError naming file and row."""
+    try:
+        reader = csv.DictReader(io.StringIO(_read_text(path)))
+        header = [h.strip() for h in reader.fieldnames or []]
+    except FileNotFoundError:
+        raise ConfigError(f"{path} is missing") from None
+    for column in columns:
+        if column not in header:
+            raise ConfigError(f"{path.name} is missing the '{column}' column (it has: {', '.join(header)})")
+    rows = []
+    for number, row in enumerate(reader, start=2):
+        if None in row:
+            raise ConfigError(f"{path.name} row {number} has too many commas; put quotes around text that contains one")
+        rows.append((number, {(k or "").strip(): (v or "").strip() for k, v in row.items()}))
+    return rows
+
+
+def _time(path: Path, number: int, row: dict[str, str], column: str) -> datetime:
+    try:
+        return datetime.fromisoformat(row[column])
+    except ValueError:
+        raise ConfigError(f"{path.name} row {number}: {column} must look like 2030-05-14 10:00, not {row[column]!r}") from None
 
 
 def load_event(directory: Path) -> Event:
     directory = Path(directory)
-    rooms = tuple(Room(r["name"], r["floor"], r["directions"]) for r in _rows(directory / "rooms.csv"))
+    path = directory / "rooms.csv"
+    rooms = tuple(Room(r["name"], r["floor"], r["directions"]) for _, r in _rows(path, ("name", "floor", "directions")))
+    path = directory / "sessions.csv"
     sessions = tuple(
-        Session(r["title"], r["room"], datetime.fromisoformat(r["start"]), datetime.fromisoformat(r["end"]),
-                r.get("speaker", ""))
-        for r in _rows(directory / "sessions.csv"))
+        Session(r["title"], r["room"], _time(path, n, r, "start"), _time(path, n, r, "end"), r.get("speaker", ""))
+        for n, r in _rows(path, ("title", "room", "start", "end")))
     attendees = {}
-    for r in _rows(directory / "attendees.csv"):
+    for _, r in _rows(directory / "attendees.csv", ("badge", "name")):
         titles = tuple(t.strip() for t in r.get("sessions", "").split(";") if t.strip())
         attendees[_badge(r["badge"])] = Attendee(_badge(r["badge"]), r["name"], titles)
-    about = (directory / "event.txt").read_text(encoding="utf-8").strip()
+    try:
+        about = _read_text(directory / "event.txt").strip()
+    except FileNotFoundError:
+        raise ConfigError(f"{directory / 'event.txt'} is missing") from None
     return Event(about, rooms, sessions, attendees)

@@ -13,7 +13,9 @@ import numpy as np
 from .listen import FRAME_MS, SAMPLE_RATE
 
 FRAME_SAMPLES = SAMPLE_RATE * FRAME_MS // 1000
-NO_MIC = "No microphone found (or permission denied). Try: minilumi run --input sample.wav"
+NO_MIC = "No microphone found (or permission denied). Try: uv run minilumi run --input samples/hello.wav --mute"
+NO_PERMISSION = ("The microphone is sending pure silence, which usually means your terminal has no microphone "
+                 "permission (macOS: System Settings > Privacy & Security > Microphone). " + NO_MIC.split(". ", 1)[1])
 
 
 class AudioUnavailable(RuntimeError):
@@ -43,8 +45,10 @@ class MicSource:
             raise AudioUnavailable(NO_MIC) from None
 
     def frames(self) -> Iterator[bytes]:
-        while True:
-            yield self._queue.get()
+        def raw() -> Iterator[bytes]:
+            while True:
+                yield self._queue.get()
+        return guard_silence(raw())
 
     def drain(self) -> None:
         """Forget everything heard so far (e.g. Lumi's own voice while she spoke)."""
@@ -54,6 +58,21 @@ class MicSource:
     def close(self) -> None:
         self._stream.stop()
         self._stream.close()
+
+
+def guard_silence(frames: Iterator[bytes], seconds: float = 1.0) -> Iterator[bytes]:
+    """A real microphone always hears a little noise. If the first second is exact digital
+    silence, the OS is almost certainly blocking the mic (macOS does this without an error)."""
+    needed = int(seconds * 1000 / FRAME_MS)
+    first: list[bytes] = []
+    for frame in frames:
+        first.append(frame)
+        if len(first) == needed:
+            break
+    if len(first) == needed and not any(f.strip(b"\0") for f in first):
+        raise AudioUnavailable(NO_PERMISSION)
+    yield from first
+    yield from frames
 
 
 class WavSource:

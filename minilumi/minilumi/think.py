@@ -67,7 +67,9 @@ def _anthropic(b: Backend, system: str) -> Thinker:
 
     def think(messages: list[dict]) -> Iterator[str]:
         try:
-            with client.messages.stream(model=b.model, max_tokens=300, system=system, messages=messages) as stream:
+            # Spoken answers are short: no extended thinking (it would also eat into max_tokens).
+            with client.messages.stream(model=b.model, max_tokens=1024, system=system, messages=messages,
+                                        thinking={"type": "disabled"}) as stream:
                 yield from stream.text_stream
         except anthropic.AuthenticationError:
             raise BackendError(f"think: Anthropic refused the key; check {b.api_key_env}") from None

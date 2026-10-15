@@ -189,7 +189,7 @@ cd build-your-own-lumi/minilumi</code></pre>
         <div data-tier-only="workstation cloud">
 <pre><code>uv sync</code></pre></div>
         <p>On Linux, also install the audio library: <code>sudo apt install libportaudio2</code></p>
-        <div class="check"><b>Check it works:</b> <code>uv run pytest -q</code> ends with <code>42 passed</code>.</div>
+        <div class="check"><b>Check it works:</b> <code>uv run pytest -q</code> ends with <code>55 passed</code>.</div>
         <div class="watch"><b>Watch out for</b><ul>
           <li>On Windows, open a <i>new</i> terminal after installing uv so it's on your PATH.</li>
           <li data-tier-only="laptop">The first local run downloads the speech models (a few hundred MB), once.</li>
@@ -244,7 +244,8 @@ $env:OPENAI_API_KEY="sk-..."</code></pre></div>
 <pre><code>ollama pull qwen3:1.7b
 # more RAM? better answers:
 ollama pull qwen3:8b</code></pre>
-          <p>If you pull the 8B model, change <code>model</code> under <code>[presets.laptop.think]</code> in <code>config.toml</code> to <code>qwen3:8b</code>.</p></div>
+          <p>If you pull the 8B model, change <code>model</code> under <code>[presets.laptop.think]</code> in <code>config.toml</code> to <code>qwen3:8b</code>.</p>
+          <p class="muted">Honest note: we tested this preset with the same model served by llama.cpp's <code>llama-server</code> (any OpenAI-compatible server works: set <code>base_url</code> to it), not through Ollama itself.</p></div>
         <div data-tier-only="workstation"><p>Serve a model with llama.cpp's OpenAI-compatible server:</p>
 <pre><code>llama-server -m your-model.gguf --host 127.0.0.1 --port 8080</code></pre></div>
         <div data-tier-only="cloud">
@@ -253,7 +254,7 @@ export ANTHROPIC_API_KEY=sk-ant-...
 # Windows (PowerShell)
 $env:ANTHROPIC_API_KEY="sk-ant-..."</code></pre>
           <p>The <code>cloud</code> preset uses Claude Haiku: fast and inexpensive for short spoken answers.</p></div>
-        <div class="check"><b>Check it works:</b> <code>uv run minilumi check</code> prints <code>✓ think</code>.</div>
+        <div class="check"><b>Check it works:</b> <code>uv run minilumi check --preset <span data-tier-only="laptop">laptop</span><span data-tier-only="workstation">workstation</span><span data-tier-only="cloud">cloud</span></code> prints <code>✓ think</code>.</div>
         <div class="watch"><b>Watch out for</b><ul>
           <li>The very first answer is slow while the model loads. Later ones are much faster.</li>
           <li>Ask for "one to three short sentences, no lists". Bullet points sound terrible read aloud.</li>
@@ -276,7 +277,7 @@ $env:ANTHROPIC_API_KEY="sk-ant-..."</code></pre>
         <div data-tier-only="laptop"><p>Nothing to install: the <code>laptop</code> preset runs Kokoro on your CPU. Voices are set with <code>voice</code> in <code>config.toml</code> (<code>af_heart</code> is Lumi's).</p></div>
         <div data-tier-only="workstation"><p>Run a Kokoro server with an OpenAI-style speech endpoint (for example <a href="https://github.com/remsky/Kokoro-FastAPI">Kokoro-FastAPI</a>), and set <code>speak.base_url</code> to it.</p></div>
         <div data-tier-only="cloud"><p>Uses the same <code>OPENAI_API_KEY</code> as step 1, with the <code>gpt-4o-mini-tts</code> model.</p></div>
-        <div class="check"><b>Check it works:</b> <code>uv run minilumi check</code> prints <code>✓ speak</code>.</div>
+        <div class="check"><b>Check it works:</b> <code>uv run minilumi check --preset <span data-tier-only="laptop">laptop</span><span data-tier-only="workstation">workstation</span><span data-tier-only="cloud">cloud</span></code> prints <code>✓ speak</code>.</div>
         <div class="watch"><b>Watch out for</b><ul>
           <li>Times and numbers: write "10:00 AM", not "10:00". The kit formats times for you.</li>
           <li>Speakers that come up muted after a reboot. Set the volume when Lumi starts.</li>

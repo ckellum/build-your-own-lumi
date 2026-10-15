@@ -84,13 +84,13 @@ p { margin: 0 0 1em; }
 .picker-group { display: flex; align-items: center; gap: 10px; min-width: 0; }
 .picker-label { font: 600 .7rem/1 var(--mono); letter-spacing: .14em; text-transform: uppercase; color: var(--faint); white-space: nowrap; }
 .seg { display: inline-flex; padding: 3px; border-radius: 999px; background: var(--bg-2); border: 1px solid var(--line); }
-.seg button { font: 600 .86rem/1 var(--sans); color: var(--muted); background: none; border: 0; padding: 9px 13px; border-radius: 999px; cursor: pointer; transition: color .2s, background .2s; white-space: nowrap; }
+.seg button { font: 600 .86rem/1 var(--sans); color: var(--muted); background: none; border: 0; padding: 9px 13px; min-height: 40px; border-radius: 999px; cursor: pointer; transition: color .2s, background .2s; white-space: nowrap; }
 .seg button[aria-pressed="true"] { color: #04101a; background: var(--grad); }
 .seg button:focus-visible { outline: 2px solid var(--holo-a); outline-offset: 2px; }
 @media (max-width: 560px) {
   .picker .wrap { justify-content: center; }
   .picker-label { display: none; }
-  .seg button { padding: 8px 10px; font-size: .8rem; }
+  .seg button { padding: 8px 10px; font-size: .8rem; min-height: 40px; }
 }
 
 /* Sections */

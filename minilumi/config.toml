@@ -1,6 +1,8 @@
 # Pick a preset with:  minilumi run --preset laptop
 default_preset = "laptop"
 event_dir = "example-event"
+# The avatar page: http://127.0.0.1:8765/
+screen_port = 8765
 
 # Workstation: every model runs as its own local server that speaks the OpenAI API
 # (llama.cpp's llama-server, a Whisper or Parakeet server, Kokoro-FastAPI).

@@ -73,3 +73,38 @@ def test_conversation_is_echoed_to_the_terminal(fake, tmp_path, capsys):
                      "--badge", "EX-0001"]) == 0
     out = capsys.readouterr().out
     assert "Lumi: Hi Ada!" in out and "You: hello" in out and "Lumi: Hi there." in out
+
+
+def _fake_config(tmp_path, url, extra=""):
+    cfg = tmp_path / "c.toml"
+    event = (cli.DEFAULT_CONFIG.parent / "example-event").as_posix()
+    cfg.write_text(f'default_preset = "x"\nevent_dir = "{event}"\n{extra}'
+                   + "".join(f'[presets.x.{r}]\nkind = "openai"\nmodel = "m"\nbase_url = "{url}"\n'
+                             for r in ("hear", "think", "speak")))
+    return cfg
+
+
+def test_busy_screen_port_is_one_line_and_exit_2(tmp_path, capsys):
+    import socket
+    s = socket.socket()
+    s.bind(("127.0.0.1", 0)); s.listen()
+    port = s.getsockname()[1]
+    try:
+        cfg = _fake_config(tmp_path, "http://127.0.0.1:9/v1", f"screen_port = {port}\n")
+        _talking_wav(tmp_path / "in.wav")
+        assert cli.main(["run", "--config", str(cfg), "--mute", "--input", str(tmp_path / "in.wav")]) == 2
+        err = capsys.readouterr().err
+        assert "screen_port" in err and "--no-screen" in err and "Traceback" not in err
+    finally:
+        s.close()
+
+
+def test_check_survives_a_non_utf8_console(fake, tmp_path, monkeypatch):
+    out = io.TextIOWrapper(io.BytesIO(), encoding="cp1252")
+    monkeypatch.setattr("sys.stdout", out)
+    assert cli.main(["check", "--config", str(_fake_config(tmp_path, fake.url))]) == 0
+
+
+def test_mic_hint_names_the_shipped_sample():
+    from minilumi.audio import NO_MIC
+    assert "samples/hello.wav" in NO_MIC and "uv run" in NO_MIC

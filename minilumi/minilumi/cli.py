@@ -77,7 +77,11 @@ def _run(args, stdin) -> int:
     source = WavSource(args.input) if args.input else None
     player = SilentPlayer() if args.mute else Player()
     hear, think, speak = make_hearer(cfg.hear), make_thinker(cfg.think, event.system_prompt()), make_speaker(cfg.speak)
-    screen = NoScreen() if args.no_screen else Screen(cfg.screen_port)
+    try:
+        screen = NoScreen() if args.no_screen else Screen(cfg.screen_port)
+    except OSError:
+        raise ConfigError(f"screen_port {cfg.screen_port} is busy (is another minilumi running?); "
+                          f"change screen_port in config.toml or use --no-screen") from None
     if not args.no_screen:
         screen.start()
         print(f"screen: open http://127.0.0.1:{screen.port}/ in a browser", flush=True)
@@ -101,6 +105,9 @@ def _run(args, stdin) -> int:
 
 def main(argv: list[str] | None = None, stdin=None) -> int:
     args = _parser().parse_args(argv)
+    for stream in (sys.stdout, sys.stderr):      # e.g. a Windows console that can't print ✓
+        if hasattr(stream, "reconfigure"):
+            stream.reconfigure(errors="replace")
     try:
         if args.command == "check":
             return _check(args)

@@ -35,7 +35,12 @@ def _whisper_local(b: Backend) -> Callable[[bytes], str]:
         from faster_whisper import WhisperModel
     except ImportError:
         raise BackendError("hear: install local speech first: uv sync --extra local") from None
-    model = WhisperModel(b.model, device="auto", compute_type="int8")   # downloads once, then cached
+    try:
+        # CPU on purpose: "auto" picks an NVIDIA GPU and then fails mid-visit if CUDA libraries are missing.
+        model = WhisperModel(b.model, device="cpu", compute_type="int8")   # downloads once, then cached
+    except Exception as exc:     # network, disk or model-name problems from the downloader
+        raise BackendError(f"hear: could not load the Whisper model {b.model!r} ({exc}). "
+                           f"Check your internet connection for the first download, or hear.model in config.toml") from None
 
     def hear(pcm: bytes) -> str:
         audio = np.frombuffer(pcm, dtype="<i2").astype(np.float32) / 32768.0

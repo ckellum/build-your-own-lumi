@@ -69,13 +69,18 @@ export function mountPipeline(section) {
     render(1);
     return;
   }
-  render(0);
-  ScrollTrigger.create({
-    trigger: section,
-    start: "top top",
-    end: "+=1600",
-    pin: true,
-    scrub: 0.6,
-    onUpdate: (self) => render(self.progress),
+  // Pin only on wide screens: on a phone the stage + text is taller than the screen, so pinning
+  // would hold the explanation below the fold. Phones scrub as the section scrolls past instead.
+  ScrollTrigger.matchMedia({
+    "(min-width: 900px)": () => {
+      render(0);
+      ScrollTrigger.create({ trigger: section, start: "top top", end: "+=1600", pin: true, scrub: 0.6,
+        onUpdate: (self) => render(self.progress) });
+    },
+    "(max-width: 899px)": () => {
+      render(0);
+      ScrollTrigger.create({ trigger: section.querySelector(".pipe-svg"), start: "top 75%", end: "bottom 35%", scrub: 0.6,
+        onUpdate: (self) => render(self.progress) });
+    },
   });
 }

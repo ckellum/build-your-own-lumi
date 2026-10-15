@@ -92,3 +92,10 @@ def test_screen_gets_heard_and_say_messages_with_lip_sync_envelope():
     assert "heard" in kinds and "say" in kinds and kinds[-1] == "state"
     say = next(m for m in visit.screen.messages if m["type"] == "say")
     assert isinstance(say["envelope"], list) and say["step_ms"] == 20
+
+
+def test_empty_reply_asks_again_and_is_not_remembered():
+    visit, said, thoughts = make(["where is my session", "goodbye"], reply=())
+    convo = visit.run("EX-0001", ListSource(frames_for(1.0, 1.0)))
+    assert "Sorry, could you ask that again?" in said
+    assert convo == []

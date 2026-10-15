@@ -32,3 +32,42 @@ def test_system_prompt_has_rooms_and_sessions_but_no_attendees():
     p = EV.system_prompt()
     assert "Maple Room" in p and "Voice Interfaces 101" in p and "10:00 AM" in p
     assert "Ada Park" not in p
+
+
+import shutil
+
+import pytest
+
+from minilumi.config import ConfigError
+
+SRC = Path(__file__).resolve().parents[1] / "example-event"
+
+
+def broken(tmp_path, name, text, encoding="utf-8"):
+    d = tmp_path / "ev"
+    shutil.copytree(SRC, d)
+    (d / name).write_bytes(text.encode(encoding))
+    return d
+
+
+def test_unquoted_comma_names_file_and_row(tmp_path):
+    d = broken(tmp_path, "rooms.csv", "name,floor,directions\nLobby,1,Turn left, then right\n")
+    with pytest.raises(ConfigError, match=r"rooms\.csv.*row 2"):
+        load_event(d)
+
+
+def test_windows_excel_encoding_is_read(tmp_path):
+    d = broken(tmp_path, "rooms.csv", "name,floor,directions\nCafé,1,Turn right\n", encoding="cp1252")
+    assert load_event(d).rooms[0].name == "Café"
+
+
+def test_bad_date_names_file_and_row(tmp_path):
+    d = broken(tmp_path, "sessions.csv", "title,room,start,end,speaker\nTalk,Main Hall,tomorrow,2030-05-14 10:00,Sam\n")
+    with pytest.raises(ConfigError, match=r"sessions\.csv.*row 2.*start"):
+        load_event(d)
+
+
+def test_missing_column_is_named(tmp_path):
+    d = broken(tmp_path, "attendees.csv", "badge,sessions\nEX-1,Talk\n")
+    with pytest.raises(ConfigError, match=r"attendees\.csv.*name"):
+        load_event(d)

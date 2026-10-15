@@ -14,6 +14,7 @@ from .listen import FRAME_MS, Endpointer
 GOODBYE = re.compile(r"\b(bye|goodbye|that's all|that is all|see you)\b", re.I)
 SENTENCE_END = re.compile(r"(?<=[.!?])\s+")
 UNKNOWN_GREETING = "Hi there! I'm Lumi. Ask me about sessions, rooms, or lunch."
+ASK_AGAIN = "Sorry, could you ask that again?"
 
 
 def sentences(chunks: Iterator[str]) -> Iterator[str]:
@@ -101,12 +102,15 @@ class Visit:
                 self._say(f"Bye{', ' + name.split()[0] if name else ''}! Enjoy the event.", source)
                 break
             prefix = self._context(name, badge) if not conversation else ""
-            conversation.append({"role": "user", "content": prefix + text})
+            asked = conversation + [{"role": "user", "content": prefix + text}]
             reply = []
-            for sentence in sentences(self.think(conversation)):
+            for sentence in sentences(self.think(asked)):
                 reply.append(sentence)
                 self._say(sentence, source)
-            conversation.append({"role": "assistant", "content": " ".join(reply)})
+            if reply:
+                conversation[:] = asked + [{"role": "assistant", "content": " ".join(reply)}]
+            else:        # the model said nothing: ask again, and keep the history valid (no empty turns)
+                self._say(ASK_AGAIN, source)
             self._state("listening")
         self.screen.send({"type": "visitor", "name": None})
         self._state("idle")
