@@ -21,6 +21,6 @@ jobs:
       - uses: actions/setup-node@v4
         with:
           node-version: 22
-      - run: node --test tests/picker.test.mjs
+      - run: node --test tests/*.test.mjs
       - uses: astral-sh/setup-uv@v6
       - run: uv run --no-project --with pytest pytest -q tools/test_leak_check.py

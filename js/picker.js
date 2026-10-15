@@ -3,6 +3,7 @@
 
 export const TIERS = ["workstation", "laptop", "cloud"];
 export const LEVELS = ["beginner", "intermediate", "expert"];
+export const WAYS = ["hand", "claude"];        // build it yourself, or with Claude Code
 
 export function readChoice(storage, key, allowed, fallback) {
   try {

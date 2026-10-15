@@ -1,5 +1,5 @@
-// Wires up the page: picker and depth switch, copy buttons, reveals, progress bar.
-import { TIERS, LEVELS, readChoice, saveChoice, applyChoice } from "./picker.js";
+// Wires up the page: picker, depth and build-with switches, copy buttons, reveals, progress bar.
+import { TIERS, LEVELS, WAYS, readChoice, saveChoice, applyChoice } from "./picker.js";
 import { mountAvatar } from "./avatar.js";
 import { mountPipeline } from "./pipeline.js";
 
@@ -21,6 +21,7 @@ function bindChoice(attr, allowed, fallback) {
 }
 bindChoice("tier", TIERS, "laptop");
 bindChoice("level", LEVELS, "beginner");
+bindChoice("way", WAYS, "hand");
 
 // Copy buttons on every code block.
 document.querySelectorAll("pre").forEach((pre) => {

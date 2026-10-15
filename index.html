@@ -1,5 +1,5 @@
 <!doctype html>
-<html lang="en" data-tier="laptop" data-level="beginner">
+<html lang="en" data-tier="laptop" data-level="beginner" data-way="hand">
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
@@ -25,6 +25,7 @@
       <p class="lead" data-hero>A voice concierge that hears a question, thinks, and answers out loud, with a face. Built on the computer you already have.</p>
       <div class="cta" data-hero>
         <a class="btn primary" href="#steps">Start building →</a>
+        <a class="btn" href="#claude-code">Build it with Claude Code</a>
         <a class="btn" href="#how">See how it works</a>
         <a class="btn" href="talk/">The talk</a>
         <a class="btn" href="https://github.com/ckellum/build-your-own-lumi">GitHub</a>
@@ -61,6 +62,13 @@
         <button type="button" data-set-level="beginner" aria-pressed="true">Beginner</button>
         <button type="button" data-set-level="intermediate" aria-pressed="false">Intermediate</button>
         <button type="button" data-set-level="expert" aria-pressed="false">Expert</button>
+      </div>
+    </div>
+    <div class="picker-group way">
+      <span class="picker-label" id="way-label">Build with</span>
+      <div class="seg" role="group" aria-labelledby="way-label">
+        <button type="button" data-set-way="hand" aria-pressed="true">By hand</button>
+        <button type="button" data-set-way="claude" aria-pressed="false">Claude Code</button>
       </div>
     </div>
   </div>
@@ -154,16 +162,67 @@
   </div>
 </section>
 
+<!-- ============ CLAUDE CODE ============ -->
+<section id="claude-code">
+  <div class="wrap">
+    <div class="section-head" data-reveal>
+      <span class="eyebrow">Or let an AI coding partner drive</span>
+      <h2>Build it with <span class="grad-text">Claude Code</span>.</h2>
+      <p>The original Lumi was written with Claude Code, an AI coding agent that works in your terminal. It can build this kit with you too: it reads the code, runs the commands, explains what it's doing, and asks before it changes anything. Switch to <b>Claude Code</b> here (or with <b>Build with</b> in the bar at the top), and every step below gets a prompt you can paste.</p>
+      <div class="cc-switch">
+        <span class="picker-label" id="way-label-2">Steps show</span>
+        <div class="seg" role="group" aria-labelledby="way-label-2">
+          <button type="button" data-set-way="hand" aria-pressed="true">By hand</button>
+          <button type="button" data-set-way="claude" aria-pressed="false">Claude Code</button>
+        </div>
+      </div>
+    </div>
+    <div class="cc-grid">
+      <div class="cc-card" data-reveal>
+        <span class="use-kicker">1 · Install it</span>
+        <p>macOS / Linux:</p>
+<pre><code>curl -fsSL https://claude.ai/install.sh | bash</code></pre>
+        <p>Windows (PowerShell):</p>
+<pre><code>irm https://claude.ai/install.ps1 | iex</code></pre>
+        <p class="muted">You need a Claude subscription (Pro or Max) or an Anthropic API account; it asks you to log in the first time. On Windows, install <a href="https://git-scm.com/downloads/win">Git for Windows</a> first.</p>
+      </div>
+      <div class="cc-card" data-reveal>
+        <span class="use-kicker">2 · Open the kit</span>
+        <p>Get the kit and start Claude Code in its folder:</p>
+<pre><code>git clone https://github.com/ckellum/build-your-own-lumi
+cd build-your-own-lumi
+claude</code></pre>
+        <p class="muted">It reads <code>CLAUDE.md</code> first, so it already knows the files, the presets and how to run the tests.</p>
+      </div>
+      <div class="cc-card" data-reveal>
+        <span class="use-kicker">3 · Use the shortcuts</span>
+        <p>The kit comes with three slash commands. Type one and press Enter:</p>
+        <dl class="cc-cmds">
+          <dt><code>/setup</code></dt><dd>Installs everything for your preset, runs the tests, and checks each model.</dd>
+          <dt><code>/my-event</code></dt><dd>Paste your agenda, room list or attendees, in any format, and it writes Lumi's event files for you.</dd>
+          <dt><code>/make-it-yours</code></dt><dd>A new name, personality and voice, then a test run to hear it.</dd>
+        </dl>
+      </div>
+    </div>
+    <div class="watch" data-reveal><b>Good habits</b><ul>
+      <li>Read what it's about to change before you say yes. It shows you the edit or command first.</li>
+      <li>Never paste an API key into the chat. Ask it how to set the key as an environment variable, then set it yourself.</li>
+      <li>Ask it to explain. "Why did that fail?" and "Walk me through listen.py" are great prompts. You'll learn the code, not just get it running.</li>
+      <li>Keep real attendee data in <code>minilumi/my-event/</code>. It's git-ignored, and <code>CLAUDE.md</code> tells Claude Code never to commit it.</li>
+    </ul></div>
+  </div>
+</section>
+
 <!-- ============ STEPS ============ -->
 <section id="steps">
   <div class="wrap">
     <div class="section-head" data-reveal>
       <span class="eyebrow">Build it</span>
       <h2>Nine steps. Each one works on its own.</h2>
-      <p>Set the <b>Detail</b> switch to Beginner for the idea, Intermediate for how it works, or Expert for what bit us.</p>
+      <p>Set the <b>Detail</b> switch to Beginner for the idea, Intermediate for how it works, or Expert for what bit us. Set <b>Build with</b> to <b>Claude Code</b> to get a prompt for each step (<a href="#claude-code">set it up first</a>).</p>
     </div>
     <div class="steps-nav" aria-label="Jump to a step">
-      <a href="#s0">0 Setup</a><a href="#s1">1 Hear</a><a href="#s2">2 Think</a><a href="#s3">3 Speak</a><a href="#s4">4 Turn-taking</a><a href="#s5">5 Face</a><a href="#s6">6 Your event</a><a href="#s7">7 Make it yours</a><a href="#s8">8 Kiosk-proof</a><a href="#uses">Other uses</a>
+      <a href="#claude-code">Claude Code</a><a href="#s0">0 Setup</a><a href="#s1">1 Hear</a><a href="#s2">2 Think</a><a href="#s3">3 Speak</a><a href="#s4">4 Turn-taking</a><a href="#s5">5 Face</a><a href="#s6">6 Your event</a><a href="#s7">7 Make it yours</a><a href="#s8">8 Kiosk-proof</a><a href="#uses">Other uses</a>
     </div>
 
     <!-- 0 -->
@@ -172,6 +231,9 @@
       <div>
         <h3>Get the code running</h3>
         <p class="what">Install one tool, download the kit, and run its tests. Five minutes.</p>
+        <div class="ask" data-way-only="claude"><span class="ask-tag">Ask Claude Code</span>
+<pre><code>/setup <span data-tier-only="laptop">laptop</span><span data-tier-only="workstation">workstation</span><span data-tier-only="cloud">cloud</span></code></pre>
+          <p class="muted">Then answer its questions. It installs uv if you don't have it, syncs the kit for your preset, and runs the tests.</p></div>
         <div class="level" data-level-only="beginner"><span class="level-tag">The idea</span>
           <p><b>uv</b> is a tool that installs Python and everything Lumi needs, without touching the rest of your computer. Copy each block into a terminal (Terminal on macOS, PowerShell on Windows).</p></div>
         <div class="level" data-level-only="intermediate"><span class="level-tag">How it's laid out</span>
@@ -205,6 +267,9 @@ cd build-your-own-lumi/minilumi</code></pre>
       <div>
         <h3>Turn speech into text</h3>
         <p class="what">A speech-to-text model writes down what the visitor said.</p>
+        <div class="ask" data-way-only="claude"><span class="ask-tag">Ask Claude Code</span>
+<pre><code>Run uv run minilumi check --preset <span data-tier-only="laptop">laptop</span><span data-tier-only="workstation">workstation</span><span data-tier-only="cloud">cloud</span> and look at the hear line. If it fails, explain why in plain words and fix what you can.</code></pre>
+          <p class="muted">Paste it into Claude Code. The commands below are what it will run, if you'd rather do it yourself.</p></div>
         <div class="level" data-level-only="beginner"><span class="level-tag">The idea</span>
           <p>Lumi records you until you stop talking, then hands the recording to a model that turns it into words. Those words are what she "heard".</p></div>
         <div class="level" data-level-only="intermediate"><span class="level-tag">How it works</span>
@@ -236,6 +301,9 @@ base_url = "http://127.0.0.1:8084/v1"</code></pre></div>
       <div>
         <h3>Answer with a language model</h3>
         <p class="what">The model reads the event's facts and the question, and writes a short spoken answer.</p>
+        <div class="ask" data-way-only="claude"><span class="ask-tag">Ask Claude Code</span>
+<pre><code><span data-tier-only="laptop">Set up the language model for the laptop preset: check that Ollama is installed and running, pull the model named in config.toml, then run the check until think passes.</span><span data-tier-only="workstation">My llama.cpp server is at http://127.0.0.1:8080. Point the workstation preset's think step at it, then run the check until think passes.</span><span data-tier-only="cloud">Set up the cloud preset's think step. Don't ask me for my API key: tell me how to set ANTHROPIC_API_KEY myself, then run the check until think passes.</span></code></pre>
+          <p class="muted">Paste it into Claude Code. The commands below are what it will run, if you'd rather do it yourself.</p></div>
         <div class="level" data-level-only="beginner"><span class="level-tag">The idea</span>
           <p>A language model is great at conversation but knows nothing about <i>your</i> event. So Lumi gives it a cheat sheet first: the rooms, the sessions, where lunch is. Then it answers using only that.</p></div>
         <div class="level" data-level-only="intermediate"><span class="level-tag">How it works</span>
@@ -270,6 +338,9 @@ base_url = "http://127.0.0.1:8084/v1"</code></pre></div>
       <div>
         <h3>Give her a voice</h3>
         <p class="what">A text-to-speech model turns each sentence into audio.</p>
+        <div class="ask" data-way-only="claude"><span class="ask-tag">Ask Claude Code</span>
+<pre><code>Run the check for the <span data-tier-only="laptop">laptop</span><span data-tier-only="workstation">workstation</span><span data-tier-only="cloud">cloud</span> preset until speak passes. Then suggest five Kokoro voices I could try and show me where to change it.</code></pre>
+          <p class="muted">Paste it into Claude Code. The commands below are what it will run, if you'd rather do it yourself.</p></div>
         <div class="level" data-level-only="beginner"><span class="level-tag">The idea</span>
           <p>Lumi doesn't wait for the whole answer. As soon as the first sentence is written, she starts saying it while the model writes the next one. That's why she feels quick.</p></div>
         <div class="level" data-level-only="intermediate"><span class="level-tag">How it works</span>
@@ -293,6 +364,9 @@ base_url = "http://127.0.0.1:8084/v1"</code></pre></div>
       <div>
         <h3>Know when someone has finished talking</h3>
         <p class="what">The hardest part of a voice kiosk isn't the AI. It's knowing when it's Lumi's turn.</p>
+        <div class="ask" data-way-only="claude"><span class="ask-tag">Ask Claude Code</span>
+<pre><code>Run minilumi on samples/hello.wav with the <span data-tier-only="laptop">laptop</span><span data-tier-only="workstation">workstation</span><span data-tier-only="cloud">cloud</span> preset, muted and with no screen. Explain each line of the output, then walk me through how listen.py decides I've finished talking.</code></pre>
+          <p class="muted">Paste it into Claude Code. The commands below are what it will run, if you'd rather do it yourself.</p></div>
         <div class="level" data-level-only="beginner"><span class="level-tag">The idea</span>
           <p>Lumi listens to how loud the room is all the time. When someone is clearly louder than the room, she starts recording. When they've been quiet for a moment, she stops and answers.</p></div>
         <div class="level" data-level-only="intermediate"><span class="level-tag">How it works</span>
@@ -315,6 +389,9 @@ base_url = "http://127.0.0.1:8084/v1"</code></pre></div>
       <div>
         <h3>A face that talks</h3>
         <p class="what">A browser page shows Lumi, her captions, and what she heard.</p>
+        <div class="ask" data-way-only="claude"><span class="ask-tag">Ask Claude Code</span>
+<pre><code>Start minilumi with the <span data-tier-only="laptop">laptop</span><span data-tier-only="workstation">workstation</span><span data-tier-only="cloud">cloud</span> preset and the avatar page, tell me what to open in my browser, and explain how the mouth stays in sync with the voice.</code></pre>
+          <p class="muted">Paste it into Claude Code. The commands below are what it will run, if you'd rather do it yourself.</p></div>
         <div class="level" data-level-only="beginner"><span class="level-tag">The idea</span>
           <p>The face is just a web page. Python tells the page what's happening ("listening", "speaking", "here's the sentence") and the page animates the mouth to match the voice.</p></div>
         <div class="level" data-level-only="intermediate"><span class="level-tag">How it works</span>
@@ -336,6 +413,9 @@ base_url = "http://127.0.0.1:8084/v1"</code></pre></div>
       <div>
         <h3>Teach her about your event</h3>
         <p class="what">Four small files are everything Lumi knows.</p>
+        <div class="ask" data-way-only="claude"><span class="ask-tag">Ask Claude Code</span>
+<pre><code>/my-event Here's my event: (paste your agenda, room list and attendees, or just describe it)</code></pre>
+          <p class="muted">It asks about anything it can't tell from what you pasted (directions to each room, for example), writes the four files into my-event/, and tests a greeting.</p></div>
         <div class="level" data-level-only="beginner"><span class="level-tag">The idea</span>
           <p>Copy <code>example-event/</code> to <code>my-event/</code>, open the copy in a spreadsheet or text editor, and replace the made-up "Example Con" with your own event: rooms with spoken directions, sessions, attendees, and any facts in <code>event.txt</code>. Then set <code>event_dir = "my-event"</code> in <code>config.toml</code>. (<code>my-event/</code> is git-ignored, so your real data stays out of git.)</p></div>
         <div class="level" data-level-only="intermediate"><span class="level-tag">How it works</span>
@@ -356,6 +436,9 @@ base_url = "http://127.0.0.1:8084/v1"</code></pre></div>
       <div>
         <h3>Give her a personality</h3>
         <p class="what">The difference between a demo and something people talk about.</p>
+        <div class="ask" data-way-only="claude"><span class="ask-tag">Ask Claude Code</span>
+<pre><code>/make-it-yours Make her a cheerful lighthouse keeper named Pearl who calls everyone "sailor"</code></pre>
+          <p class="muted">Swap in your own idea. It writes persona.txt, picks a matching voice, and runs a test so you can hear her.</p></div>
         <div class="level" data-level-only="beginner"><span class="level-tag">The idea</span>
           <p>Change her name, tone and voice. Have her greet people by nickname. The original had a pronunciation list, playful greetings, and a few surprise "shows" for specific badges.</p></div>
         <div class="level" data-level-only="intermediate"><span class="level-tag">How it works</span>
@@ -374,6 +457,9 @@ base_url = "http://127.0.0.1:8084/v1"</code></pre></div>
       <div>
         <h3>Make it survive a whole event</h3>
         <p class="what">Demos run for five minutes. Kiosks run for three days.</p>
+        <div class="ask" data-way-only="claude"><span class="ask-tag">Ask Claude Code</span>
+<pre><code>Set minilumi up to start when this computer starts and restart itself if it ever stops, using the <span data-tier-only="laptop">laptop</span><span data-tier-only="workstation">workstation</span><span data-tier-only="cloud">cloud</span> preset. Show me every change before you make it, and how to undo it.</code></pre>
+          <p class="muted">On a kiosk machine, also ask it for a checklist: sleep, screen saver and automatic updates off.</p></div>
         <div class="level" data-level-only="beginner"><span class="level-tag">The idea</span>
           <p>Have Lumi start by herself when the computer starts, and restart herself if she ever stops. The simplest way: a terminal that opens at login and runs her in a loop.</p></div>
         <div class="level" data-level-only="intermediate"><span class="level-tag">How it works</span>

@@ -91,6 +91,7 @@ p { margin: 0 0 1em; }
   .picker .wrap { justify-content: center; }
   .picker-label { display: none; }
   .seg button { padding: 8px 10px; font-size: .8rem; min-height: 40px; }
+  .picker-group.way { display: none; }      /* on a phone, the switch lives in the Claude Code section */
 }
 
 /* Sections */
@@ -170,6 +171,8 @@ p code, li code, td code, dd code { font-size: .88em; background: #0b1426; borde
 :root[data-level="beginner"] [data-level-only]:not([data-level-only~="beginner"]),
 :root[data-level="intermediate"] [data-level-only]:not([data-level-only~="intermediate"]),
 :root[data-level="expert"] [data-level-only]:not([data-level-only~="expert"]) { display: none; }
+:root[data-way="hand"] [data-way-only]:not([data-way-only~="hand"]),
+:root[data-way="claude"] [data-way-only]:not([data-way-only~="claude"]) { display: none; }
 .tier-badge { font: 600 .68rem var(--mono); letter-spacing: .12em; text-transform: uppercase; color: var(--holo-a); }
 
 /* Lessons */
@@ -223,3 +226,18 @@ footer .wrap { display: flex; flex-wrap: wrap; gap: 12px 28px; justify-content: 
 .use-kicker { font: 600 .72rem var(--mono); letter-spacing: .14em; text-transform: uppercase; color: var(--holo-a); }
 .use h3 { margin: 8px 0 6px; font-size: 1.15rem; }
 .use p { color: var(--muted); font-size: .95rem; margin: 0; }
+
+/* Build it with Claude Code */
+.cc-grid { display: grid; gap: 16px; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); margin-bottom: 18px; }
+.cc-card { background: var(--card); border: 1px solid var(--line); border-radius: var(--radius); padding: 22px; min-width: 0; }
+.cc-card .use-kicker { display: block; margin-bottom: 10px; }
+.cc-cmds { margin: 0; display: grid; gap: 4px 0; }
+.cc-cmds dt { margin-top: 10px; }
+.cc-cmds dt code { font-size: .95rem; color: var(--holo-a); }
+.cc-cmds dd { margin: 0; color: var(--muted); font-size: .95rem; }
+.ask { border-radius: 14px; padding: 14px 16px; margin: 16px 0; background: #1a1233aa; border: 1px solid #4b3a8a; }
+.ask-tag { font: 600 .7rem var(--mono); letter-spacing: .14em; text-transform: uppercase; color: var(--holo-b); display: block; }
+.ask pre, .cc-card pre { white-space: pre-wrap; overflow-wrap: anywhere; padding-right: 64px; }
+.cc-switch { display: flex; flex-wrap: wrap; align-items: center; gap: 10px 14px; margin-top: 6px; }
+.cc-switch .picker-label { display: inline; }
+.ask p { margin: 0; font-size: .92rem; }

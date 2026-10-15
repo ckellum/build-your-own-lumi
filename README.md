@@ -10,6 +10,10 @@ ask a question out loud, and Lumi answers out loud, with a talking face.
 - `talk/`: the slides from the talk, with made-up demo data (open `talk/index.html`, arrows to move, F for full screen).
 - `tools/leak-check.py`: the pre-push check that keeps private data out of this repo.
 
+**Build it with Claude Code:** run `claude` in this folder. It reads [CLAUDE.md](CLAUDE.md), and three
+slash commands do the busy work: `/setup` (install, test, check each model), `/my-event` (paste your
+agenda in any format and it writes the event files) and `/make-it-yours` (name, personality, voice).
+
 Three ways to run it: **workstation** (big local models), **laptop** (32 GB RAM or a mid-range GPU),
 or **cloud** (no GPU, API keys). See [minilumi/TESTED.md](minilumi/TESTED.md) for what we actually ran.
 
