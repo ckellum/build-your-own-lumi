@@ -1,0 +1,3 @@
+#!/bin/sh
+# Installed as .git/hooks/pre-push: refuse to push if anything private is in the tree or history.
+exec python3 "$(git rev-parse --show-toplevel)/tools/leak-check.py" --history
