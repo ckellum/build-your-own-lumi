@@ -28,7 +28,8 @@ model = "base.en"
 
 [presets.laptop.think]
 kind = "openai"
-model = "qwen3:8b"
+# We tested Qwen3 1.7B. With 32 GB, an 8B model (ollama pull qwen3:8b) gives better answers.
+model = "qwen3:1.7b"
 base_url = "http://127.0.0.1:11434/v1"
 
 [presets.laptop.speak]

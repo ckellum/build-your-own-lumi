@@ -2,7 +2,9 @@
 
 from __future__ import annotations
 
+import io
 import json
+import wave
 import threading
 from dataclasses import dataclass
 from http.server import BaseHTTPRequestHandler, ThreadingHTTPServer
@@ -46,7 +48,11 @@ class FakeOpenAI:
                     lines = [f"data: {json.dumps({'choices': [{'delta': {'content': c}}]})}\n\n" for c in CHAT_CHUNKS]
                     self._send("".join(lines + ["data: [DONE]\n\n"]).encode(), "text/event-stream")
                 elif self.path.endswith("/audio/speech"):
-                    self._send(b"\x01\x00" * 2400, "audio/pcm")
+                    buf = io.BytesIO()
+                    with wave.open(buf, "wb") as w:
+                        w.setnchannels(1); w.setsampwidth(2); w.setframerate(22050)
+                        w.writeframes(b"\x01\x00" * 2205)
+                    self._send(buf.getvalue(), "audio/wav")
                 else:
                     self.send_response(404)
                     self.end_headers()

@@ -50,3 +50,26 @@ def test_missing_audio_library_is_one_line_and_exit_2(monkeypatch, capsys):
     assert cli.main(["run", "--preset", "workstation", "--no-screen"], stdin=io.StringIO("\n")) == 2
     err = capsys.readouterr().err
     assert "--mute" in err and "Traceback" not in err
+
+
+def _talking_wav(path):
+    import wave
+    import numpy as np
+    quiet = np.zeros(16000, dtype="<i2")
+    voice = (np.sin(np.arange(16000) / 3) * 8000).astype("<i2")
+    with wave.open(str(path), "wb") as w:
+        w.setnchannels(1); w.setsampwidth(2); w.setframerate(16000)
+        w.writeframes(np.concatenate([quiet, voice, quiet]).tobytes())
+
+
+def test_conversation_is_echoed_to_the_terminal(fake, tmp_path, capsys):
+    cfg = tmp_path / "c.toml"
+    event = (cli.DEFAULT_CONFIG.parent / "example-event").as_posix()
+    cfg.write_text(f'default_preset = "x"\nevent_dir = "{event}"\n'
+                   + "".join(f'[presets.x.{r}]\nkind = "openai"\nmodel = "m"\nbase_url = "{fake.url}"\n'
+                             for r in ("hear", "think", "speak")))
+    _talking_wav(tmp_path / "in.wav")
+    assert cli.main(["run", "--config", str(cfg), "--no-screen", "--mute", "--input", str(tmp_path / "in.wav"),
+                     "--badge", "EX-0001"]) == 0
+    out = capsys.readouterr().out
+    assert "Lumi: Hi Ada!" in out and "You: hello" in out and "Lumi: Hi there." in out

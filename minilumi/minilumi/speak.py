@@ -2,7 +2,9 @@
 
 from __future__ import annotations
 
+import io
 import sys
+import wave
 import urllib.request
 from collections.abc import Callable
 from pathlib import Path
@@ -31,11 +33,27 @@ def make_speaker(b: Backend) -> Speaker:
 
 def _openai(b: Backend) -> Speaker:
     def speak(text: str) -> tuple[bytes, int]:
-        payload = {"model": b.model, "input": text, "voice": b.voice or "alloy", "response_format": "pcm"}
+        payload = {"model": b.model, "input": text, "voice": b.voice or "alloy", "response_format": "wav"}
         with post_json(b, "speak", "/audio/speech", payload) as response:
-            pcm = response.read()
-        return pcm[: len(pcm) // 2 * 2], 24000     # OpenAI-style "pcm" is 24 kHz mono s16le
+            data = response.read()
+        return wav_to_mono_pcm(data)
     return speak
+
+
+def wav_to_mono_pcm(data: bytes) -> tuple[bytes, int]:
+    """WAV bytes -> (mono s16le PCM, sample rate). Streamed WAVs may claim a wrong length, so read what's there."""
+    try:
+        with wave.open(io.BytesIO(data), "rb") as w:
+            channels, width, rate = w.getnchannels(), w.getsampwidth(), w.getframerate()
+            frames = w.readframes(w.getnframes() or 1 << 30)
+    except (wave.Error, EOFError) as exc:
+        raise BackendError(f"speak: the server did not send a WAV file ({exc})") from None
+    if width != 2:
+        raise BackendError("speak: expected 16-bit WAV audio")
+    samples = np.frombuffer(frames[: len(frames) // (2 * channels) * 2 * channels], dtype="<i2")
+    if channels > 1:
+        samples = samples.reshape(-1, channels).mean(axis=1).astype("<i2")
+    return samples.tobytes(), rate
 
 
 def _download(name: str, url: str) -> Path:

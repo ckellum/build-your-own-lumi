@@ -35,7 +35,7 @@ Presets live in `config.toml`. Each one says what hears, what thinks and what sp
 For **laptop**, install [Ollama](https://ollama.com) and pull the model named in `config.toml`:
 
 ```bash
-ollama pull qwen3:8b
+ollama pull qwen3:1.7b     # or qwen3:8b for better answers if you have 32 GB
 ```
 
 For **cloud**, set your keys as environment variables (never in the file):

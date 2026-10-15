@@ -34,6 +34,23 @@ def _parser() -> argparse.ArgumentParser:
     return parser
 
 
+class Echo:
+    """Passes screen messages on, and prints the conversation in the terminal."""
+
+    def __init__(self, screen):
+        self._screen = screen
+
+    def send(self, message: dict) -> None:
+        if message.get("type") == "heard":
+            print(f"You: {message['text']}", flush=True)
+        elif message.get("type") == "say":
+            print(f"Lumi: {message['text']}", flush=True)
+        self._screen.send(message)
+
+    def stop(self) -> None:
+        self._screen.stop()
+
+
 def _check(args) -> int:
     cfg = load_config(args.config, args.preset)
     event = load_event(cfg.event_dir)
@@ -64,7 +81,7 @@ def _run(args, stdin) -> int:
     if not args.no_screen:
         screen.start()
         print(f"screen: open http://127.0.0.1:{screen.port}/ in a browser", flush=True)
-    visit = Visit(event=event, hear=hear, think=think, speak=speak, player=player, screen=screen)
+    visit = Visit(event=event, hear=hear, think=think, speak=speak, player=player, screen=Echo(screen))
     try:
         if source is not None:
             visit.run(args.badge, source)

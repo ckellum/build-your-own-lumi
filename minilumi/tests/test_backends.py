@@ -25,11 +25,11 @@ def test_openai_think_streams_and_strips_think_tags(fake):
     assert body["stream"] is True and body["model"] == "m"
 
 
-def test_openai_speak_returns_24khz_pcm(fake):
+def test_openai_speak_asks_for_wav_and_returns_its_pcm_and_rate(fake):
     pcm, sr = make_speaker(Backend("openai", "kokoro", fake.url, voice="af_heart"))("hi")
-    assert sr == 24000 and len(pcm) == 4800
+    assert sr == 22050 and len(pcm) == 4410
     body = fake.requests[-1].json
-    assert body["voice"] == "af_heart" and body["response_format"] == "pcm"
+    assert body["voice"] == "af_heart" and body["response_format"] == "wav"
 
 
 def test_api_key_is_sent_as_bearer(fake, monkeypatch):
