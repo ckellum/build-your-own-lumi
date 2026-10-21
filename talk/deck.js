@@ -1,7 +1,7 @@
 // Lumi talk deck. Plain script (no modules) so it runs from file:// with no server.
 // Keys: → Space PageDown next · ← PageUp back · Home/End · P presenter view · F full screen.
 (function () {
-  const REPO = "github.com/ckellum/build-your-own-lumi";
+  const REPO = "ckellum.github.io/build-your-own-lumi";
   const slides = [...document.querySelectorAll(".slide")];
   const stage = document.getElementById("stage");
   const presenterMode = new URLSearchParams(location.search).has("presenter");

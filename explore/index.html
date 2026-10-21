@@ -1,0 +1,97 @@
+<!doctype html>
+<html lang="en" data-level="beginner">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Explore Local and Frontier AI · Build Your Own Lumi</title>
+<meta name="description" content="Explore AI on the computer you already have: what runs on an 8-16 GB GPU or a Mac, local vs frontier models, home automation, things to build, and lessons from building a real local voice assistant.">
+<meta name="theme-color" content="#05080f">
+<link rel="icon" href="../img/favicon.svg" type="image/svg+xml">
+<link rel="stylesheet" href="../css/site.css">
+<link rel="stylesheet" href="../css/explore.css">
+</head>
+<body class="page">
+<div class="bg-grid" aria-hidden="true"></div>
+<div class="progress" aria-hidden="true"></div>
+<header class="topbar">
+  <div class="wrap">
+    <a class="home" href="../">Build your own <b>Lumi</b></a>
+    <nav class="topnav" aria-label="Explore">
+      <a href="./" aria-current="page">Explore</a>
+      <a href="fit.html">Will it run?</a>
+      <a href="local-vs-frontier.html">Local vs frontier</a>
+      <a href="home-automation.html">Home automation</a>
+      <a href="ideas.html">Ideas</a>
+      <a href="lessons.html">Lessons</a>
+      <a href="faq.html">FAQ</a>
+      <a href="learn.html">Learn more</a>
+    </nav>
+    <div class="depth">
+      <span class="picker-label" id="level-label">Detail</span>
+      <div class="seg" role="group" aria-labelledby="level-label">
+        <button type="button" data-set-level="beginner" aria-pressed="true">Beginner</button>
+        <button type="button" data-set-level="intermediate" aria-pressed="false">Intermediate</button>
+        <button type="button" data-set-level="expert" aria-pressed="false">Expert</button>
+      </div>
+    </div>
+  </div>
+</header>
+
+<main>
+<div class="wrap page-hero">
+  <span class="eyebrow">Explore</span>
+  <h1>AI on the computer you <span class="grad-text">already have</span>.</h1>
+  <p class="lead">Lumi runs on a desk-sized AI computer with 128 GB of memory. Most people have a gaming GPU with 8–16 GB, or a Mac. That's enough to do a lot, locally and privately, and to know when a frontier model like Claude, GPT or Gemini is the better tool. Start wherever you are.</p>
+</div>
+
+<section>
+  <div class="wrap">
+    <h2>Pick your starting point</h2>
+    <div class="cards">
+      <a class="cardx top" href="local-vs-frontier.html#start"><span class="kick">I've never used AI</span><h3>Start in the cloud, then try local</h3><p>Ten minutes with a free frontier chat, then one app that runs a model on your own computer.</p><span class="go">Where to start →</span></a>
+      <a class="cardx top" href="fit.html"><span class="kick">I use ChatGPT or Claude</span><h3>Run your first local model</h3><p>Pick your GPU or Mac and see which models fit, how fast they'll be, and what they're good for.</p><span class="go">Will it run? →</span></a>
+      <a class="cardx top" href="home-automation.html"><span class="kick">I already run local models</span><h3>Build something real</h3><p>Talk to your house with Home Assistant, a voice assistant like Lumi, agents with tools.</p><span class="go">Home automation →</span></a>
+    </div>
+  </div>
+</section>
+
+<section>
+  <div class="wrap">
+    <h2>The one-minute version</h2>
+    <div class="cards">
+      <div class="cardx"><span class="kick">1 · Memory decides what fits</span><p>Downloads are usually compressed to about 4 bits per number, so a model needs about <b>0.6 GB per billion parameters</b>, plus a little for the conversation. 8 GB runs about 8B models, 16 GB about 14B, 24–32 GB about 30B.</p></div>
+      <div class="cardx"><span class="kick">2 · Memory speed decides how fast</span><p>Every word it writes reads the whole model from memory. A fast GPU with a small model talks fastest; a big memory with a modest speed (like Lumi's computer) fits bigger models.</p></div>
+      <div class="cardx"><span class="kick">3 · Small models have limits</span><p>Great for chat, summaries, transcription, search and home control. Weaker at hard reasoning, long tasks and reliable tool use. They can be confidently wrong.</p></div>
+      <div class="cardx"><span class="kick">4 · Use both</span><p>Local for private, offline and always-on jobs. Frontier for hard problems. Frontier to build, local to run: that's how Lumi was made.</p></div>
+    </div>
+  </div>
+</section>
+
+<section>
+  <div class="wrap">
+    <h2>Everything here</h2>
+    <div class="cards">
+      <a class="cardx top" href="fit.html"><span class="kick">Calculator</span><h3>What will run on my machine?</h3><p>Your GPU or Mac → the models that fit, their speed, and the trade-offs. Plus how a big-memory AI computer like Lumi's differs from a gaming GPU.</p><span class="go">Open →</span></a>
+      <a class="cardx top" href="local-vs-frontier.html"><span class="kick">Guide</span><h3>Local vs frontier</h3><p>Strengths, real costs, privacy, five ways to use both, and myths worth correcting.</p><span class="go">Open →</span></a>
+      <a class="cardx top" href="home-automation.html"><span class="kick">Guide</span><h3>Home automation with local AI</h3><p>A weekend starter path, the next level, and the guardrails for locks and cameras.</p><span class="go">Open →</span></a>
+      <a class="cardx top" href="ideas.html"><span class="kick">Ideas</span><h3>Things people build</h3><p>Private chat, chat with your documents, transcription, coding, photo search, tutors and more, by difficulty.</p><span class="go">Open →</span></a>
+      <a class="cardx top" href="lessons.html"><span class="kick">Lessons</span><h3>What broke building Lumi</h3><p>Fourteen real problems from a real building, and the fixes.</p><span class="go">Open →</span></a>
+      <a class="cardx top" href="faq.html"><span class="kick">FAQ</span><h3>The concepts, explained</h3><p>Tokens, parameters, quantization, VRAM, mixture of experts, context, tool calling, MCP, RAG, privacy and cost, in plain words with a deeper version.</p><span class="go">Open →</span></a>
+      <a class="cardx top" href="learn.html"><span class="kick">Learn more</span><h3>The best free videos and courses</h3><p>From an eight-minute explainer to building a GPT from scratch, plus running models locally and home automation.</p><span class="go">Open →</span></a>
+      <a class="cardx top" href="../#steps"><span class="kick">Build</span><h3>Build your own Lumi</h3><p>Nine steps to a voice concierge on your laptop, workstation or cloud models.</p><span class="go">Open →</span></a>
+    </div>
+  </div>
+</section>
+</main>
+
+<footer>
+  <div class="wrap">
+    <span>Built with <a href="https://claude.com/claude-code">Claude Code</a>. MIT licensed.</span>
+    <span><a href="../talk/">The talk (slides)</a> · <a href="https://github.com/ckellum/build-your-own-lumi">GitHub</a></span>
+  </div>
+</footer>
+<script src="../vendor/gsap/gsap.min.js"></script>
+<script src="../vendor/gsap/ScrollTrigger.min.js"></script>
+<script type="module" src="../js/explore.js"></script>
+</body>
+</html>

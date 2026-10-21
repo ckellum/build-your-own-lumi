@@ -1,0 +1,180 @@
+<!doctype html>
+<html lang="en" data-level="beginner">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Learn More · Build Your Own Lumi</title>
+<meta name="description" content="The best free videos, courses and reading for understanding AI and language models, running models locally, home automation with local AI, and using frontier models well, from first steps to building your own.">
+<meta name="theme-color" content="#05080f">
+<link rel="icon" href="../img/favicon.svg" type="image/svg+xml">
+<link rel="stylesheet" href="../css/site.css">
+<link rel="stylesheet" href="../css/explore.css">
+</head>
+<body class="page">
+<div class="bg-grid" aria-hidden="true"></div>
+<div class="progress" aria-hidden="true"></div>
+<header class="topbar">
+  <div class="wrap">
+    <a class="home" href="../">Build your own <b>Lumi</b></a>
+    <nav class="topnav" aria-label="Explore">
+      <a href="./">Explore</a>
+      <a href="fit.html">Will it run?</a>
+      <a href="local-vs-frontier.html">Local vs frontier</a>
+      <a href="home-automation.html">Home automation</a>
+      <a href="ideas.html">Ideas</a>
+      <a href="lessons.html">Lessons</a>
+      <a href="faq.html">FAQ</a>
+      <a href="learn.html" aria-current="page">Learn more</a>
+    </nav>
+    <div class="depth">
+      <span class="picker-label" id="level-label">Detail</span>
+      <div class="seg" role="group" aria-labelledby="level-label">
+        <button type="button" data-set-level="beginner" aria-pressed="true">Beginner</button>
+        <button type="button" data-set-level="intermediate" aria-pressed="false">Intermediate</button>
+        <button type="button" data-set-level="expert" aria-pressed="false">Expert</button>
+      </div>
+    </div>
+  </div>
+</header>
+
+<main>
+<div class="wrap page-hero">
+  <span class="eyebrow">Learn more</span>
+  <h1>The best free ways to <span class="grad-text">go deeper</span>.</h1>
+  <p class="lead">Hand-picked videos, courses and reading, from an eight-minute explainer to building a GPT from scratch. Free, no hype. Every link was checked on October 21, 2026.</p>
+  <div class="meta-row"><span class="lvl b">Beginner</span><span class="lvl i">Intermediate</span><span class="lvl e">Advanced</span><span>marks who each one is for</span></div>
+  <div class="toc"><a href="#three">If you only watch three</a><a href="#start">Start here</a><a href="#how">How it works</a><a href="#local">Running AI locally</a><a href="#home">Home automation</a><a href="#frontier">Using frontier models</a><a href="#current">Staying current</a></div>
+</div>
+
+<section id="three">
+  <div class="wrap">
+    <h2>If you only watch three</h2>
+    <div class="cards">
+      <a class="cardx top" href="https://www.youtube.com/watch?v=LPZh9BOjkQs"><span class="kick">8 min · 3Blue1Brown</span><h3>Large Language Models explained briefly</h3><p>The clearest picture of what a chatbot actually does when it predicts the next word.</p><span class="go">Watch →</span></a>
+      <a class="cardx top" href="https://www.youtube.com/watch?v=EWvNQjAaOHw"><span class="kick">2 h · Andrej Karpathy · 2025</span><h3>How I use LLMs</h3><p>A practical tour of using chatbots well: thinking models, search, files, voice, and picking a model. Watch in chapters.</p><span class="go">Watch →</span></a>
+      <a class="cardx top" href="https://www.youtube.com/watch?v=U6_ZbW97-GY"><span class="kick">22 min · ExplainingComputers · 2026</span><h3>Running Gemma 4 Local AI</h3><p>A calm, hype-free walkthrough of LM Studio on an ordinary laptop with no gaming GPU.</p><span class="go">Watch →</span></a>
+    </div>
+  </div>
+</section>
+
+<section id="start">
+  <div class="wrap">
+    <h2>Start here: no background needed</h2>
+    <div class="table-wrap"><table>
+      <thead><tr><th>Resource</th><th>Who it's for</th><th>Why</th></tr></thead>
+      <tbody>
+        <tr><td><a href="https://www.youtube.com/watch?v=X-AWdfSFCHQ"><b>How Chatbots and Large Language Models Work</b></a><br><span class="src">Code.org · 7 min</span></td><td><span class="lvl b">Beginner</span></td><td>School-friendly, no jargon. Good for absolute newcomers, and for kids.</td></tr>
+        <tr><td><a href="https://www.youtube.com/watch?v=zjkBMFhNj_g"><b>Intro to Large Language Models</b></a><br><span class="src">Andrej Karpathy · 1 h · 2023</span></td><td><span class="lvl b">Beginner</span></td><td>The classic one-hour overview of how they're trained. The ideas hold up; the example models are dated.</td></tr>
+        <tr><td><a href="https://www.youtube.com/watch?v=0vZ_UVLhSQQ"><b>Getting started with Claude.ai</b></a><br><span class="src">Anthropic · 5 min · 2025</span></td><td><span class="lvl b">Beginner</span></td><td>Prompts, files, research and extended thinking, in five minutes.</td></tr>
+        <tr><td><a href="https://anthropic.skilljar.com/ai-fluency-framework-foundations"><b>AI Fluency: Framework &amp; Foundations</b></a><br><span class="src">Anthropic · free course</span></td><td><span class="lvl b">Beginner</span></td><td>How to work <i>with</i> AI: delegation, describing what you want, judging the output.</td></tr>
+        <tr><td><a href="https://www.elementsofai.com/"><b>Elements of AI</b></a><br><span class="src">University of Helsinki · free course</span></td><td><span class="lvl b">Beginner</span></td><td>A no-math introduction to what AI can and can't do.</td></tr>
+      </tbody>
+    </table></div>
+  </div>
+</section>
+
+<section id="how">
+  <div class="wrap">
+    <h2>How it actually works</h2>
+    <p class="lead-in">For the curious. Some math, explained beautifully.</p>
+    <div class="table-wrap"><table>
+      <thead><tr><th>Resource</th><th>Who it's for</th><th>Why</th></tr></thead>
+      <tbody>
+        <tr><td><a href="https://www.youtube.com/watch?v=aircAruvnKk"><b>But what is a neural network?</b></a><br><span class="src">3Blue1Brown · 19 min · <a href="https://www.3blue1brown.com/topics/neural-networks">the whole series</a></span></td><td><span class="lvl i">Intermediate</span></td><td>The best visual introduction to neural networks. Older, but the fundamentals don't date.</td></tr>
+        <tr><td><a href="https://www.youtube.com/watch?v=wjZofJX0v4M"><b>Transformers, the tech behind LLMs</b></a><br><span class="src">3Blue1Brown · 27 min · 2024</span></td><td><span class="lvl i">Intermediate</span></td><td>The architecture behind every modern chatbot, step by step.</td></tr>
+        <tr><td><a href="https://www.youtube.com/watch?v=eMlx5fFNoYc"><b>Attention in transformers, step by step</b></a><br><span class="src">3Blue1Brown · 26 min · 2024</span></td><td><span class="lvl i">Intermediate</span></td><td>The key idea of modern AI, made intuitive.</td></tr>
+        <tr><td><a href="https://www.youtube.com/watch?v=7xTGNNLPyMI"><b>Deep Dive into LLMs like ChatGPT</b></a><br><span class="src">Andrej Karpathy · 3.5 h · 2025</span></td><td><span class="lvl i">Intermediate</span></td><td>The whole pipeline (pretraining, fine-tuning, reinforcement learning, why they hallucinate) for a general audience. No code.</td></tr>
+        <tr><td><a href="https://poloclub.github.io/transformer-explainer/"><b>Transformer Explainer</b></a><br><span class="src">Georgia Tech · interactive</span></td><td><span class="lvl i">Intermediate</span></td><td>A small GPT running live in your browser. Type and watch it think.</td></tr>
+        <tr><td><a href="https://jalammar.github.io/illustrated-transformer/"><b>The Illustrated Transformer</b></a><br><span class="src">Jay Alammar · reading</span></td><td><span class="lvl i">Intermediate</span></td><td>The diagrams half the internet learned from.</td></tr>
+        <tr><td><a href="https://bbycroft.net/llm"><b>LLM Visualization</b></a><br><span class="src">Brendan Bycroft · interactive 3D</span></td><td><span class="lvl e">Advanced</span></td><td>Every number inside a small GPT, in 3D.</td></tr>
+        <tr><td><a href="https://www.youtube.com/watch?v=kCc8FmEb1nY"><b>Let's build GPT: from scratch, in code</b></a><br><span class="src">Andrej Karpathy · 2 h · <a href="https://karpathy.ai/zero-to-hero.html">Zero to Hero series</a></span></td><td><span class="lvl e">Advanced</span></td><td>Write a working GPT in Python, line by line.</td></tr>
+      </tbody>
+    </table></div>
+  </div>
+</section>
+
+<section id="local">
+  <div class="wrap">
+    <h2>Running AI locally</h2>
+    <div class="table-wrap"><table>
+      <thead><tr><th>Resource</th><th>Who it's for</th><th>Why</th></tr></thead>
+      <tbody>
+        <tr><td><a href="https://www.youtube.com/watch?v=onrvYqir_mQ"><b>Ollama Tutorial: Run AI Models on Your Own Computer</b></a><br><span class="src">Teacher's Tech · 19 min · 2026</span></td><td><span class="lvl b">Beginner</span></td><td>Install Ollama, pick a model that fits, and chat with your own files.</td></tr>
+        <tr><td><a href="https://www.youtube.com/watch?v=edIHPoWgIKU"><b>Local AI Explained</b></a><br><span class="src">Tech With Tim · 24 min · 2026</span></td><td><span class="lvl b">Beginner</span> <span class="lvl i">Intermediate</span></td><td>The jargon decoded: weights, quantization, VRAM, inference engines. (Starts with a sponsor segment.)</td></tr>
+        <tr><td><a href="https://www.youtube.com/watch?v=K75j8MkwgJ0"><b>Optimize Your AI: Quantization Explained</b></a><br><span class="src">Matt Williams · 12 min · 2024</span></td><td><span class="lvl i">Intermediate</span></td><td>The clearest explanation of Q4 and Q8, by a former Ollama team member. The app screens have changed; the ideas haven't.</td></tr>
+        <tr><td><a href="https://www.youtube.com/watch?v=2t9XrPcAiHg"><b>Local AI just leveled up: llama.cpp vs Ollama</b></a><br><span class="src">Alex Ziskind · 15 min · 2025</span></td><td><span class="lvl i">Intermediate</span></td><td>What llama.cpp gives you beyond Ollama, mostly on Macs.</td></tr>
+        <tr><td><a href="https://www.youtube.com/watch?v=Oa3MUGsFays"><b>The Only Local AI GPUs Worth Buying Right Now</b></a><br><span class="src">Digital Spaceport · 20 min · 2026</span></td><td><span class="lvl i">Intermediate</span></td><td>GPUs ranked by memory per dollar and memory speed: the numbers that matter. Pair it with <a href="fit.html">our calculator</a>.</td></tr>
+        <tr><td><a href="https://www.youtube.com/watch?v=N5xhOqlvRh4"><b>I built a private AI mini-cluster with Framework Desktop</b></a><br><span class="src">Jeff Geerling · 20 min · 2025</span></td><td><span class="lvl e">Advanced</span></td><td>An honest, benchmark-driven look at the limits of big local models.</td></tr>
+        <tr><td><b>Docs</b>: <a href="https://docs.ollama.com/quickstart">Ollama quickstart</a> · <a href="https://github.com/ggml-org/llama.cpp">llama.cpp</a> · <a href="https://simonwillison.net/tags/local-llms/">Simon Willison's local-LLM notes</a></td><td><span class="lvl i">Intermediate</span></td><td>The references you'll come back to.</td></tr>
+      </tbody>
+    </table></div>
+  </div>
+</section>
+
+<section id="home">
+  <div class="wrap">
+    <h2>Home automation with local AI</h2>
+    <div class="table-wrap"><table>
+      <thead><tr><th>Resource</th><th>Who it's for</th><th>Why</th></tr></thead>
+      <tbody>
+        <tr><td><a href="https://www.home-assistant.io/blog/2025/09/11/ai-in-home-assistant/"><b>Building the AI-powered local smart home</b></a><br><span class="src">Home Assistant blog · 2025</span></td><td><span class="lvl b">Beginner</span> <span class="lvl i">Intermediate</span></td><td>The project's own view of where AI fits in a private smart home.</td></tr>
+        <tr><td><a href="https://www.youtube.com/watch?v=Ich9IGwn0yI"><b>Ollama in Home Assistant Is Ridiculously Easy Now</b></a><br><span class="src">KPeyanski · 15 min · 2026</span></td><td><span class="lvl b">Beginner</span> <span class="lvl i">Intermediate</span></td><td>A current walkthrough of connecting a local model.</td></tr>
+        <tr><td><a href="https://www.youtube.com/watch?v=kKDNd6tnFzE"><b>Testing 3 Very Different Home Assistant Voice Assistants</b></a><br><span class="src">BeardedTinker · 12 min · 2026</span></td><td><span class="lvl b">Beginner</span></td><td>An honest comparison of the voice hardware options.</td></tr>
+        <tr><td><a href="https://www.home-assistant.io/voice_control/voice_remote_local_assistant/"><b>Set up a fully local voice assistant</b></a> · <a href="https://www.home-assistant.io/integrations/ollama/">Ollama integration</a><br><span class="src">Home Assistant docs</span></td><td><span class="lvl i">Intermediate</span></td><td>The official step-by-step guides.</td></tr>
+        <tr><td><a href="https://www.youtube.com/watch?v=sIkguv0NEQI"><b>What's New in Voice: Chapter 11</b></a><br><span class="src">Home Assistant · livestream · 2025</span></td><td><span class="lvl i">Intermediate</span></td><td>The voice team demos the latest features themselves.</td></tr>
+        <tr><td><a href="https://www.youtube.com/watch?v=XvbVePuP7NY"><b>My local AI voice assistant (I replaced Alexa!)</b></a><br><span class="src">NetworkChuck · 40 min · 2024</span></td><td><span class="lvl i">Intermediate</span></td><td>The most-watched build of its kind, and a lot of fun. Older: treat it as inspiration, not current steps. (Has a sponsor segment.)</td></tr>
+      </tbody>
+    </table></div>
+    <p class="src">And our own <a href="home-automation.html">home automation guide</a>.</p>
+  </div>
+</section>
+
+<section id="frontier">
+  <div class="wrap">
+    <h2>Using frontier models well, and building with them</h2>
+    <div class="table-wrap"><table>
+      <thead><tr><th>Resource</th><th>Who it's for</th><th>Why</th></tr></thead>
+      <tbody>
+        <tr><td><a href="https://www.youtube.com/watch?v=ysPbXH0LpIE"><b>Prompting 101</b></a><br><span class="src">Anthropic · 25 min · 2025</span></td><td><span class="lvl b">Beginner</span> <span class="lvl i">Intermediate</span></td><td>Anthropic's applied-AI team builds a real prompt live, step by step.</td></tr>
+        <tr><td><a href="https://anthropic.skilljar.com/"><b>Anthropic Academy</b></a><br><span class="src">free courses, including Claude Code in Action</span></td><td><span class="lvl b">Beginner</span> → <span class="lvl e">Advanced</span></td><td>Short, practical courses for using and building with Claude.</td></tr>
+        <tr><td><a href="https://github.com/anthropics/prompt-eng-interactive-tutorial"><b>Interactive Prompt Engineering Tutorial</b></a> · <a href="https://github.com/anthropics/courses">more courses</a><br><span class="src">Anthropic · GitHub</span></td><td><span class="lvl i">Intermediate</span></td><td>Hands-on exercises you run yourself.</td></tr>
+        <tr><td><a href="https://platform.claude.com/docs/en/build-with-claude/prompt-engineering/overview"><b>Prompt engineering guide</b></a> · <a href="https://code.claude.com/docs/en/overview">Claude Code docs</a></td><td><span class="lvl i">Intermediate</span></td><td>The reference docs. Claude Code is what Lumi was built with.</td></tr>
+        <tr><td><a href="https://www.deeplearning.ai/courses/claude-code-a-highly-agentic-coding-assistant"><b>Claude Code: A Highly Agentic Coding Assistant</b></a> · <a href="https://www.deeplearning.ai/courses">more short courses</a><br><span class="src">DeepLearning.AI</span></td><td><span class="lvl i">Intermediate</span></td><td>Short courses on building with AI. (Some certificates need a paid plan; the courses are free.)</td></tr>
+        <tr><td><a href="https://huggingface.co/learn/llm-course/chapter1/1"><b>Hugging Face LLM Course</b></a></td><td><span class="lvl i">Intermediate</span> <span class="lvl e">Advanced</span></td><td>Using, fine-tuning and building with open models.</td></tr>
+        <tr><td><a href="https://developers.openai.com/cookbook"><b>OpenAI Cookbook</b></a></td><td><span class="lvl i">Intermediate</span></td><td>Practical code recipes.</td></tr>
+      </tbody>
+    </table></div>
+  </div>
+</section>
+
+<section id="current">
+  <div class="wrap">
+    <h2>Staying current</h2>
+    <div class="cards">
+      <a class="cardx top" href="https://simonwillison.net/"><span class="kick">Blog</span><h3>Simon Willison's Weblog</h3><p>Independent, careful, almost daily notes on every new model and tool. Start with <i>2025: The year in LLMs</i>.</p><span class="go">Read →</span></a>
+      <a class="cardx top" href="https://www.youtube.com/watch?v=YpY83-kA7Bo"><span class="kick">18 min · video</span><h3>2025 in LLMs, illustrated by pelicans on bicycles</h3><p>A funny, vendor-neutral recap of a year of models.</p><span class="go">Watch →</span></a>
+      <a class="cardx top" href="https://www.reddit.com/r/LocalLLaMA/"><span class="kick">Community</span><h3>r/LocalLLaMA</h3><p>Where local-model people compare hardware, models and settings. Read critically.</p><span class="go">Visit →</span></a>
+      <a class="cardx top" href="https://artificialanalysis.ai/"><span class="kick">Comparisons</span><h3>Artificial Analysis</h3><p>Independent comparisons of model quality, speed and price, local and frontier.</p><span class="go">Visit →</span></a>
+      <a class="cardx top" href="https://epoch.ai/"><span class="kick">Research</span><h3>Epoch AI</h3><p>Rigorous charts on AI progress, compute and the open vs closed gap.</p><span class="go">Visit →</span></a>
+      <a class="cardx top" href="https://www.latent.space/"><span class="kick">Podcast</span><h3>Latent Space</h3><p>A podcast and newsletter for people building with AI.</p><span class="go">Visit →</span></a>
+    </div>
+    <div class="callout"><b>On a work network?</b> Some company networks block model download sites. If a link won't open at the office, try it at home.</div>
+    <div class="next-page">
+      <a class="btn primary" href="faq.html">FAQ: the concepts explained →</a>
+      <a class="btn" href="fit.html">What will run on my machine?</a>
+    </div>
+  </div>
+</section>
+</main>
+
+<footer>
+  <div class="wrap">
+    <span>Built with <a href="https://claude.com/claude-code">Claude Code</a>. MIT licensed.</span>
+    <span><a href="../talk/">The talk (slides)</a> · <a href="https://github.com/ckellum/build-your-own-lumi">GitHub</a></span>
+  </div>
+</footer>
+<script src="../vendor/gsap/gsap.min.js"></script>
+<script src="../vendor/gsap/ScrollTrigger.min.js"></script>
+<script type="module" src="../js/explore.js"></script>
+</body>
+</html>

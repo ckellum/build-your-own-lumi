@@ -1,0 +1,177 @@
+<!doctype html>
+<html lang="en" data-level="beginner">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Home Automation with Local AI · Build Your Own Lumi</title>
+<meta name="description" content="Talk to your house with a local AI model: Home Assistant, Ollama or llama.cpp on your gaming PC or Mac, which models work, a weekend starter path, the next level, and the guardrails for locks, cameras and kids.">
+<meta name="theme-color" content="#05080f">
+<link rel="icon" href="../img/favicon.svg" type="image/svg+xml">
+<link rel="stylesheet" href="../css/site.css">
+<link rel="stylesheet" href="../css/explore.css">
+</head>
+<body class="page">
+<div class="bg-grid" aria-hidden="true"></div>
+<div class="progress" aria-hidden="true"></div>
+<header class="topbar">
+  <div class="wrap">
+    <a class="home" href="../">Build your own <b>Lumi</b></a>
+    <nav class="topnav" aria-label="Explore">
+      <a href="./">Explore</a>
+      <a href="fit.html">Will it run?</a>
+      <a href="local-vs-frontier.html">Local vs frontier</a>
+      <a href="home-automation.html" aria-current="page">Home automation</a>
+      <a href="ideas.html">Ideas</a>
+      <a href="lessons.html">Lessons</a>
+      <a href="faq.html">FAQ</a>
+      <a href="learn.html">Learn more</a>
+    </nav>
+    <div class="depth">
+      <span class="picker-label" id="level-label">Detail</span>
+      <div class="seg" role="group" aria-labelledby="level-label">
+        <button type="button" data-set-level="beginner" aria-pressed="true">Beginner</button>
+        <button type="button" data-set-level="intermediate" aria-pressed="false">Intermediate</button>
+        <button type="button" data-set-level="expert" aria-pressed="false">Expert</button>
+      </div>
+    </div>
+  </div>
+</header>
+
+<main>
+<div class="wrap page-hero">
+  <span class="eyebrow">Home automation</span>
+  <h1>Talk to your house. Keep it in your <span class="grad-text">house</span>.</h1>
+  <p class="lead">“Turn off the kitchen lights.” “Is the garage open?” “Is anything still on upstairs?” With <b>Home Assistant</b> and a model on your own gaming PC or Mac, your voice, your cameras and your kids' questions never leave home. It's the same relay race as Lumi: wake word, speech to text, a model, a voice.</p>
+  <div class="toc"><a href="#how">How it works</a><a href="#models">Which models work</a><a href="#weekend">Weekend starter</a><a href="#next">Next level</a><a href="#more">More projects</a><a href="#safety">Guardrails</a></div>
+</div>
+
+<section id="how">
+  <div class="wrap">
+    <h2>How it works</h2>
+    <div class="flow-strip">
+      <div class="hop"><span class="n">1</span><h3>Wake word</h3><p>“Okay Nabu” is heard on the device itself. Nothing is sent until then.</p></div>
+      <div class="hop"><span class="n">2</span><h3>Speech to text</h3><p>Whisper, or Speech-to-Phrase for fixed commands.</p></div>
+      <div class="hop"><span class="n">3</span><h3>Simple commands first</h3><p>“Turn off the lights” is handled by Home Assistant itself, no AI needed.</p></div>
+      <div class="hop"><span class="n">4</span><h3>The model for the rest</h3><p>Your local model, calling Home Assistant's tools (<a href="faq.html#tools">tool calling</a>).</p></div>
+      <div class="hop"><span class="n">5</span><h3>Text to speech</h3><p>Piper answers, starting about half a second in.</p></div>
+    </div>
+    <div class="callout good"><b>The best setup is a split one.</b> Home Assistant runs on a small, always-on box (a Home Assistant Green, a Raspberry Pi 5 with an SSD, or a mini PC). The model runs on your gaming PC or Mac on the same network. If the PC is off, simple commands still work.</div>
+    <div data-level-only="intermediate expert">
+      <p><b>Under the hood.</b> Home Assistant's <b>Assist</b> pipeline chains these stages, and each voice device can use its own pipeline. The <b>Wyoming</b> protocol connects outside speech services. The <b>Ollama</b> integration gives a local model “Control Home Assistant” through tool calling (local device control arrived in 2024.8); since <b>2026.8</b> a core <b>llama.cpp</b> integration talks to any OpenAI-compatible server (llama.cpp, vLLM). “Prefer handling commands locally” (2024.12) sends only unmatched requests to the model.</p>
+    </div>
+    <div data-level-only="expert">
+      <p><b>Newer pieces.</b> Since 2025.10 a satellite can listen for two wake words, each tied to its own pipeline: one local-only, one with a model. AI Task (2025.7) lets automations ask a model for structured output, with camera snapshots attached. MCP client and server arrived in 2025.2; 2026.10 adds an “AI” settings page with a one-click MCP card for Claude, ChatGPT or Cursor (by default everything is exposed, to admins only). 2026.9 prefixed tool names (<code>intent__HassTurnOn</code>), so update custom prompts that name tools. The old <code>wyoming-satellite</code> was archived in January 2026 in favor of <b>Linux Voice Assistant</b>, and Piper moved to <code>OHF-Voice/piper1-gpl</code>.</p>
+    </div>
+  </div>
+</section>
+
+<section id="models">
+  <div class="wrap">
+    <h2>Which models work</h2>
+    <p class="lead-in">Below about 4 billion parameters, reliability falls off a cliff. The practical range on an 8–16 GB machine is 8–14B, or gpt-oss-20b on 16 GB.</p>
+    <div class="table-wrap"><table class="compact">
+      <thead><tr><th>Model</th><th>Hard requests</th><th>Simpler set</th><th>Fits</th></tr></thead>
+      <tbody>
+        <tr><td><b>gpt-oss-20b</b></td><td>87.6%</td><td>95.4%</td><td>16 GB</td></tr>
+        <tr><td><b>Gemma 4 12B</b></td><td>83.5%</td><td>97.4%</td><td>12 GB</td></tr>
+        <tr><td><b>Qwen3 8B</b></td><td>82.8%</td><td>93.4%</td><td>8 GB</td></tr>
+        <tr><td><b>Qwen3.5 4B</b></td><td>81.1%</td><td>88.3%</td><td>8 GB</td></tr>
+        <tr><td><b>Qwen3 14B</b></td><td>79.3%</td><td>98.0%</td><td>12–16 GB</td></tr>
+        <tr><td><b>Ministral 3 8B</b></td><td>78.0%</td><td>93.9%</td><td>8 GB</td></tr>
+        <tr><td><b>Gemma 4 E2B</b> (too small)</td><td>45%</td><td>61%</td><td>any</td></tr>
+      </tbody>
+    </table></div>
+    <p class="src">From the <a href="https://github.com/allenporter/home-assistant-datasets/tree/main/reports">Home LLM leaderboard</a> (updated 2026-10-05): 460 deliberately hard requests and a 196-request set with fewer devices. Small samples, so differences of a few points don't mean much. <a href="fit.html">Check what fits your machine.</a></p>
+    <div class="callout warn"><b>What “88%” means at home.</b> About one request in eight goes wrong: the wrong light, a made-up answer about a sensor. Fine for lights and music. Not fine for a lock, which is why the guardrails below matter.</div>
+    <div data-level-only="intermediate expert">
+      <h3>Gotchas</h3>
+      <ul>
+        <li><b>Every device you expose goes into the prompt.</b> Home Assistant suggests fewer than 25 while experimenting; 30 devices can be over a thousand tokens, read on every request.</li>
+        <li><b>Keep the model loaded.</b> Ollama unloads a model after 5 minutes by default, so the next command waits for a reload. Set keep-alive to -1.</li>
+        <li><b>Context size.</b> Ollama's default is 4K tokens; Home Assistant asks for 8K. More context, more memory.</li>
+        <li><b>Turn “think” off.</b> Reasoning adds seconds and rarely helps with “turn on the porch light”.</li>
+        <li><b>Names matter more than the model.</b> Most wrong-device mistakes come from vague names. Use areas, aliases and clear descriptions on scripts.</li>
+      </ul>
+    </div>
+  </div>
+</section>
+
+<section id="weekend">
+  <div class="wrap">
+    <h2>A weekend starter path</h2>
+    <p class="lead-in">For a gaming PC (8 GB or more) or a Mac (16 GB or more), and a few smart lights or plugs you already have.</p>
+    <ol class="steps-list">
+      <li><b>Install Ollama</b> on the PC or Mac and try a model: <code>ollama run qwen3:8b</code> (or <code>qwen3:14b</code> with 12 GB or more). Chat with it to feel the speed.</li>
+      <li><b>Let your network reach it</b>: set <code>OLLAMA_HOST=0.0.0.0:11434</code> and <code>OLLAMA_KEEP_ALIVE=-1</code>, restart Ollama, and allow port 11434 on your home network only.</li>
+      <li><b>Install Home Assistant</b> on a Home Assistant Green, a Raspberry Pi 5 with an SSD, a small mini PC, or a virtual machine.</li>
+      <li><b>Add the Ollama integration</b>: Settings → Devices &amp; services → Add → Ollama. Use <code>http://&lt;your-pc-ip&gt;:11434</code>, pick the model, turn on <b>Control Home Assistant</b>, set the context window to 8K, leave “think” off.</li>
+      <li><b>Make it the voice assistant's brain</b>: Settings → Voice assistants. Pick the Ollama agent and turn on <b>Prefer handling commands locally</b>.</li>
+      <li><b>Expose 5–10 devices</b>: lights, a thermostat, a speaker. Give them clear names and areas. Don't expose locks or garage doors yet.</li>
+      <li><b>Test by typing</b> in the Assist dialog: “turn off the kitchen lights”, “is anything on upstairs?”. Then add the Whisper and Piper add-ons and talk to it from the phone app, or a Home Assistant Voice Preview Edition speaker.</li>
+    </ol>
+    <div class="callout"><b>Prefer an app to commands?</b> LM Studio can serve a model on your network too, and Home Assistant's llama.cpp integration talks to any OpenAI-compatible server.</div>
+  </div>
+</section>
+
+<section id="next">
+  <div class="wrap">
+    <h2>The next level</h2>
+    <div class="cards">
+      <div class="cardx top"><span class="kick">Every room</span><h3>Voice satellites</h3><p>ESPHome boards or Linux Voice Assistant on a Pi Zero 2W in each room, with speech running on your GPU box. Your own wake word with microWakeWord.</p></div>
+      <div class="cardx top"><span class="kick">Two wake words</span><h3>Local-only, and smart</h3><p>One wake word for fast, fixed commands with no model, another for open questions to your model.</p></div>
+      <div class="cardx top"><span class="kick">Tools</span><h3>MCP both ways</h3><p>Let your house use outside tools (MCP client), or let Claude or Cursor drive your house (MCP server). Narrow what you expose.</p></div>
+      <div class="cardx top"><span class="kick">Cameras</span><h3>Frigate + a vision model</h3><p>Local object detection, then a vision model writes what it saw: “A delivery driver left a package at the front door.” Frigate 0.18 added a llama.cpp provider.</p></div>
+      <div class="cardx top"><span class="kick">Automations</span><h3>AI Task</h3><p>A morning briefing from your calendar, the weather and sensors; a camera snapshot turned into a sentence.</p></div>
+      <div class="cardx top"><span class="kick">Hybrid</span><h3>A frontier fallback</h3><p>There's no automatic switch, but you can add a second agent or wake word that uses a cloud model for questions your local one can't handle. Only for what you're happy to send out.</p></div>
+    </div>
+  </div>
+</section>
+
+<section id="more">
+  <div class="wrap">
+    <h2>More local-AI projects around the house</h2>
+    <div class="table-wrap"><table>
+      <thead><tr><th>Project</th><th>What it does</th><th>Needs</th><th>Level</th></tr></thead>
+      <tbody>
+        <tr><td><b><a href="https://github.com/valentinfrlch/ha-llmvision">LLM Vision</a></b></td><td>A camera snapshot or clip becomes a short summary in a notification or a timeline.</td><td>Ollama or another local server, plus a vision model</td><td><span class="lvl b">Beginner</span> <span class="lvl i">Intermediate</span></td></tr>
+        <tr><td><b><a href="https://docs.frigate.video/configuration/genai/genai_config">Frigate</a></b></td><td>A local video recorder with object detection, review summaries and a chat assistant.</td><td>An Intel iGPU, NVIDIA GPU, Apple Silicon or Hailo for detection; a vision model</td><td><span class="lvl i">Intermediate</span> <span class="lvl e">Advanced</span></td></tr>
+        <tr><td><b><a href="https://docs.mealie.io/documentation/getting-started/installation/ai-providers/">Mealie</a></b></td><td>Recipes imported and tidied up by your own model.</td><td>An 8B model; a vision model for photo imports</td><td><span class="lvl b">Beginner</span> <span class="lvl i">Intermediate</span></td></tr>
+        <tr><td><b><a href="https://immich.app">Immich</a></b></td><td>Your photo library, searchable by describing it, with face grouping.</td><td>Its own small models; a GPU helps</td><td><span class="lvl i">Intermediate</span></td></tr>
+        <tr><td><b>Homework helper</b></td><td>Open WebUI with a tutor prompt that explains instead of answering.</td><td>An 8–14B model</td><td><span class="lvl b">Beginner</span></td></tr>
+      </tbody>
+    </table></div>
+  </div>
+</section>
+
+<section id="safety">
+  <div class="wrap">
+    <h2>Guardrails</h2>
+    <p class="lead-in">Local keeps cameras, microphones and kids' voices at home, and works when the internet is down. It doesn't make a model careful.</p>
+    <div class="cards">
+      <div class="cardx top"><span class="kick">1</span><h3>Expose as little as possible</h3><p>No locks, garage doors or alarms for the model, or only “lock” and “close”.</p></div>
+      <div class="cardx top"><span class="kick">2</span><h3>Confirm risky actions</h3><p>Expose a script instead of the device, with a confirmation question, a phone notification or a PIN.</p></div>
+      <div class="cardx top"><span class="kick">3</span><h3>Never put Ollama on the internet</h3><p>It has no password. Security researchers found over a thousand Ollama servers open to the world. Keep it on your network, or use a VPN like Tailscale.</p></div>
+      <div class="cardx top"><span class="kick">4</span><h3>Treat outside text as untrusted</h3><p>In 2025 researchers hid instructions in a calendar invite and made an AI assistant open shutters and turn on a boiler. Calendar text, emails, device names and camera descriptions can all carry instructions. Give summary agents no control.</p></div>
+      <div class="cardx top"><span class="kick">5</span><h3>MCP: admins only, narrow, HTTPS</h3><p>The MCP server hands an AI app the keys. Expose only what it needs.</p></div>
+      <div class="cardx top"><span class="kick">6</span><h3>Respect the people in the house</h3><p>Use the hardware mute switch, keep cameras and the model on your network, and agree on rules for kids' rooms.</p></div>
+    </div>
+    <p class="src">Sources: <a href="https://www.home-assistant.io/integrations/ollama/">Home Assistant: Ollama</a>, <a href="https://www.home-assistant.io/integrations/llama_cpp">llama.cpp</a>, <a href="https://www.home-assistant.io/voice_control/best_practices/">voice best practices</a>, <a href="https://www.home-assistant.io/blog/2026/10/07/release-202610/">2026.10 release</a>, <a href="https://www.home-assistant.io/voice-pe/">Voice Preview Edition</a>; <a href="https://docs.ollama.com/faq">Ollama FAQ</a>; <a href="https://blogs.cisco.com/security/detecting-exposed-llm-servers-shodan-case-study-on-ollama">Cisco Talos on exposed Ollama servers</a> (2025); <a href="https://www.androidauthority.com/gemini-hacked-calendar-invite-smart-homes-3584529">calendar-invite attack coverage</a> (2025). Checked 2026-10-21.</p>
+    <div class="next-page">
+      <a class="btn primary" href="ideas.html">More things to build →</a>
+      <a class="btn" href="faq.html">FAQ: the concepts explained</a>
+    </div>
+  </div>
+</section>
+</main>
+
+<footer>
+  <div class="wrap">
+    <span>Built with <a href="https://claude.com/claude-code">Claude Code</a>. MIT licensed.</span>
+    <span><a href="../talk/">The talk (slides)</a> · <a href="https://github.com/ckellum/build-your-own-lumi">GitHub</a></span>
+  </div>
+</footer>
+<script src="../vendor/gsap/gsap.min.js"></script>
+<script src="../vendor/gsap/ScrollTrigger.min.js"></script>
+<script type="module" src="../js/explore.js"></script>
+</body>
+</html>

@@ -1,0 +1,289 @@
+<!doctype html>
+<html lang="en" data-level="beginner">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>FAQ: AI Concepts Explained · Build Your Own Lumi</title>
+<meta name="description" content="Plain-language answers about local and frontier AI: tokens, parameters, quantization, VRAM, unified memory, bandwidth, mixture of experts, context windows, hallucination, tool calling, MCP, RAG, speech models, privacy and cost.">
+<meta name="theme-color" content="#05080f">
+<link rel="icon" href="../img/favicon.svg" type="image/svg+xml">
+<link rel="stylesheet" href="../css/site.css">
+<link rel="stylesheet" href="../css/explore.css">
+</head>
+<body class="page">
+<div class="bg-grid" aria-hidden="true"></div>
+<div class="progress" aria-hidden="true"></div>
+<header class="topbar">
+  <div class="wrap">
+    <a class="home" href="../">Build your own <b>Lumi</b></a>
+    <nav class="topnav" aria-label="Explore">
+      <a href="./">Explore</a>
+      <a href="fit.html">Will it run?</a>
+      <a href="local-vs-frontier.html">Local vs frontier</a>
+      <a href="home-automation.html">Home automation</a>
+      <a href="ideas.html">Ideas</a>
+      <a href="lessons.html">Lessons</a>
+      <a href="faq.html" aria-current="page">FAQ</a>
+      <a href="learn.html">Learn more</a>
+    </nav>
+    <div class="depth">
+      <span class="picker-label" id="level-label">Detail</span>
+      <div class="seg" role="group" aria-labelledby="level-label">
+        <button type="button" data-set-level="beginner" aria-pressed="true">Beginner</button>
+        <button type="button" data-set-level="intermediate" aria-pressed="false">Intermediate</button>
+        <button type="button" data-set-level="expert" aria-pressed="false">Expert</button>
+      </div>
+    </div>
+  </div>
+</header>
+
+<main>
+<div class="wrap page-hero">
+  <span class="eyebrow">FAQ</span>
+  <h1>The concepts, <span class="grad-text">explained</span>.</h1>
+  <p class="lead">Every answer starts in plain words. Switch <b>Detail</b> to Intermediate or Expert at the top for the deeper version. Or search:</p>
+  <div class="fit-controls" style="margin-top:18px"><label>Search the FAQ<input id="faq-search" type="search" placeholder="e.g. quantization, VRAM, MCP" autocomplete="off" style="font:500 1rem var(--sans);color:var(--ink);background:var(--bg-2);border:1px solid var(--line);border-radius:10px;padding:11px 12px;min-height:44px;width:100%"></label></div>
+  <p class="src" id="faq-count" aria-live="polite"></p>
+  <div class="toc"><a href="#basics">The basics</a><a href="#hardware">Hardware</a><a href="#models">Models</a><a href="#speed">Speed</a><a href="#building">Building things</a><a href="#trust">Trust and safety</a><a href="#cost">Cost</a><a href="#lumi">About Lumi</a></div>
+</div>
+
+<section id="basics" class="faq-group">
+  <div class="wrap">
+    <h2>The basics</h2>
+
+    <details class="deeper" id="what-is-a-model"><summary>What is an AI model, or an “LLM”?</summary><div>
+      <p>A large language model (LLM) is a program that has read an enormous amount of text and learned to predict what comes next. Ask it a question and it writes an answer one word at a time, each word chosen because it fits what came before. That simple trick, at a huge scale, is enough to answer questions, write, translate, summarize and write code.</p>
+      <div data-level-only="intermediate expert"><p>Under the hood it's a neural network (a “transformer”) with billions of adjustable numbers, trained first on general text, then tuned to follow instructions and hold a conversation. It doesn't look things up unless you give it a tool to do so; it answers from patterns it learned.</p></div>
+    </div></details>
+
+    <details class="deeper" id="token"><summary>What's a token?</summary><div>
+      <p>The unit a model reads and writes: a word or a piece of one. “Hello” is one token; “unbelievable” might be three. As a rough rule, 100 tokens is about 75 English words. Speed (“tokens per second”), memory (“a 32K context”) and price (“$2 per million tokens”) are all counted in tokens.</p>
+      <div data-level-only="expert"><p>Each model family has its own tokenizer, so the same text can be a different number of tokens on different models. That matters when comparing prices or context limits across vendors.</p></div>
+    </div></details>
+
+    <details class="deeper" id="parameters"><summary>What does “9B” or “120B” mean?</summary><div>
+      <p>The number of parameters: the adjustable numbers inside the model, in billions. More parameters generally means more knowledge and better reasoning, and more memory needed. A 9B model is a good home assistant; a frontier model is many times larger.</p>
+      <div data-level-only="intermediate expert"><p>Parameter count is only a rough guide. Newer, better-trained models beat older, bigger ones, and a “mixture of experts” model with 35B parameters may only use 3B of them for each word (see <a href="#moe">mixture of experts</a>).</p></div>
+    </div></details>
+
+    <details class="deeper" id="local"><summary>What does “running a model locally” mean?</summary><div>
+      <p>The model file is downloaded to your computer and runs on your own GPU or chip. Nothing you type or say is sent anywhere. It works with the internet unplugged. The trade-off: you're limited to models that fit in your computer's memory.</p>
+    </div></details>
+
+    <details class="deeper" id="frontier"><summary>What's a “frontier” model?</summary><div>
+      <p>The most capable models available, like Claude, GPT and Gemini. They run in large data centers, and you use them through a website, an app or an API. They're far better than local models at hard problems. <a href="local-vs-frontier.html">When to use which.</a></p>
+    </div></details>
+
+    <details class="deeper" id="open-weights"><summary>What's the difference between open weights and open source?</summary><div>
+      <p>“Open weights” means you can download the trained model and run it. “Open source” in the strict sense also means the training code and data are published. Most models you can run at home (Qwen, Gemma, Mistral, gpt-oss) are open weights.</p>
+      <div data-level-only="intermediate expert"><p>Read the license. Apache 2.0 and MIT let you use a model for almost anything, including commercially. Others add rules: the Llama license, for example, has an acceptable-use policy and a cap on very large companies. Some image models are non-commercial only.</p></div>
+    </div></details>
+  </div>
+</section>
+
+<section id="hardware" class="faq-group">
+  <div class="wrap">
+    <h2>Hardware</h2>
+
+    <details class="deeper" id="vram"><summary>What's VRAM, and why does everyone talk about it?</summary><div>
+      <p>The graphics card's own memory. A model runs fast only if it fits there. An 8 GB card runs about 8B models; 16 GB about 14B, or a 20B mixture of experts. If a model doesn't fit, part of it spills into normal system memory and slows down a lot. <a href="fit.html">Check your card.</a></p>
+    </div></details>
+
+    <details class="deeper" id="unified"><summary>What's unified memory, and why are Macs good at this?</summary><div>
+      <p>On Apple Silicon Macs (and the DGX Spark and AMD's Ryzen AI Max), the CPU and GPU share one pool of memory. A 64 GB Mac can give a model far more memory than any 16 GB graphics card, so it can run much bigger models. It's also quiet and uses little power.</p>
+      <div data-level-only="intermediate expert"><p>macOS lets the GPU use about two thirds of memory up to 36 GB and about three quarters above that, by default. A 16 GB Mac therefore has roughly 10–11 GB for models.</p></div>
+    </div></details>
+
+    <details class="deeper" id="bandwidth"><summary>Why does memory speed (bandwidth) matter so much?</summary><div>
+      <p>To write each word, the computer reads the whole active model from memory once. So the speed of memory, not the speed of the chip, usually decides how fast it talks. An RTX 5090 reads memory about six and a half times faster than a DGX Spark, so it writes about four to six times faster, for models that fit in its 32 GB.</p>
+      <div data-level-only="intermediate expert"><p>Rule of thumb: tokens per second ≤ bandwidth (GB/s) ÷ GB read per token. An 8B model at 4-bit is about 4.8 GB, so a 272 GB/s card tops out near 57 tokens per second. Real results land at 40–80% of that ceiling.</p></div>
+    </div></details>
+
+    <details class="deeper" id="cpu-only"><summary>Can I run models without a GPU?</summary><div>
+      <p>Yes, slowly. A laptop with 16–32 GB of RAM can run 4–8B models at a few words per second, which is fine for short answers. Speech-to-text (Whisper) and some voices (Kokoro, Piper) run well on a CPU.</p>
+    </div></details>
+
+    <details class="deeper" id="need-nvidia"><summary>Do I need NVIDIA?</summary><div>
+      <p>No. NVIDIA has the widest support and the fastest prompt reading, but Apple Silicon Macs work very well (LM Studio, Ollama, MLX), and AMD GPUs and Intel run llama.cpp and Ollama too, with a bit more setup.</p>
+    </div></details>
+
+    <details class="deeper" id="spark"><summary>What's a DGX Spark, and do I need one?</summary><div>
+      <p>NVIDIA's desktop AI computer, the one Lumi runs on: 128 GB of unified memory in a box the size of a hardcover book. It can run models far bigger than any gaming card, and several at once. You don't need one to start: everything on this site has a path for an 8–16 GB card or a Mac.</p>
+      <div data-level-only="intermediate expert"><p>Its memory is large but not especially fast (273 GB/s), so it shines on big mixture-of-experts models (gpt-oss-120b at about 40–55 tokens/s) and long prompts, and is slower per word than a gaming GPU on small models. <a href="fit.html#machines">Full comparison.</a></p></div>
+    </div></details>
+  </div>
+</section>
+
+<section id="models" class="faq-group">
+  <div class="wrap">
+    <h2>Models</h2>
+
+    <details class="deeper" id="quantization"><summary>What's quantization (Q4, Q8, GGUF)?</summary><div>
+      <p>Storing a model's numbers with fewer bits so it takes less memory. A “Q4” download uses about 4–5 bits per number instead of 16, making it about a third of the size with only a small loss of quality. It's how big models fit on home hardware. Q4 is the usual choice; Q8 is nearly identical to the original but twice the size of Q4.</p>
+      <div data-level-only="intermediate expert"><p><b>GGUF</b> is the file format llama.cpp, Ollama and LM Studio use. Names like Q4_K_M or IQ4_XS describe the method. <b>MLX</b> is Apple's format for Macs. Quality loss is larger on very small models, and 4-bit has been measured to increase some kinds of made-up output, so if you have the memory, a smaller model at Q8 can beat a bigger one at Q3.</p></div>
+    </div></details>
+
+    <details class="deeper" id="which-first"><summary>Which model should I start with?</summary><div>
+      <p>On an 8 GB card or 16 GB Mac: <b>Qwen3.5 9B</b> or <b>Gemma 4 E4B</b>. On 12 GB: <b>Gemma 4 12B</b> or <b>Ministral 3 14B</b>. On 16 GB: <b>gpt-oss-20b</b>. On a 32 GB Mac: <b>Gemma 4 26B-A4B</b> or <b>gpt-oss-20b</b>; with 48 GB or more, <b>Qwen3.6 35B-A3B</b>. Then try your own prompts: your tasks are the only benchmark that matters. <a href="fit.html">The calculator</a> lists more.</p>
+    </div></details>
+
+    <details class="deeper" id="moe"><summary>What's a “mixture of experts” model?</summary><div>
+      <p>A model made of many smaller “expert” parts, where only a few are used for each word. Qwen3.6 35B-A3B has 35 billion parameters but uses about 3 billion per word, so it talks as fast as a small model while knowing more. The catch: all 35 billion still need to be in memory.</p>
+      <div data-level-only="expert"><p>The “A3B” in the name means about 3B active parameters. Because only the chosen experts are read per token, you can keep the shared layers on the GPU and park experts in system RAM (llama.cpp <code>--n-cpu-moe</code>) and still get usable speed, which doesn't work for dense models.</p></div>
+    </div></details>
+
+    <details class="deeper" id="context"><summary>What's a context window?</summary><div>
+      <p>How much text the model can consider at once: your question, the conversation so far, and any documents you gave it. 8K tokens is a normal chat; 128K is a long book. Bigger windows need more memory, and models get less reliable as the input grows, so give them the relevant parts, not everything.</p>
+      <div data-level-only="expert"><p>Studies of “context rot” found reliability drops with input length even on simple tasks, and distracting text makes it worse. Focused prompts of a few hundred tokens beat full histories of 100K+ in some memory tests.</p></div>
+    </div></details>
+
+    <details class="deeper" id="kv"><summary>What's the KV cache?</summary><div>
+      <p>The model's working memory for the current conversation. It grows with every token in the context, which is why a long conversation needs more memory than a short one.</p>
+      <div data-level-only="intermediate expert"><p>Per token it's 2 × layers × KV heads × head size × bytes. A Llama-style 8B model needs about 128 KiB per token at 16-bit: 1 GB at 8K, 16 GB at 128K. Newer hybrid and sliding-window models need far less, and the cache can be quantized to 8-bit.</p></div>
+    </div></details>
+
+    <details class="deeper" id="thinking"><summary>What's a “thinking” or reasoning model?</summary><div>
+      <p>A model that writes out its reasoning before answering. It helps on hard problems (math, logic, planning) and costs time and tokens. For simple jobs like home commands, turn it off.</p>
+      <div data-level-only="intermediate expert"><p>Small thinking models can loop or spend hundreds of tokens on easy questions. On stage, Lumi was told never to think out loud: it's slower, and the audience hears the reasoning.</p></div>
+    </div></details>
+
+    <details class="deeper" id="system-prompt"><summary>What's a system prompt?</summary><div>
+      <p>Instructions the model reads before every conversation: who it is, how to behave, what it knows. Lumi's is her personality plus every room, session and restaurant at the event. A good system prompt matters as much as which model you pick.</p>
+      <div data-level-only="expert"><p>Keep it identical across users and put per-user details in the first message: servers can then reuse the work of reading it (prompt caching). That took Lumi's first answer from 21.6 s to about 0.5 s.</p></div>
+    </div></details>
+
+    <details class="deeper" id="temperature"><summary>What's temperature?</summary><div>
+      <p>A setting for how adventurous the model's word choices are. Low (0–0.3) gives predictable, focused answers: good for facts and commands. Higher (0.7–1) gives more varied, creative writing.</p>
+    </div></details>
+
+    <details class="deeper" id="hallucination"><summary>Why does it make things up?</summary><div>
+      <p>It predicts likely-sounding text; it doesn't know when it doesn't know. When the answer isn't in what it learned or what you gave it, it can produce something plausible and wrong. Small models do this more. Give it the facts (a document, a list), ask it to say “I don't know”, and check anything that matters.</p>
+    </div></details>
+
+    <details class="deeper" id="fine-tuning"><summary>Do I need to fine-tune a model?</summary><div>
+      <p>Almost never to start. A good system prompt plus your own documents (see <a href="#rag">RAG</a>) gets most people what they need. Fine-tuning (training a model further on your examples) helps for a fixed style or format, or to make a small model reliable at one narrow job.</p>
+    </div></details>
+  </div>
+</section>
+
+<section id="speed" class="faq-group">
+  <div class="wrap">
+    <h2>Speed</h2>
+
+    <details class="deeper" id="tps"><summary>How fast is fast enough?</summary><div>
+      <p>People read about 4–5 words a second, roughly 5–7 tokens a second. Anything above that feels fluent in a chat. For a voice assistant, the delay before the first word matters more than the speed after it.</p>
+    </div></details>
+
+    <details class="deeper" id="prefill"><summary>Why is there a pause before it starts answering?</summary><div>
+      <p>Before writing, the model reads everything you gave it (prompt processing). A short question is instant; a long document can take seconds to minutes, especially on a Mac. The first request after loading also waits for the model to load into memory.</p>
+      <div data-level-only="intermediate expert"><p>Reading the prompt (“prefill”) is limited by compute; writing is limited by memory speed. NVIDIA GPUs and the Spark read prompts several times faster than Macs and Strix Halo. Prompt caching skips re-reading the parts that haven't changed.</p></div>
+    </div></details>
+
+    <details class="deeper" id="slow-first"><summary>Why is the first answer slow and later ones fast?</summary><div>
+      <p>Loading a model from disk into memory takes seconds. Ollama also unloads models after 5 minutes idle by default, so the next request waits again. Set keep-alive to keep it loaded if you use it often.</p>
+    </div></details>
+  </div>
+</section>
+
+<section id="building" class="faq-group">
+  <div class="wrap">
+    <h2>Building things</h2>
+
+    <details class="deeper" id="tools"><summary>What's tool calling?</summary><div>
+      <p>Letting a model ask your program to do something: “turn on the kitchen light”, “search the web”, “add milk to the list”. The model writes a structured request; your program does the work and tells it the result. It's how Home Assistant lets a model control your house.</p>
+      <div data-level-only="intermediate expert"><p>Small models break the format or pick the wrong tool more often than frontier models. Keep the list of tools short and their descriptions clear, test on your own requests, and confirm anything you can't undo. Lumi uses a simpler version: tags in her answer like <code>[show:route:R102]</code> that her code acts on.</p></div>
+    </div></details>
+
+    <details class="deeper" id="mcp"><summary>What's MCP (Model Context Protocol)?</summary><div>
+      <p>A standard plug for tools. A program offers tools over MCP (read files, search, control the house), and any app that speaks MCP (Claude, LM Studio, Cursor, Home Assistant) can use them. Write a tool once, use it from many assistants.</p>
+      <div data-level-only="expert"><p>Every tool's description takes up context, which hurts small models. Never auto-approve tools that write or change things, and limit file tools to one folder.</p></div>
+    </div></details>
+
+    <details class="deeper" id="rag"><summary>What's RAG, and what are embeddings?</summary><div>
+      <p>RAG (retrieval-augmented generation) means: find the relevant passages in your documents first, then give only those to the model with your question. It's how “chat with your PDFs” works, and it's how a model answers about things it was never trained on.</p>
+      <div data-level-only="intermediate expert"><p>An embedding model turns each passage into a list of numbers that captures its meaning; similar meanings get similar numbers. Your question is embedded the same way and the closest passages are retrieved. Embedding models are tiny (Qwen3-Embedding 0.6B, EmbeddingGemma 308M) and run anywhere.</p></div>
+    </div></details>
+
+    <details class="deeper" id="agent"><summary>What's an “agent”?</summary><div>
+      <p>A model that works in a loop: plan, use a tool, look at the result, decide the next step, until the task is done. Coding assistants like Claude Code are agents. Frontier models are far better at long agent tasks; local models handle short, well-scoped ones.</p>
+    </div></details>
+
+    <details class="deeper" id="voice"><summary>How does a voice assistant work?</summary><div>
+      <p>A relay race: a <b>wake word</b> (or a button) starts listening, <b>speech-to-text</b> turns your voice into text, a <b>language model</b> writes the answer, and <b>text-to-speech</b> says it. Lumi adds a badge scanner and a screen. Each runner is a separate model.</p>
+      <div data-level-only="intermediate expert"><p>The hardest part isn't the models. It's knowing when someone has finished talking, in a noisy room. See the <a href="lessons.html#hearing">hearing lessons</a>.</p></div>
+    </div></details>
+
+    <details class="deeper" id="openai-compatible"><summary>What does “OpenAI-compatible API” mean?</summary><div>
+      <p>Most local servers (Ollama, LM Studio, llama.cpp, vLLM) answer requests in the same format as OpenAI's API. That means apps built for the cloud can usually point at your own computer instead, just by changing an address. Lumi's three models each speak it.</p>
+    </div></details>
+
+    <details class="deeper" id="claude-code"><summary>Can I build things like this without being a programmer?</summary><div>
+      <p>More than ever. Lumi was built by one person with Claude Code, an AI coding assistant, in about four weeks. The AI wrote the code and tests; the person made every decision that needed taste or judgment, and tested it in the real world. Start small: the <a href="../#claude-code">guide's Claude Code path</a> has a prompt for every step.</p>
+    </div></details>
+  </div>
+</section>
+
+<section id="trust" class="faq-group">
+  <div class="wrap">
+    <h2>Trust and safety</h2>
+
+    <details class="deeper" id="private"><summary>Is local really private?</summary><div>
+      <p>Only if every piece stays local. Some apps have cloud features or telemetry, some plugins call cloud models, and Ollama's “-cloud” models run on Ollama's servers. The simplest test: turn off Wi-Fi and see what still works.</p>
+    </div></details>
+
+    <details class="deeper" id="injection"><summary>What's prompt injection?</summary><div>
+      <p>Hidden instructions in text the model reads: a web page, an email, a calendar invite, a device name. A model can't reliably tell your instructions from the text's. In 2025 researchers used a calendar invite to make an AI assistant open window shutters and turn on a boiler. Treat outside text as untrusted, and don't give a model that reads it the power to act.</p>
+    </div></details>
+
+    <details class="deeper" id="exposed"><summary>Is it safe to run a model server at home?</summary><div>
+      <p>Yes, on your own network. Never expose it to the internet: Ollama has no password, and security researchers found over a thousand open to the world. For access from outside, use a VPN like Tailscale.</p>
+    </div></details>
+
+    <details class="deeper" id="kids"><summary>Is it OK for kids to use?</summary><div>
+      <p>With a grown-up's setup, yes, and local keeps their questions at home. Use a system prompt that suits their age (a tutor that explains instead of answering), remind them it can be wrong, and keep cameras and microphones under clear house rules.</p>
+    </div></details>
+  </div>
+</section>
+
+<section id="cost" class="faq-group">
+  <div class="wrap">
+    <h2>Cost</h2>
+
+    <details class="deeper" id="cheaper"><summary>Is local cheaper than the cloud?</summary><div>
+      <p>Usually not for casual use. A chat turn on a small cloud model costs a fraction of a cent, and plans start around $20 a month. Local wins on privacy, offline use and control, and on cost only at high, steady volume. Electricity is tiny: a 300 W GPU costs about 6¢ an hour while working. <a href="local-vs-frontier.html#cost">The numbers.</a></p>
+    </div></details>
+
+    <details class="deeper" id="buy"><summary>What should I buy?</summary><div>
+      <p>Start with what you have. If you're buying: a 16 GB NVIDIA card (RTX 5060 Ti 16 GB) is the cheapest comfortable start; a Mac with 32 GB+ runs bigger models quietly; a 128 GB machine (DGX Spark, AMD Ryzen AI Max) is for big models or several at once. Prices rose in 2026 with a memory shortage, so compare before you buy.</p>
+    </div></details>
+  </div>
+</section>
+
+<section id="lumi" class="faq-group">
+  <div class="wrap">
+    <h2>About Lumi</h2>
+
+    <details class="deeper" id="lumi-stack"><summary>What does Lumi run on?</summary><div>
+      <p>One NVIDIA DGX Spark. Three models run on it at once: <b>Parakeet</b> turns speech into text, a <b>Qwen</b> language model served by <b>llama.cpp</b> writes her answers, and <b>Kokoro</b> gives her a voice. Her screen is a web page in Chrome. Nothing goes to the cloud.</p>
+      <div data-level-only="expert"><p>The language model file is about 88 GB at 4-bit, with four conversation slots of 64K tokens each. The kiosk app itself is plain Python with no third-party libraries.</p></div>
+    </div></details>
+
+    <details class="deeper" id="lumi-small"><summary>Can I build a Lumi on a normal computer?</summary><div>
+      <p>Yes. The <a href="../#steps">nine-step guide</a> builds a smaller Lumi on a laptop (a small local model), a workstation (bigger local models), or cloud models if you have no GPU. Tested end to end at about 1.3–1.5 seconds from question to answer.</p>
+    </div></details>
+  </div>
+</section>
+</main>
+
+<footer>
+  <div class="wrap">
+    <span>Built with <a href="https://claude.com/claude-code">Claude Code</a>. MIT licensed.</span>
+    <span><a href="../talk/">The talk (slides)</a> · <a href="https://github.com/ckellum/build-your-own-lumi">GitHub</a></span>
+  </div>
+</footer>
+<script src="../vendor/gsap/gsap.min.js"></script>
+<script src="../vendor/gsap/ScrollTrigger.min.js"></script>
+<script type="module" src="../js/explore.js"></script>
+<script type="module" src="../js/faq.js"></script>
+</body>
+</html>

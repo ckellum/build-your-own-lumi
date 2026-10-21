@@ -1,0 +1,190 @@
+<!doctype html>
+<html lang="en" data-level="beginner">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Will It Run? · Build Your Own Lumi</title>
+<meta name="description" content="Pick your GPU or Mac and see which local AI models fit, roughly how fast they talk, and why. Plus how a 128 GB AI desktop like the DGX Spark compares with gaming GPUs and Macs.">
+<meta name="theme-color" content="#05080f">
+<link rel="icon" href="../img/favicon.svg" type="image/svg+xml">
+<link rel="stylesheet" href="../css/site.css">
+<link rel="stylesheet" href="../css/explore.css">
+</head>
+<body class="page">
+<div class="bg-grid" aria-hidden="true"></div>
+<div class="progress" aria-hidden="true"></div>
+<header class="topbar">
+  <div class="wrap">
+    <a class="home" href="../">Build your own <b>Lumi</b></a>
+    <nav class="topnav" aria-label="Explore">
+      <a href="./">Explore</a>
+      <a href="fit.html" aria-current="page">Will it run?</a>
+      <a href="local-vs-frontier.html">Local vs frontier</a>
+      <a href="home-automation.html">Home automation</a>
+      <a href="ideas.html">Ideas</a>
+      <a href="lessons.html">Lessons</a>
+      <a href="faq.html">FAQ</a>
+      <a href="learn.html">Learn more</a>
+    </nav>
+    <div class="depth">
+      <span class="picker-label" id="level-label">Detail</span>
+      <div class="seg" role="group" aria-labelledby="level-label">
+        <button type="button" data-set-level="beginner" aria-pressed="true">Beginner</button>
+        <button type="button" data-set-level="intermediate" aria-pressed="false">Intermediate</button>
+        <button type="button" data-set-level="expert" aria-pressed="false">Expert</button>
+      </div>
+    </div>
+  </div>
+</header>
+
+<main>
+<div class="wrap page-hero">
+  <span class="eyebrow">Will it run?</span>
+  <h1>What will run on <span class="grad-text">my machine</span>?</h1>
+  <p class="lead">Pick your GPU or Mac. You'll see which current open models fit, roughly how fast they'll talk, and what each is good for. Two numbers decide almost everything: <b>how much memory</b> you have, and <b>how fast</b> that memory is.</p>
+  <div class="toc"><a href="#calc">Calculator</a><a href="#how">How it works</a><a href="#machines">Spark vs GPU vs Mac</a><a href="#tools">Tools</a><a href="#speech">Speech and images</a><a href="#downsides">Downsides</a></div>
+</div>
+
+<section id="calc">
+  <div class="wrap">
+    <h2 class="sr-only">Calculator</h2>
+    <div class="fit-controls">
+      <label>My machine<select id="fit-hw"></select></label>
+      <label id="fit-ram-wrap">System RAM<select id="fit-ram"><option value="16">16 GB</option><option value="32" selected>32 GB</option><option value="64">64 GB</option></select></label>
+      <label>Conversation length<select id="fit-ctx"><option value="8k" selected>Normal chat (8K tokens)</option><option value="32k">Long documents (32K)</option><option value="128k">Very long (128K)</option></select></label>
+      <label>Good for<select id="fit-task"><option value="all">Everything</option><option value="chat">Chat and writing</option><option value="tools">Tool calling / home automation</option><option value="code">Coding</option><option value="vision">Understanding images</option></select></label>
+      <label class="check-label"><input type="checkbox" id="fit-speech"> Also running speech models (a voice assistant)</label>
+    </div>
+    <div class="fit-summary" id="fit-summary" aria-live="polite"></div>
+    <div class="fit-legend"><span><i style="background:var(--ok)"></i>Fits: runs entirely in fast memory</span><span><i style="background:var(--warn)"></i>Fits, just: keep chats short, close other apps</span><span><i style="background:var(--holo-c)"></i>Partly in system RAM: works, much slower</span><span><i style="background:var(--faint)"></i>Doesn't fit</span></div>
+    <div class="fit-list" id="fit-list"></div>
+    <div class="callout warn"><b>These are estimates.</b> Sizes are for 4-bit models (Q4_K_M, the usual download). Speeds are rough (±30–40%), for one person at a time, after the model has read your question. Real numbers depend on the app, drivers and settings. Checked against published llama.cpp benchmarks in <a href="https://github.com/ckellum/build-your-own-lumi/blob/main/tests/fit.test.mjs">our tests</a>. Model list current as of October 2026.</div>
+  </div>
+</section>
+
+<section id="how">
+  <div class="wrap">
+    <h2>How it works</h2>
+    <div class="cards">
+      <div class="cardx top"><span class="kick">1 · Memory decides what fits</span><h3>About 0.6 GB per billion parameters</h3><p>A model is billions of numbers ("parameters"). Downloads usually store each in about 4.8 bits, so a 9-billion-parameter model is about 5.4 GB. Add a little for the conversation and the app.</p></div>
+      <div class="cardx top"><span class="kick">2 · Memory speed decides how fast</span><h3>Every word reads the whole model</h3><p>To write each token (a word or part of one), the computer reads every active parameter from memory once. Twice the memory speed, about twice the words per second.</p></div>
+      <div class="cardx top"><span class="kick">3 · Mixture of experts is the trick</span><h3>Big models that talk like small ones</h3><p>Models like gpt-oss-20b or Qwen3.6 35B-A3B only use a few "experts" per word. They need memory for all of it, but run at the speed of the small active part.</p></div>
+    </div>
+    <div data-level-only="intermediate expert">
+      <h3>The formulas</h3>
+      <ul>
+        <li><b>Memory</b> ≈ parameters (billions) × bits per weight ÷ 8 + the conversation's memory (KV cache) + about 1 GB for the runtime. Q4_K_M is about 4.8 bits per weight; Q8_0 about 8.5.</li>
+        <li><b>Speed ceiling</b> ≈ memory bandwidth ÷ GB read per token. An 8B model at Q4 is about 4.8 GB, so an RTX 4060 (272 GB/s) tops out near 57 tokens a second; real numbers land at 40–80% of the ceiling.</li>
+        <li><b>4-bit vs 8-bit</b>: 4-bit is the usual sweet spot. Quality loss is small on bigger models and more noticeable on the smallest ones. 8-bit is nearly identical to the original, at almost twice the size.</li>
+      </ul>
+    </div>
+    <div data-level-only="expert">
+      <h3>The details that bite</h3>
+      <ul>
+        <li><b>The KV cache grows with the conversation.</b> Llama-style 8B models use about 128 KiB per token at 16-bit: 1 GB at 8K tokens, 16 GB at 128K. Newer hybrid and sliding-window models (Qwen3.5/3.6, Gemma, gpt-oss) need far less. KV-cache quantization (q8_0) halves it.</li>
+        <li><b>Reading your question is a different speed.</b> Prompt processing ("prefill") is limited by compute, not bandwidth. NVIDIA GPUs and the Spark are much faster at it than Macs or Strix Halo: a 32K-token prompt into gpt-oss-120b takes about 19 s on a Spark, 37 s on an M3 Ultra and 96 s on Strix Halo before the first word.</li>
+        <li><b>Offloading mixture-of-experts models.</b> Keep the shared layers on the GPU and the experts in system RAM: llama.cpp's <code>--n-cpu-moe</code>, and the expert cache in recent releases (<code>--moe-cache-mib</code>). Dense models offloaded this way crawl; MoE models stay usable because only a few experts are read per token.</li>
+        <li><b>Macs</b> let the GPU use about two thirds of memory up to 36 GB, about three quarters above. You can raise the limit (<code>sudo sysctl iogpu.wired_limit_mb=…</code>), at the cost of the rest of the system. MLX is often 30–80% faster than llama.cpp on a Mac.</li>
+      </ul>
+    </div>
+  </div>
+</section>
+
+<section id="machines">
+  <div class="wrap">
+    <h2>A 128 GB AI desktop vs a gaming GPU vs a Mac</h2>
+    <p class="lead-in">Lumi runs on an NVIDIA DGX Spark: 128 GB of memory shared by the CPU and GPU. Its language model alone is an 88 GB file. No gaming card can hold that. But per word, a gaming card is faster on anything that does fit.</p>
+    <div class="table-wrap"><table>
+      <thead><tr><th>Machine</th><th>Memory for models</th><th>Memory speed</th><th>Best at</th></tr></thead>
+      <tbody>
+        <tr><td><b>RTX 4060 / 5060 Ti / 5070</b></td><td>8 / 16 / 12 GB</td><td>272 / 448 / 672 GB/s</td><td>Fast small models (4–14B). The cheapest way in.</td></tr>
+        <tr><td><b>RTX 5080 / 4090 / 5090</b></td><td>16 / 24 / 32 GB</td><td>960 / 1,008 / 1,792 GB/s</td><td>The fastest per word, for anything that fits. Up to about 30B.</td></tr>
+        <tr><td><b>Mac, M5 / M5 Pro / M5 Max</b></td><td>16–32 / 24–64 / 36–128 GB (shared)</td><td>153 / 307 / 460–614 GB/s</td><td>Big memory, quiet, low power. Weaker at reading long prompts.</td></tr>
+        <tr><td><b>NVIDIA DGX Spark</b> (Lumi)</td><td>128 GB (shared)</td><td>273 GB/s</td><td>Big mixture-of-experts models, several models at once, long prompts. Slower per word than a 5090 on small models.</td></tr>
+        <tr><td><b>AMD Ryzen AI Max+ 395</b></td><td>128 GB (up to ~96 for the GPU)</td><td>256 GB/s</td><td>Similar capacity to the Spark; much slower at reading long prompts.</td></tr>
+      </tbody>
+    </table></div>
+    <div class="cards">
+      <div class="cardx top"><span class="kick">Spark</span><h3>Capacity</h3><p>gpt-oss-120b runs at about 40–55 tokens a second, and Lumi keeps three models loaded at once. On big <i>dense</i> models it's slow: a 70B dense model at 8-bit ran at about 3 tokens a second.</p></div>
+      <div class="cardx top"><span class="kick">Gaming GPU</span><h3>Speed</h3><p>About six and a half times the Spark's memory speed on a 5090. An 8B model: about 150 tokens a second vs about 38. But 8–32 GB is the ceiling.</p></div>
+      <div class="cardx top"><span class="kick">Mac</span><h3>Balance</h3><p>Big unified memory at good speed, silent, and sips power. Generation is quick; reading very long prompts is slower than on NVIDIA.</p></div>
+    </div>
+    <div data-level-only="intermediate expert">
+      <h3>One model, four machines: gpt-oss-120b</h3>
+      <div class="table-wrap"><table class="compact">
+        <thead><tr><th>Machine</th><th>Reading the prompt</th><th>Writing</th></tr></thead>
+        <tbody>
+          <tr><td><b>DGX Spark</b></td><td>1,723 tokens/s</td><td>38.6 tokens/s (52.9 on a newer build)</td></tr>
+          <tr><td><b>Mac Studio, M3 Ultra</b></td><td>864</td><td>70.8</td></tr>
+          <tr><td><b>Ryzen AI Max+ 395</b></td><td>340</td><td>34.1</td></tr>
+          <tr><td><b>3× RTX 3090</b></td><td>1,642</td><td>124</td></tr>
+        </tbody>
+      </table></div>
+      <p class="src">llama.cpp, MXFP4. ggml-org data via <a href="https://www.hardware-corner.net/first-dgx-spark-llm-benchmarks/">Hardware Corner</a> (Oct 2025); newer Spark build: <a href="https://jetsonhacks.com/wp-content/uploads/2025/10/spark-llamacpp-bench.html">JetsonHacks</a>.</p>
+    </div>
+    <div class="callout"><b>2026 prices.</b> A memory shortage pushed prices up this year: the DGX Spark went from $3,999 to $4,699 in February, and many GPUs sell well above list price. Check current prices before you buy, and start with what you have.</div>
+    <p class="src">Specs: <a href="https://docs.nvidia.com/dgx/dgx-spark/hardware.html">NVIDIA DGX Spark</a>, <a href="https://support.apple.com/126318">Apple MacBook Pro (M5 Pro/Max)</a>, <a href="https://www.apple.com/macbook-air/specs/">MacBook Air (M5)</a>. Benchmarks via <a href="https://www.spheron.network/blog/dgx-spark-vs-rtx-5090-for-local-llms-tokens-per-second-2026/">Spheron</a> (Oct 2026).</p>
+  </div>
+</section>
+
+<section id="tools">
+  <div class="wrap">
+    <h2>Tools to run them</h2>
+    <div class="table-wrap"><table>
+      <thead><tr><th>Tool</th><th>For</th><th>First step</th></tr></thead>
+      <tbody>
+        <tr><td><b>LM Studio</b></td><td>Beginners who want an app. Windows, Mac, Linux. Can host MCP tools.</td><td>Download, search for a model, click Load.</td></tr>
+        <tr><td><b>Ollama</b></td><td>Beginners and app builders. One command per model, and an API other apps (Home Assistant, editors) can use.</td><td><code>ollama run qwen3.5:9b</code></td></tr>
+        <tr><td><b>Jan</b></td><td>Privacy-minded desktop users. Open source.</td><td>Download the app.</td></tr>
+        <tr><td><b>Open WebUI</b></td><td>A ChatGPT-style web page for the whole house, on top of Ollama or others.</td><td>Run its Docker image.</td></tr>
+        <tr><td><b>llama.cpp</b></td><td>Tinkerers who want every setting. Runs on everything. What Lumi uses.</td><td><code>llama-server -hf &lt;model repo&gt;</code></td></tr>
+        <tr><td><b>MLX / mlx-lm</b></td><td>Mac users who want the most speed.</td><td><code>pip install mlx-lm</code></td></tr>
+        <tr><td><b>vLLM</b></td><td>Serving many people at once on NVIDIA. Overkill for one person.</td><td><code>vllm serve &lt;model&gt;</code></td></tr>
+      </tbody>
+    </table></div>
+  </div>
+</section>
+
+<section id="speech">
+  <div class="wrap">
+    <h2>Speech and images</h2>
+    <div class="cards">
+      <div class="cardx top"><span class="kick">Speech to text</span><h3>Small and very good</h3><p><b>NVIDIA Parakeet</b> (Lumi uses it): about 2 GB, very fast, 25 European languages. <b>Whisper large-v3-turbo</b>: 99 languages, fits 6–8 GB setups; <b>faster-whisper</b> and <b>whisper.cpp</b> run it efficiently, even on a CPU.</p></div>
+      <div class="cardx top"><span class="kick">Text to speech</span><h3>Natural voices on a CPU</h3><p><b>Kokoro</b> (Lumi's voice): tiny, runs on a CPU. <b>Piper</b>: runs on a Raspberry Pi. <b>Chatterbox</b> and <b>Qwen3-TTS</b> can clone a voice from seconds of audio (use that responsibly), at 2–6 GB.</p></div>
+      <div class="cardx top"><span class="kick">Images</span><h3>8 GB is enough to start</h3><p><b>SDXL</b> runs on 8 GB. <b>FLUX.2 [klein] 4B</b> and <b>Z-Image Turbo</b> (both Apache 2.0) fit 8–12 GB in reduced precision. Some popular models are non-commercial: check the license.</p></div>
+    </div>
+  </div>
+</section>
+
+<section id="downsides">
+  <div class="wrap">
+    <h2>The honest downsides</h2>
+    <div class="cards">
+      <div class="cardx"><span class="kick">Weaker reasoning</span><p>Models that fit one consumer GPU trail the frontier by roughly 6–12 months of progress, and small models are often tuned to look good on benchmarks.</p></div>
+      <div class="cardx"><span class="kick">Confidently wrong</span><p>Small models know fewer facts and make more up. 4-bit compression adds errors, worst on the smallest models. Check anything that matters.</p></div>
+      <div class="cardx"><span class="kick">Flaky tools</span><p>Tool calling and JSON break more often. In home-automation tests, good 8–20B models got roughly 80–88% of hard requests right and 88–98% of simpler ones. Great for lights, not for locks.</p></div>
+      <div class="cardx"><span class="kick">Long inputs</span><p>Advertised 128K windows cost lots of memory, and speed drops as the conversation grows: one 16 GB test went from 29 to 8 tokens a second at 64K.</p></div>
+      <div class="cardx"><span class="kick">Waiting to read</span><p>Before the first word, the model reads your whole prompt. Long documents mean seconds to minutes, especially on Macs.</p></div>
+      <div class="cardx"><span class="kick">Upkeep</span><p>Matching downloads to memory, app and driver updates, the occasional broken release. Plus heat, noise and power on a big GPU.</p></div>
+    </div>
+    <p class="src">Sources: <a href="https://epoch.ai/data-insights/consumer-gpu-model-gap">Epoch AI, consumer GPU gap</a>; <a href="https://arxiv.org/pdf/2512.08213">quantization and hallucination (arXiv 2512.08213)</a>; <a href="https://github.com/allenporter/home-assistant-datasets/tree/main/reports">Home LLM leaderboard</a>; <a href="https://www.glukhov.org/llm-performance/benchmarks/best-llm-on-16gb-vram-gpu/">16 GB llama.cpp benchmarks</a>.</p>
+    <div class="next-page">
+      <a class="btn primary" href="local-vs-frontier.html">Local vs frontier →</a>
+      <a class="btn" href="faq.html">FAQ: the concepts explained</a>
+    </div>
+  </div>
+</section>
+</main>
+
+<footer>
+  <div class="wrap">
+    <span>Built with <a href="https://claude.com/claude-code">Claude Code</a>. MIT licensed.</span>
+    <span><a href="../talk/">The talk (slides)</a> · <a href="https://github.com/ckellum/build-your-own-lumi">GitHub</a></span>
+  </div>
+</footer>
+<script src="../vendor/gsap/gsap.min.js"></script>
+<script src="../vendor/gsap/ScrollTrigger.min.js"></script>
+<script type="module" src="../js/explore.js"></script>
+<script type="module" src="../js/fit.js"></script>
+</body>
+</html>

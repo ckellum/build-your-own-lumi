@@ -1,0 +1,191 @@
+<!doctype html>
+<html lang="en" data-level="beginner">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Local vs Frontier AI · Build Your Own Lumi</title>
+<meta name="description" content="When to run an AI model on your own computer and when to use a frontier model like Claude, GPT or Gemini: strengths, real costs, privacy, hybrid patterns and common myths.">
+<meta name="theme-color" content="#05080f">
+<link rel="icon" href="../img/favicon.svg" type="image/svg+xml">
+<link rel="stylesheet" href="../css/site.css">
+<link rel="stylesheet" href="../css/explore.css">
+</head>
+<body class="page">
+<div class="bg-grid" aria-hidden="true"></div>
+<div class="progress" aria-hidden="true"></div>
+<header class="topbar">
+  <div class="wrap">
+    <a class="home" href="../">Build your own <b>Lumi</b></a>
+    <nav class="topnav" aria-label="Explore">
+      <a href="./">Explore</a>
+      <a href="fit.html">Will it run?</a>
+      <a href="local-vs-frontier.html" aria-current="page">Local vs frontier</a>
+      <a href="home-automation.html">Home automation</a>
+      <a href="ideas.html">Ideas</a>
+      <a href="lessons.html">Lessons</a>
+      <a href="faq.html">FAQ</a>
+      <a href="learn.html">Learn more</a>
+    </nav>
+    <div class="depth">
+      <span class="picker-label" id="level-label">Detail</span>
+      <div class="seg" role="group" aria-labelledby="level-label">
+        <button type="button" data-set-level="beginner" aria-pressed="true">Beginner</button>
+        <button type="button" data-set-level="intermediate" aria-pressed="false">Intermediate</button>
+        <button type="button" data-set-level="expert" aria-pressed="false">Expert</button>
+      </div>
+    </div>
+  </div>
+</header>
+
+<main>
+<div class="wrap page-hero">
+  <span class="eyebrow">Local vs frontier</span>
+  <h1>Both have their <span class="grad-text">place</span>.</h1>
+  <p class="lead">A <b>frontier model</b> (Claude, GPT, Gemini) runs in a data center and is the smartest thing you can talk to. A <b>local model</b> runs on your own computer: private, offline and yours forever, but smaller. Most people end up using both. This page helps you decide which, when.</p>
+  <div class="toc"><a href="#compare">Side by side</a><a href="#gap">How big is the gap?</a><a href="#cost">What it costs</a><a href="#privacy">Privacy</a><a href="#hybrid">Use both</a><a href="#myths">Myths</a><a href="#start">Where to start</a></div>
+</div>
+
+<section id="compare">
+  <div class="wrap">
+    <h2>Side by side</h2>
+    <div class="cards">
+      <div class="cardx top"><span class="kick">Frontier: Claude, GPT, Gemini</span><h3>Reach for it when the task is hard</h3>
+        <ul>
+          <li><b>Hard reasoning</b>: multi-step problems, analysis, math.</li>
+          <li><b>Coding agents</b> that work across a whole project for an hour.</li>
+          <li><b>Reliable tool use</b> over many steps.</li>
+          <li><b>Long documents</b>: context windows up to about a million tokens.</li>
+          <li><b>Current knowledge</b> through built-in web search.</li>
+          <li><b>Images and video</b>, understanding and making them.</li>
+        </ul></div>
+      <div class="cardx top"><span class="kick">Local: on your machine</span><h3>Reach for it when the data or the setting matters</h3>
+        <ul>
+          <li><b>Privacy</b>: nothing leaves your machine (if the app doesn't phone home).</li>
+          <li><b>Offline</b>: on a plane, in a basement, in a kiosk with no network.</li>
+          <li><b>No per-use cost</b> once you own the hardware, and no rate limits.</li>
+          <li><b>Fast for small jobs</b>: no network round trip.</li>
+          <li><b>Control</b>: the model never changes under you, and you can tune it.</li>
+          <li><b>Works forever</b>: downloaded weights can't be retired.</li>
+        </ul></div>
+    </div>
+    <div class="callout"><b>Lumi is both.</b> She runs entirely locally, because visitors' voices should never leave the building. She was <i>built</i> with a frontier coding assistant, Claude Code, in about four weeks. Frontier to build, local to run.</div>
+  </div>
+</section>
+
+<section id="gap">
+  <div class="wrap">
+    <h2>How big is the gap?</h2>
+    <p class="lead-in">Smaller than it used to be at the top, and still large at the size that fits on a home computer.</p>
+    <ul>
+      <li>Epoch AI's capability index (May 2026) puts the <b>best open-weight models about four months behind</b> the best closed ones on average this year.</li>
+      <li>But those best open models are huge: hundreds of billions of parameters. They don't fit on a gaming PC.</li>
+      <li>What fits in <b>8–16 GB</b> is much weaker at hard reasoning, long agentic work and reliable tool use, and <b>plenty</b> for chat, summaries, transcription, drafting, translation, search over your files and home control with a few devices.</li>
+    </ul>
+    <div data-level-only="intermediate expert"><div class="callout"><b>A good way to see it yourself.</b> Ask a local model and a frontier model the same ten prompts you actually use. Mark where the local one is fine and where it falls short. That list is your personal answer, better than any leaderboard.</div></div>
+    <p class="src">Source: <a href="https://epoch.ai/data-insights/open-closed-eci-gap">Epoch AI, open vs closed capability gap</a> (2026-05-29).</p>
+  </div>
+</section>
+
+<section id="cost">
+  <div class="wrap">
+    <h2>What it actually costs</h2>
+    <p class="lead-in">For casual use, the cloud is cheap. Local's real advantages are privacy, offline use and control, not saving money, unless you run a lot.</p>
+    <div class="table-wrap"><table class="compact">
+      <thead><tr><th>Frontier API (per million tokens)</th><th>Input</th><th>Output</th></tr></thead>
+      <tbody>
+        <tr><td><b>Claude Haiku 5.5</b> (prompts up to 100k tokens)</td><td>$0.10</td><td>$0.50</td></tr>
+        <tr><td><b>Claude Sonnet 5.5</b></td><td>$2</td><td>$10</td></tr>
+        <tr><td><b>Claude Opus 5.5</b></td><td>$4</td><td>$20</td></tr>
+        <tr><td><b>GPT-5.4 mini</b></td><td>$0.75</td><td>$4.50</td></tr>
+        <tr><td><b>GPT-6.1 Sol</b></td><td>$2</td><td>$10</td></tr>
+      </tbody>
+    </table></div>
+    <p>A typical chat turn (about 2,000 tokens in, 500 out) costs about <b>a cent</b> on Sonnet 5.5 and <b>a twentieth of a cent</b> on Haiku 5.5. Consumer plans: Claude, ChatGPT and Google each have a free tier and a plan around <b>$20 a month</b>, with heavier tiers at $100–200.</p>
+    <p>Local: the hardware is the cost. Electricity is a rounding error: at the US average of about 19¢/kWh, a 300 W GPU costs about <b>6¢ an hour</b> while it's working, and an Apple Silicon Mac far less.</p>
+    <div data-level-only="expert"><div class="callout"><b>When local wins on cost.</b> High, steady volume: thousands of documents a day, a kiosk answering all day, batch transcription. Then compare the hardware price against what the same tokens would cost through an API over its life. Note that tokenizers differ, so the same text can be more or fewer tokens on different models.</div></div>
+    <p class="src">Prices from <a href="https://platform.claude.com/docs/en/about-claude/pricing">Anthropic</a> and <a href="https://developers.openai.com/api/docs/pricing">OpenAI</a> pricing pages and <a href="https://claude.com/pricing">claude.com/pricing</a>, checked 2026-10-21. Prices change; check before you budget. Electricity: EIA, April 2026.</p>
+  </div>
+</section>
+
+<section id="privacy">
+  <div class="wrap">
+    <h2>Privacy, honestly</h2>
+    <ul>
+      <li><b>Local is private only if the whole chain is local.</b> Some apps have cloud features, telemetry or plugins that call a cloud model. Ollama's "-cloud" model tags run on Ollama's servers. An MCP tool can reach the web. The simplest test: turn off Wi-Fi and see what still works.</li>
+      <li><b>Cloud privacy depends on the plan and your settings.</b> Consumer apps may use your chats to improve models depending on the settings you choose; business and API terms usually differ. Read the data settings once, and pick the ones you're comfortable with.</li>
+      <li><b>Never paste</b> passwords, other people's personal data or anything your company classifies as confidential into a tool your company hasn't approved.</li>
+    </ul>
+  </div>
+</section>
+
+<section id="hybrid">
+  <div class="wrap">
+    <h2>Use both: five patterns that work</h2>
+    <div class="cards">
+      <div class="cardx top"><span class="kick">1</span><h3>Local first, frontier for the hard ones</h3><p>A local model handles everyday questions; you (or a simple router) send the hard ones to a frontier model. Open WebUI and Zed hold both side by side.</p></div>
+      <div class="cardx top"><span class="kick">2</span><h3>Clean it locally, then ask the cloud</h3><p>A local model removes names, numbers and account IDs, or summarizes a private document. Only the cleaned text goes out. Check its work: small models miss things.</p></div>
+      <div class="cardx top"><span class="kick">3</span><h3>Search locally, answer in the cloud</h3><p>Your files are indexed on your machine. Only the few passages that matter go to the frontier model with the question.</p></div>
+      <div class="cardx top"><span class="kick">4</span><h3>Frontier to build, local to run</h3><p>Use a coding assistant like Claude Code to write the software, then run it fully local. That's how Lumi was made.</p></div>
+      <div class="cardx top"><span class="kick">5</span><h3>Local at home, frontier as a fallback</h3><p>Home Assistant can answer "turn off the lights" with no AI at all, use a local model for the rest, and hand a question it can't answer to a cloud model if you allow it.</p></div>
+    </div>
+  </div>
+</section>
+
+<section id="myths">
+  <div class="wrap">
+    <h2>Myths worth correcting</h2>
+    <div class="lessons">
+      <details class="lesson"><summary><h3>“Local models are as good as GPT or Claude.”</h3><p class="hook">Not at the size that fits at home.</p><span class="more">Why →</span></summary><dl><dd>The best open models are close to the best closed ones, but they need data-center hardware. A model that fits in 8–16 GB is much weaker at hard reasoning and long agent tasks. It's still very good at everyday jobs.</dd></dl></details>
+      <details class="lesson"><summary><h3>“You need a $3,000 GPU.”</h3><p class="hook">An 8–16 GB card or a 16 GB Mac is enough to start.</p><span class="more">Why →</span></summary><dl><dd>Useful models start around 4 billion parameters, about 3 GB. Transcription and photo search need even less. Bigger hardware buys bigger models and longer documents, not entry. <a href="fit.html">Check your machine.</a></dd></dl></details>
+      <details class="lesson"><summary><h3>“Local means 100% private.”</h3><p class="hook">Only if every piece stays local.</p><span class="more">Why →</span></summary><dl><dd>Watch for cloud features, telemetry, plugins and tools that reach the internet. Test with the network off.</dd></dl></details>
+      <details class="lesson"><summary><h3>“A bigger context window means it reads everything well.”</h3><p class="hook">Models get less reliable as input grows.</p><span class="more">Why →</span></summary><dl><dd>Chroma's “Context Rot” study (2025) tested 18 models and found reliability drops as input gets longer, even on simple tasks. Give a model the relevant excerpts, not everything. This matters even more for small local models.</dd></dl></details>
+      <details class="lesson"><summary><h3>“Cloud AI is always expensive.”</h3><p class="hook">A chat turn on a small model costs a fraction of a cent.</p><span class="more">Why →</span></summary><dl><dd>The cost case for local is volume, privacy and control. For occasional use, a $20 plan or pay-per-use API is usually cheaper than new hardware.</dd></dl></details>
+      <details class="lesson"><summary><h3>“Local AI never changes, so it never breaks.”</h3><p class="hook">The weights don't change. The apps around them do.</p><span class="more">Why →</span></summary><dl><dd>Projects get renamed, archived or change licenses. Keep copies of the model files you rely on and note the versions that worked.</dd></dl></details>
+    </div>
+  </div>
+</section>
+
+<section id="start">
+  <div class="wrap">
+    <h2>Where to start</h2>
+    <div class="cards">
+      <div class="cardx top"><span class="kick">Never used AI</span><h3>Start in the cloud</h3>
+        <ol>
+          <li>Try a free Claude, ChatGPT or Gemini account on something real: rewrite an email, explain a bill, plan a trip.</li>
+          <li>Give it context, ask follow-ups, and <b>check facts</b>: it can be confidently wrong.</li>
+          <li>Install <b>LM Studio</b> and download one small suggested model to see the same thing on your own computer.</li>
+        </ol></div>
+      <div class="cardx top"><span class="kick">Use ChatGPT or Claude</span><h3>Run your first local model</h3>
+        <ol>
+          <li>Install LM Studio or Ollama and try a 4–12B model (<a href="fit.html">what fits?</a>).</li>
+          <li>Ask it your usual prompts. Compare side by side.</li>
+          <li>Do one private task you'd never upload: chat with your own PDFs, or transcribe a meeting.</li>
+          <li>Turn off Wi-Fi and use it.</li>
+        </ol></div>
+      <div class="cardx top"><span class="kick">Already run local models</span><h3>Build something</h3>
+        <ol>
+          <li>Wire up one read-only MCP tool with manual approval and test how reliably your model calls it.</li>
+          <li>Build a local-first router with a frontier fallback.</li>
+          <li>Use a coding assistant to build a voice pipeline (<a href="../#steps">like Lumi</a>) and run it locally.</li>
+          <li>Measure tokens per second, power and accuracy on your own test set.</li>
+        </ol></div>
+    </div>
+    <div class="next-page">
+      <a class="btn primary" href="fit.html">What will run on my machine? →</a>
+      <a class="btn" href="home-automation.html">Home automation</a>
+    </div>
+  </div>
+</section>
+</main>
+
+<footer>
+  <div class="wrap">
+    <span>Built with <a href="https://claude.com/claude-code">Claude Code</a>. MIT licensed.</span>
+    <span><a href="../talk/">The talk (slides)</a> · <a href="https://github.com/ckellum/build-your-own-lumi">GitHub</a></span>
+  </div>
+</footer>
+<script src="../vendor/gsap/gsap.min.js"></script>
+<script src="../vendor/gsap/ScrollTrigger.min.js"></script>
+<script type="module" src="../js/explore.js"></script>
+</body>
+</html>

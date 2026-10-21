@@ -1,0 +1,214 @@
+<!doctype html>
+<html lang="en" data-level="beginner">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Lessons Learned · Build Your Own Lumi</title>
+<meta name="description" content="Everything that broke while building and running a local voice concierge in a real building: speed, hearing, a stage with another AI, hardware, reboots and process, with the fixes.">
+<meta name="theme-color" content="#05080f">
+<link rel="icon" href="../img/favicon.svg" type="image/svg+xml">
+<link rel="stylesheet" href="../css/site.css">
+<link rel="stylesheet" href="../css/explore.css">
+</head>
+<body class="page">
+<div class="bg-grid" aria-hidden="true"></div>
+<div class="progress" aria-hidden="true"></div>
+<header class="topbar">
+  <div class="wrap">
+    <a class="home" href="../">Build your own <b>Lumi</b></a>
+    <nav class="topnav" aria-label="Explore">
+      <a href="./">Explore</a>
+      <a href="fit.html">Will it run?</a>
+      <a href="local-vs-frontier.html">Local vs frontier</a>
+      <a href="home-automation.html">Home automation</a>
+      <a href="ideas.html">Ideas</a>
+      <a href="lessons.html" aria-current="page">Lessons</a>
+      <a href="faq.html">FAQ</a>
+      <a href="learn.html">Learn more</a>
+    </nav>
+    <div class="depth">
+      <span class="picker-label" id="level-label">Detail</span>
+      <div class="seg" role="group" aria-labelledby="level-label">
+        <button type="button" data-set-level="beginner" aria-pressed="true">Beginner</button>
+        <button type="button" data-set-level="intermediate" aria-pressed="false">Intermediate</button>
+        <button type="button" data-set-level="expert" aria-pressed="false">Expert</button>
+      </div>
+    </div>
+  </div>
+</header>
+
+<main>
+<div class="wrap page-hero">
+  <span class="eyebrow">Lessons learned</span>
+  <h1>It worked on my desk. Then it met the <span class="grad-text">real world</span>.</h1>
+  <p class="lead">Lumi works a three-day event in a busy building: a crowd, an air conditioner, a stage with another AI on it, and more reboots than we planned. Here is everything that broke, why, and what fixed it, so yours won't. Use <b>Detail</b> at the top for more or less depth.</p>
+  <div class="toc">
+    <a href="#five">The five lessons</a><a href="#speed">Speed</a><a href="#hearing">Hearing</a><a href="#behavior">Behavior</a><a href="#hardware">Hardware</a><a href="#process">Process</a>
+  </div>
+</div>
+
+<section id="five">
+  <div class="wrap">
+    <h2>The five lessons, if you read nothing else</h2>
+    <div class="cards">
+      <div class="cardx top"><span class="kick">1</span><h3>Measure the real place</h3><p>Your desk is not a hallway full of people. Record the real room and test against the recording.</p></div>
+      <div class="cardx top"><span class="kick">2</span><h3>Rehearse on the real hardware</h3><p>The first full rehearsal found bugs that over a thousand automated tests didn't.</p></div>
+      <div class="cardx top"><span class="kick">3</span><h3>Script what matters</h3><p>Let the model chat. Don't let it improvise the moments people will remember or quote.</p></div>
+      <div class="cardx top"><span class="kick">4</span><h3>Review the whole</h3><p>Small changes that each look fine can add up to something broken.</p></div>
+      <div class="cardx top"><span class="kick">5</span><h3>You are the judge</h3><p>An AI coding partner builds fast and guesses confidently. Measure before you believe it.</p></div>
+    </div>
+  </div>
+</section>
+
+<section id="speed">
+  <div class="wrap">
+    <span class="eyebrow">Speed</span>
+    <h2>The 21-second hello</h2>
+    <div class="lessons">
+      <details class="lesson" open>
+        <summary><span class="num">01</span><h3>The first answer took 21.6 seconds</h3><p class="hook">Nobody waits 21 seconds at a kiosk.</p><span class="more">What happened →</span></summary>
+        <dl><dt>What happened</dt><dd>Before saying a word, the model read Lumi's whole cheat sheet: every room, session, restaurant and her personality, about 17,500 tokens. It did that again for every visitor.</dd>
+        <dt>The fix</dt><dd>Keep that cheat sheet identical for everyone (each visitor's details go in their first message instead), warm it up when Lumi starts, and keep it warm every few minutes. First answers dropped to about half a second.</dd>
+        <dt>For you</dt><dd>If your assistant has a big system prompt, don't change it per user. Servers like llama.cpp and Ollama can then reuse the work they already did.</dd></dl>
+        <div data-level-only="intermediate expert"><div class="callout"><b>Why it works.</b> A language model reads its whole prompt before writing. Reading is fast per token but adds up: thousands of tokens take seconds on any hardware. A prompt cache keeps the model's internal state for the start of the prompt, so the next request only reads what's new.</div></div>
+        <div data-level-only="expert"><div class="callout"><b>The expert detail.</b> Lumi's model is a hybrid with recurrent layers, which can only resume from saved checkpoints of its state, not from any point. The server saved one near the end of each request but, by default, deleted older checkpoints within 8,192 tokens of a newer one, so the checkpoint at the end of the shared prompt kept disappearing and every visitor re-read about 2,000 tokens (about 3.5 s). Saving checkpoints every 256 tokens, and priming with a long padding message so a checkpoint lands right after the shared prompt, brought it to 86 tokens re-read and 17,462 reused. Check <code>cache_n</code> and <code>prompt_n</code> in the server's timings before blaming the prompt's size.</div></div>
+      </details>
+    </div>
+  </div>
+</section>
+
+<section id="hearing">
+  <div class="wrap">
+    <span class="eyebrow">Hearing</span>
+    <h2>Knowing <i>when</i> someone is talking is harder than knowing <i>what</i> they said</h2>
+    <p class="lead-in">Speech-to-text models are very good now. The hard part is deciding which sounds are a person talking to you, and when they've finished.</p>
+    <div class="lessons">
+      <details class="lesson">
+        <summary><span class="num">02</span><h3>One voice in a crowd</h3><p class="hook">Quiet office: perfect. Busy hallway: she answered strangers.</p><span class="more">What happened →</span></summary>
+        <dl><dt>What happened</dt><dd>Fixed loudness thresholds. When the hallway filled up, the crowd kept starting turns.</dd>
+        <dt>The fix</dt><dd>She now measures how loud the room is all the time, and a person has to be clearly louder than the room. We recorded 75 seconds of real crowd noise and replayed it through the hearing code while tuning, plus a shotgun microphone aimed at the visitor with its back to the crowd.</dd>
+        <dt>For you</dt><dd>Record the real place once and test against the recording. The microphone and where you point it matter more than any model.</dd></dl>
+        <div data-level-only="expert"><div class="callout"><b>The numbers.</b> Room level is the 20th percentile of the last 1.5 s, re-measured continuously. A turn starts at 4× the room level, continues above 2×, ends after a short silence, and must peak above a fixed floor. On the recording, visitors peaked at 6,000–19,000 (16-bit RMS) and the crowd never passed 1,833.</div></div>
+      </details>
+      <details class="lesson">
+        <summary><span class="num">03</span><h3>The air conditioning kicked on</h3><p class="hook">The room changes during the day.</p><span class="more">What happened →</span></summary>
+        <dl><dt>What happened</dt><dd>On the first morning the air conditioning started and the background noise doubled. Quieter voices became harder to understand.</dd>
+        <dt>The fix</dt><dd>Because her thresholds follow the room, she kept working. We measured voice against noise from her logs, lowered one cutoff a little, and used the mic's low-cut filter, which removes most of the rumble.</dd>
+        <dt>For you</dt><dd>Log the levels your assistant hears. When someone says "it's not understanding me," you can look instead of guess.</dd></dl>
+        <div data-level-only="expert"><div class="callout"><b>The numbers.</b> Background median went from 59 to about 120. Voice-to-noise margin went from about 53× to about 19× for a quieter speaker. Lowering the cutoff only helps if voices are being thrown away; clarity comes from a louder voice at the mic, so measure which problem you have first.</div></div>
+      </details>
+      <details class="lesson">
+        <summary><span class="num">04</span><h3>The AI told us to flip the wrong switch</h3><p class="hook">The sound got ten times louder, and she stopped understanding anyone.</p><span class="more">What happened →</span></summary>
+        <dl><dt>What happened</dt><dd>The microphone has a switch that turns its level down (a "pad"). The AI coding partner advised switching it off. The room level jumped ten times, speech clipped, and speech-to-text returned nothing: "Sorry, I didn't catch that."</dd>
+        <dt>The fix</dt><dd>We measured, saw the jump, and switched the pad back on. All the tuning had been done with it on.</dd>
+        <dt>For you</dt><dd>AI advice about the physical world is a guess until you measure it. Write down the settings you tuned with.</dd></dl>
+      </details>
+      <details class="lesson">
+        <summary><span class="num">05</span><h3>Two AIs on one stage</h3><p class="hook">Another assistant spoke through the room speakers. Lumi answered it.</p><span class="more">What happened →</span></summary>
+        <dl><dt>What happened</dt><dd>On stage, a second AI assistant answered questions through the same speakers. Lumi heard it as someone talking to her, and the two talked over each other.</dd>
+        <dt>The fix</dt><dd>Two layers. In her instructions, every turn on stage comes with a note: if it isn't the presenter talking to you, reply with exactly <code>[quiet]</code>, which she never says aloud. In code, a loudness fingerprint: an AI through the speakers is loud for 30–57% of the time; a person at a mic, 13% at most. She ignores the speakers before the model ever sees it.</dd>
+        <dt>For you</dt><dd>Tell the model the rule, then add a check in code for the cases it will still miss. Neither alone was enough.</dd></dl>
+        <div data-level-only="expert"><div class="callout"><b>Detail.</b> The rule in the system prompt alone was ignored: the model never chose <code>[quiet]</code> until the reminder came with each turn. The fingerprint counts 100 ms windows above 3,000 RMS; at 30% or more the clip is treated as the speakers. Measure it in the real room: the numbers depend on the speakers and the distance.</div></div>
+      </details>
+    </div>
+  </div>
+</section>
+
+<section id="behavior">
+  <div class="wrap">
+    <span class="eyebrow">Behavior</span>
+    <h2>What she says, and how</h2>
+    <div class="lessons">
+      <details class="lesson">
+        <summary><span class="num">06</span><h3>Thinking out loud on stage</h3><p class="hook">She repeated herself and narrated her reasoning, in front of a room.</p><span class="more">What happened →</span></summary>
+        <dl><dt>What happened</dt><dd>The stage instructions asked for very short answers. She gave one-word answers, repeated herself, and sometimes spoke her reasoning aloud.</dd>
+        <dt>The fix</dt><dd>Clear, positive instructions: two to four conversational sentences, everything the kiosk knows, and never think out loud.</dd>
+        <dt>For you</dt><dd>Small models follow the letter of an instruction. "Be brief" can mean one word. Say what good looks like.</dd></dl>
+      </details>
+      <details class="lesson">
+        <summary><span class="num">07</span><h3>Script the moments that matter</h3><p class="hook">A running joke the model wouldn't stop riffing on.</p><span class="more">What happened →</span></summary>
+        <dl><dt>What happened</dt><dd>Lumi has a friendly rivalry with another assistant. When people mentioned it, the model riffed on it instead of answering the question.</dd>
+        <dt>The fix</dt><dd>The jokes are scripted lines, chosen in code, and only the rest of the question reaches the model. The same goes for the first-visit shows a few VIPs got: every word written and reviewed, played once, no improvising.</dd>
+        <dt>For you</dt><dd>Use the model for the open-ended part. Write the parts you'd be embarrassed to see go wrong.</dd></dl>
+      </details>
+      <details class="lesson">
+        <summary><span class="num">08</span><h3>Saying names right, and not overdoing it</h3><p class="hook">Some words just don't come out right.</p><span class="more">What happened →</span></summary>
+        <dl><dt>What happened</dt><dd>The voice model mispronounced some names, and misread "Uh oh" (while "Oh no" was fine). A playful title someone asked for was added to every sentence, which got old fast.</dd>
+        <dt>The fix</dt><dd>A pronunciation list applied just before speaking, rewording lines the voice reads badly, and using titles naturally rather than everywhere.</dd>
+        <dt>For you</dt><dd>Listen to everything your assistant says out loud at least once. Text that reads well can sound wrong.</dd></dl>
+      </details>
+    </div>
+  </div>
+</section>
+
+<section id="hardware">
+  <div class="wrap">
+    <span class="eyebrow">Hardware and reboots</span>
+    <h2>The box, the cables and the restarts</h2>
+    <div class="lessons">
+      <details class="lesson">
+        <summary><span class="num">09</span><h3>The computer that turned itself off</h3><p class="hook">Twice. No logs. No warning.</p><span class="more">What happened →</span></summary>
+        <dl><dt>What happened</dt><dd>Under sustained AI load, the whole computer powered off twice. Nothing in the logs. The likely cause is a fast heat spike that the firmware reacts to before the operating system sees it.</dd>
+        <dt>The fix</dt><dd>Cap the GPU clock at boot, improve airflow, keep test load to one request at a time, and log temperatures to a file that survives a power cut.</dd>
+        <dt>For you</dt><dd>Heat and power are part of your design, especially for a small box running all day.</dd></dl>
+        <div data-level-only="expert"><div class="callout"><b>The numbers.</b> The clock was capped at 2,200 MHz (it ran about 2,500 uncapped). At the same ~90% GPU use it drew about 26 W instead of 45 W and ran about 10 °C cooler, with no visible slowdown for one visitor at a time.</div></div>
+      </details>
+      <details class="lesson">
+        <summary><span class="num">10</span><h3>Every restart is a new day</h3><p class="hook">A muted speaker, a missing device, the wrong display.</p><span class="more">What happened →</span></summary>
+        <dl><dt>What happened</dt><dd>After one reboot the speaker came back at 0%: she talked, nobody heard. A flaky USB speaker dropped off and she restarted 27 times in a row. Another time she spoke to a Bluetooth speaker at volume zero. After the last reboot, the desktop came back on a different display number and her screen wouldn't open.</dd>
+        <dt>The fix</dt><dd>Set volumes and devices at startup, wait out a missing device instead of crashing, and look for the display and devices that are actually there instead of assuming.</dd>
+        <dt>For you</dt><dd>Rehearse the reboot, not just the demo. Unplug things on purpose and see what happens.</dd></dl>
+      </details>
+      <details class="lesson">
+        <summary><span class="num">11</span><h3>QR codes vs. screens</h3><p class="hook">Badges on a phone took forever to scan.</p><span class="more">What happened →</span></summary>
+        <dl><dt>What happened</dt><dd>Glare and screen refresh confuse a cheap scanner.</dd>
+        <dt>The fix</dt><dd>Printed on matte labels, about 5 cm wide, with the highest error correction. Instant reads.</dd>
+        <dt>For you</dt><dd>Test with the real thing people will hold up, in the real light.</dd></dl>
+      </details>
+    </div>
+  </div>
+</section>
+
+<section id="process">
+  <div class="wrap">
+    <span class="eyebrow">Process</span>
+    <h2>Building with an AI coding partner</h2>
+    <div class="lessons">
+      <details class="lesson">
+        <summary><span class="num">12</span><h3>The bug that passed eleven reviews</h3><p class="hook">Lip sync broke on every reply longer than one sentence.</p><span class="more">What happened →</span></summary>
+        <dl><dt>What happened</dt><dd>A "sanity check" treated audio scheduled to start a few seconds in the future as a clock error, and threw its timing away. Each small change looked fine in its own review. Only a review of the whole branch caught it.</dd>
+        <dt>The fix</dt><dd>Different limits for the past and the future, and the habit of reviewing the whole thing at the end, not only each piece.</dd>
+        <dt>For you</dt><dd>Ask for a fresh-eyes review of everything together before you call it done.</dd></dl>
+      </details>
+      <details class="lesson">
+        <summary><span class="num">13</span><h3>Listening before the screen had finished</h3><p class="hook">She cut off her own animations.</p><span class="more">What happened →</span></summary>
+        <dl><dt>What happened</dt><dd>After showing the way to a room, she went straight back to listening. A quick follow-up question replaced the 3D walk before it reached the room.</dd>
+        <dt>The fix</dt><dd>The screen now tells her how long its animation still runs, and she waits for it (up to a limit) before listening. A new badge scan still cuts in at once.</dd>
+        <dt>For you</dt><dd>When two parts of a system run at their own pace, let them tell each other when they're done.</dd></dl>
+      </details>
+      <details class="lesson">
+        <summary><span class="num">14</span><h3>Tests plus rehearsals</h3><p class="hook">Over a thousand tests, and rehearsals still found things.</p><span class="more">What happened →</span></summary>
+        <dl><dt>What happened</dt><dd>Every feature started as a failing test, and the AI wrote all of them. That's why she could keep changing safely during the event itself. But the first full rehearsal on the real hardware found two bugs the tests didn't: the muted speaker and the speaker never being released.</dd>
+        <dt>The fix</dt><dd>Both: automated tests for the logic, and rehearsals on the real hardware, in the real place, for everything else.</dd>
+        <dt>For you</dt><dd>Tests let you change things without fear. Rehearsals tell you whether it works for people.</dd></dl>
+      </details>
+    </div>
+    <div class="next-page">
+      <a class="btn primary" href="fit.html">What will run on my machine? →</a>
+      <a class="btn" href="../#steps">Build your own Lumi</a>
+    </div>
+  </div>
+</section>
+</main>
+
+<footer>
+  <div class="wrap">
+    <span>Built with <a href="https://claude.com/claude-code">Claude Code</a>. MIT licensed.</span>
+    <span><a href="../talk/">The talk (slides)</a> · <a href="https://github.com/ckellum/build-your-own-lumi">GitHub</a></span>
+  </div>
+</footer>
+<script src="../vendor/gsap/gsap.min.js"></script>
+<script src="../vendor/gsap/ScrollTrigger.min.js"></script>
+<script type="module" src="../js/explore.js"></script>
+</body>
+</html>

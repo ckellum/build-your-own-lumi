@@ -1,0 +1,142 @@
+<!doctype html>
+<html lang="en" data-level="beginner">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Things to Build · Build Your Own Lumi</title>
+<meta name="description" content="Practical things people build with local AI on an ordinary GPU or Mac: private chat, chat with your documents, transcription, coding help, photo search, a voice assistant, home cameras and more, by difficulty.">
+<meta name="theme-color" content="#05080f">
+<link rel="icon" href="../img/favicon.svg" type="image/svg+xml">
+<link rel="stylesheet" href="../css/site.css">
+<link rel="stylesheet" href="../css/explore.css">
+</head>
+<body class="page">
+<div class="bg-grid" aria-hidden="true"></div>
+<div class="progress" aria-hidden="true"></div>
+<header class="topbar">
+  <div class="wrap">
+    <a class="home" href="../">Build your own <b>Lumi</b></a>
+    <nav class="topnav" aria-label="Explore">
+      <a href="./">Explore</a>
+      <a href="fit.html">Will it run?</a>
+      <a href="local-vs-frontier.html">Local vs frontier</a>
+      <a href="home-automation.html">Home automation</a>
+      <a href="ideas.html" aria-current="page">Ideas</a>
+      <a href="lessons.html">Lessons</a>
+      <a href="faq.html">FAQ</a>
+      <a href="learn.html">Learn more</a>
+    </nav>
+    <div class="depth">
+      <span class="picker-label" id="level-label">Detail</span>
+      <div class="seg" role="group" aria-labelledby="level-label">
+        <button type="button" data-set-level="beginner" aria-pressed="true">Beginner</button>
+        <button type="button" data-set-level="intermediate" aria-pressed="false">Intermediate</button>
+        <button type="button" data-set-level="expert" aria-pressed="false">Expert</button>
+      </div>
+    </div>
+  </div>
+</header>
+
+<main>
+<div class="wrap page-hero">
+  <span class="eyebrow">Ideas</span>
+  <h1>What people actually <span class="grad-text">build</span>.</h1>
+  <p class="lead">Real things you can do with local AI on an ordinary gaming PC or Mac, from a ten-minute install to a weekend project. Each card says how hard it is, what it needs, and where to start. Sizes are for 4-bit models; <a href="fit.html">check what fits your machine</a>.</p>
+  <div class="meta-row"><span class="lvl b">Beginner</span><span>install an app</span><span class="lvl i">Intermediate</span><span>some setup, maybe Docker</span><span class="lvl e">Advanced</span><span>wiring things together</span></div>
+</div>
+
+<section>
+  <div class="wrap">
+    <h2>Start with these</h2>
+    <div class="cards">
+      <article class="cardx top"><span class="kick">Private chat</span><h3>A ChatGPT-style assistant on your machine</h3>
+        <div class="meta-row"><span class="lvl b">Beginner</span><span>4–9B model · any 8 GB GPU or 16 GB Mac</span></div>
+        <p>Ask, draft, rewrite, brainstorm, with nothing leaving your computer. <b>LM Studio</b> and <b>Jan</b> are one install; <b>Ollama + Open WebUI</b> gives you a web chat for the whole house.</p>
+        <p class="src"><a href="https://lmstudio.ai">lmstudio.ai</a> · <a href="https://jan.ai">jan.ai</a> · <a href="https://ollama.com">ollama.com</a></p></article>
+      <article class="cardx top"><span class="kick">Transcription</span><h3>Meetings and voice memos, typed and summarized</h3>
+        <div class="meta-row"><span class="lvl b">Beginner</span><span>a Whisper-class speech model · runs on almost anything</span></div>
+        <p><b>MacWhisper</b> (Mac) and <b>Buzz</b> (Mac, Windows, Linux, free and open source) transcribe offline and can tell speakers apart. Paste the transcript into your local chat for a summary.</p>
+        <p class="src"><a href="https://github.com/chidiwilliams/buzz">Buzz on GitHub</a></p></article>
+      <article class="cardx top"><span class="kick">Translate and write</span><h3>Email, letters and translations, kept private</h3>
+        <div class="meta-row"><span class="lvl b">Beginner</span><span>4–12B model</span></div>
+        <p>Paste into a local chat app to summarize, draft or translate. Gemma and Qwen models handle many languages. Firefox already translates pages on your device.</p></article>
+    </div>
+  </div>
+</section>
+
+<section>
+  <div class="wrap">
+    <h2>Your own information</h2>
+    <div class="cards">
+      <article class="cardx top"><span class="kick">Your documents</span><h3>Chat with your files and notes</h3>
+        <div class="meta-row"><span class="lvl b">Beginner</span><span class="lvl i">Intermediate</span><span>7–14B model + a small <a href="faq.html#rag">embedding model</a></span></div>
+        <p><b>AnythingLLM</b> (desktop app) indexes a folder of PDFs and documents and answers questions with quotes. <b>Open WebUI</b> has “Knowledge” collections. Obsidian users have plugins like Copilot and Smart Connections.</p>
+        <div data-level-only="intermediate expert"><p><b>How it works:</b> the files are split into passages and turned into numbers (“embeddings”) by a small local model. Your question finds the closest passages, and only those go to the chat model. Ask for quotes so you can check its answers.</p></div>
+        <p class="src"><a href="https://anythingllm.com">anythingllm.com</a></p></article>
+      <article class="cardx top"><span class="kick">Photos</span><h3>Search your photo library by describing it</h3>
+        <div class="meta-row"><span class="lvl i">Intermediate</span><span>small built-in models · no chat model needed</span></div>
+        <p>“Dog at the beach.” “Birthday cake.” <b>Immich</b> is a self-hosted photo library with smart search and face grouping, running on your own server or PC. <b>PhotoPrism</b> is another option and can caption photos with a local model.</p>
+        <p class="src"><a href="https://immich.app">immich.app</a></p></article>
+      <article class="cardx top"><span class="kick">Offline</span><h3>A model for the plane, the cabin, the basement</h3>
+        <div class="meta-row"><span class="lvl b">Beginner</span><span>whatever your laptop fits</span></div>
+        <p>Download a model before you go and everything above works with no signal. Useful for health, money and work documents you'd rather not upload anywhere.</p></article>
+    </div>
+  </div>
+</section>
+
+<section>
+  <div class="wrap">
+    <h2>For builders</h2>
+    <div class="cards">
+      <article class="cardx top"><span class="kick">Coding</span><h3>A coding helper in your editor</h3>
+        <div class="meta-row"><span class="lvl i">Intermediate</span><span>7–14B for autocomplete · 20B+ for edits</span></div>
+        <p><b>Continue</b>, <b>Cline</b>, <b>Aider</b> and <b>Zed</b> all work with Ollama or LM Studio. Local is great for autocomplete and quick questions. For agents that change a whole project, frontier models are still far ahead.</p>
+        <p class="src"><a href="https://zed.dev/docs/ai/use-a-local-model">Zed: use a local model</a> · <a href="https://docs.cline.bot/running-models-locally/overview.md">Cline: running models locally</a></p></article>
+      <article class="cardx top"><span class="kick">Voice</span><h3>A voice assistant or kiosk, like Lumi</h3>
+        <div class="meta-row"><span class="lvl i">Intermediate</span><span class="lvl e">Advanced</span><span>speech-to-text + 4–12B model + a voice</span></div>
+        <p>Microphone → speech to text → a language model → text to speech → a speaker. The <a href="../#steps">nine-step guide</a> builds one in about a thousand lines of Python, on a laptop, workstation or cloud models.</p></article>
+      <article class="cardx top"><span class="kick">Home</span><h3>Talk to your house</h3>
+        <div class="meta-row"><span class="lvl i">Intermediate</span><span>Home Assistant + a 4–14B model with tool calling</span></div>
+        <p>“Turn off the kitchen lights.” “Is the garage open?” Fully local, with your own model. <a href="home-automation.html">The home automation guide</a> walks through it.</p></article>
+      <article class="cardx top"><span class="kick">Agents</span><h3>Let a model use tools (MCP)</h3>
+        <div class="meta-row"><span class="lvl e">Advanced</span><span>20B+ for dependable tool use</span></div>
+        <p>The Model Context Protocol lets a model read files, search and call apps. <b>LM Studio</b> can host MCP tools and asks you to approve each call. Small models often break the tool format or drop arguments, so keep tasks short, tools few, and approve anything that writes.</p>
+        <p class="src"><a href="https://lmstudio.ai/blog/mcp">LM Studio and MCP</a></p></article>
+    </div>
+  </div>
+</section>
+
+<section>
+  <div class="wrap">
+    <h2>For family, learning and access</h2>
+    <div class="cards">
+      <article class="cardx top"><span class="kick">Learning</span><h3>A patient tutor that quizzes you</h3>
+        <div class="meta-row"><span class="lvl b">Beginner</span><span>4–12B model</span></div>
+        <p>Paste class notes and ask it to quiz you instead of answering. Local means a child's questions stay at home. Check its facts: small models are confident even when wrong.</p></article>
+      <article class="cardx top"><span class="kick">Accessibility</span><h3>Describe images, read aloud</h3>
+        <div class="meta-row"><span class="lvl b">Beginner</span><span class="lvl i">Intermediate</span><span>a small vision model + a voice</span></div>
+        <p>Vision models like Gemma describe a photo or a screenshot; a local voice like Kokoro reads text aloud. <b>VOLlama</b> is an accessible app for Ollama.</p></article>
+      <article class="cardx top"><span class="kick">Kitchen</span><h3>A hands-free kitchen helper</h3>
+        <div class="meta-row"><span class="lvl i">Intermediate</span><span>the minilumi kit's <code>my-day</code> example</span></div>
+        <p>Recipes read out step by step, the grocery list, trash day, the Wi-Fi password. The kit ships a made-up household you can try in five minutes.</p></article>
+    </div>
+    <div class="callout warn"><b>Two rules for everything here.</b> Check facts that matter: small models can be confidently wrong. And never let a model take an action you can't undo (unlock, delete, send, buy) without asking you first.</div>
+    <div class="next-page">
+      <a class="btn primary" href="home-automation.html">Home automation guide →</a>
+      <a class="btn" href="fit.html">What will run on my machine?</a>
+    </div>
+  </div>
+</section>
+</main>
+
+<footer>
+  <div class="wrap">
+    <span>Built with <a href="https://claude.com/claude-code">Claude Code</a>. MIT licensed.</span>
+    <span><a href="../talk/">The talk (slides)</a> · <a href="https://github.com/ckellum/build-your-own-lumi">GitHub</a></span>
+  </div>
+</footer>
+<script src="../vendor/gsap/gsap.min.js"></script>
+<script src="../vendor/gsap/ScrollTrigger.min.js"></script>
+<script type="module" src="../js/explore.js"></script>
+</body>
+</html>

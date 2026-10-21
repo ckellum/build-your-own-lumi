@@ -25,6 +25,7 @@
       <p class="lead" data-hero>A voice concierge that hears a question, thinks, and answers out loud, with a face. Built on the computer you already have.</p>
       <div class="cta" data-hero>
         <a class="btn primary" href="#steps">Start building →</a>
+        <a class="btn" href="explore/">Explore what you can run</a>
         <a class="btn" href="#claude-code">Build it with Claude Code</a>
         <a class="btn" href="#how">See how it works</a>
         <a class="btn" href="talk/">The talk</a>
@@ -85,8 +86,8 @@
     </div>
     <div class="stats">
       <div class="stat" data-reveal><b class="grad-text">4 weeks</b><span>idea to working kiosk</span></div>
-      <div class="stat" data-reveal><b class="grad-text">191</b><span>commits, written with an AI coding agent</span></div>
-      <div class="stat" data-reveal><b class="grad-text">866</b><span>automated tests in the original</span></div>
+      <div class="stat" data-reveal><b class="grad-text">253</b><span>commits, written with an AI coding agent</span></div>
+      <div class="stat" data-reveal><b class="grad-text">1,143</b><span>automated tests in the original</span></div>
       <div class="stat" data-reveal><b class="grad-text">≈1.5 s</b><span>question to answer with this kit (tested)</span></div>
     </div>
   </div>
@@ -518,13 +519,33 @@ goto loop</code></pre>
   </div>
 </section>
 
+<!-- ============ EXPLORE ============ -->
+<section id="explore">
+  <div class="wrap">
+    <div class="section-head" data-reveal>
+      <span class="eyebrow">Beyond Lumi</span>
+      <h2>Explore AI on the computer you already have.</h2>
+      <p>What runs on an 8–16 GB GPU or a Mac, when a frontier model like Claude, GPT or Gemini is the better tool, home automation, and more things to build. As deep as you want to go.</p>
+    </div>
+    <div class="uses">
+      <a class="use" href="explore/fit.html" data-reveal style="text-decoration:none;color:inherit"><span class="use-kicker">Calculator</span><h3>Will it run on my machine?</h3><p>Pick your GPU or Mac: the models that fit, their speed, and why.</p></a>
+      <a class="use" href="explore/local-vs-frontier.html" data-reveal style="text-decoration:none;color:inherit"><span class="use-kicker">Guide</span><h3>Local vs frontier</h3><p>Strengths, real costs, privacy, and five ways to use both.</p></a>
+      <a class="use" href="explore/home-automation.html" data-reveal style="text-decoration:none;color:inherit"><span class="use-kicker">Guide</span><h3>Home automation</h3><p>Talk to your house with Home Assistant and a local model.</p></a>
+      <a class="use" href="explore/ideas.html" data-reveal style="text-decoration:none;color:inherit"><span class="use-kicker">Ideas</span><h3>Things people build</h3><p>Private chat, your documents, transcription, coding, photos and more.</p></a>
+      <a class="use" href="explore/faq.html" data-reveal style="text-decoration:none;color:inherit"><span class="use-kicker">FAQ</span><h3>The concepts, explained</h3><p>Tokens, quantization, VRAM, MCP, RAG and more, in plain words.</p></a>
+      <a class="use" href="explore/learn.html" data-reveal style="text-decoration:none;color:inherit"><span class="use-kicker">Learn more</span><h3>The best free videos</h3><p>Hand-picked videos and courses, beginner to advanced.</p></a>
+      <a class="use" href="explore/lessons.html" data-reveal style="text-decoration:none;color:inherit"><span class="use-kicker">Lessons</span><h3>Everything that broke</h3><p>Fourteen real problems from a real building.</p></a>
+    </div>
+  </div>
+</section>
+
 <!-- ============ LESSONS ============ -->
 <section id="lessons">
   <div class="wrap">
     <div class="section-head" data-reveal>
       <span class="eyebrow">Lessons from the build</span>
       <h2>Six things that broke, so yours won't.</h2>
-      <p>Tap a card for what happened, why, and the fix.</p>
+      <p>Tap a card for what happened, why, and the fix. <a href="explore/lessons.html">All fourteen lessons from the event →</a></p>
     </div>
     <div class="lessons">
       <details class="lesson" data-reveal>
@@ -544,7 +565,7 @@ goto loop</code></pre>
       </details>
       <details class="lesson" data-reveal>
         <summary><span class="num">04</span><h3>The computer that turned itself off</h3><p class="hook">Twice, under heavy load, the whole machine just powered off. No logs.</p><span class="more">What happened →</span></summary>
-        <dl><dt>Why</dt><dd>Sustained AI load caused power spikes on early firmware.</dd>
+        <dl><dt>Why</dt><dd>Likely a fast heat spike under sustained AI load: the firmware cut power before the operating system saw it.</dd>
         <dt>Fix</dt><dd>Cap the GPU clock at boot and keep test load to one request at a time. Plan for the hardware, not just the software.</dd></dl>
       </details>
       <details class="lesson" data-reveal>
@@ -554,7 +575,7 @@ goto loop</code></pre>
       </details>
       <details class="lesson" data-reveal>
         <summary><span class="num">06</span><h3>The silent speaker</h3><p class="hook">After a reboot, Lumi was talking. Nobody could hear her.</p><span class="more">What happened →</span></summary>
-        <dl><dt>Why</dt><dd>The USB speaker came up at 0% volume after every boot.</dd>
+        <dl><dt>Why</dt><dd>The USB speaker came back at 0% volume after a reboot.</dd>
         <dt>Fix</dt><dd>Set the volume when Lumi starts, and a self-check that fails loudly on a muted speaker.</dd></dl>
       </details>
     </div>
@@ -587,7 +608,7 @@ goto loop</code></pre>
 <footer>
   <div class="wrap">
     <span>Built with <a href="https://claude.com/claude-code">Claude Code</a>. MIT licensed.</span>
-    <span><a href="talk/">The talk (slides)</a> · <a href="https://github.com/ckellum/build-your-own-lumi">github.com/ckellum/build-your-own-lumi</a></span>
+    <span><a href="explore/">Explore</a> · <a href="explore/faq.html">FAQ</a> · <a href="explore/learn.html">Learn more</a> · <a href="talk/">The talk (slides)</a> · <a href="https://github.com/ckellum/build-your-own-lumi">github.com/ckellum/build-your-own-lumi</a></span>
   </div>
 </footer>
 

@@ -142,3 +142,99 @@ body.presenter #presenter { display: grid; grid-template-columns: 1fr 1fr; gap: 
 #presenter .now h2 { font-size: 30px; margin: 4px 0 0; } #presenter .next h2 { font-size: 22px; margin: 4px 0 0; color: var(--muted); }
 #presenter .notes { grid-column: 1 / -1; background: var(--card); border: 1px solid var(--line); border-radius: 16px; padding: 22px 26px; font-size: 26px; line-height: 1.5; white-space: pre-wrap; }
 #presenter .meta { grid-column: 1 / -1; display: flex; gap: 30px; font: 600 26px var(--mono); color: var(--a); }
+
+/* ---------- 30-minute deck (2026-10-21): lessons, local vs frontier, what fits ---------- */
+.story .ba.lesson { border-color: #1f5f73; background: #0b2030; }
+.story .ba.lesson .kicker { color: var(--a); }
+.story h2 { font-size: 76px; }
+.story .ba p { font-size: 30px; }
+
+.takeaways { display: grid; grid-template-columns: repeat(5, 1fr); gap: 22px; margin-top: 30px; }
+.takeaways .card { padding: 30px 26px; }
+.takeaways .step { font: 800 64px/1 var(--sans); margin-bottom: 14px; }
+.takeaways h3 { font-size: 33px; }
+.takeaways p { font-size: 25px; margin: 0; }
+
+.vs { display: grid; grid-template-columns: 1fr 1fr; gap: 44px; margin-top: 10px; }
+.vs .card h3 { font-size: 46px; }
+.vs ul.clean li { font-size: 30px; margin-bottom: 12px; }
+.vs .local::before { background: linear-gradient(90deg, var(--ok), var(--a)); }
+.both { margin-top: 34px; text-align: center; }
+
+/* What fits: bars on one memory scale */
+.fit { display: grid; gap: 16px; margin-top: 18px; }
+.fit .row { display: grid; grid-template-columns: 300px 1fr; gap: 26px; align-items: center; }
+.fit .who { font: 700 28px var(--sans); color: var(--ink); text-align: right; }
+.fit .who span { display: block; font: 500 20px var(--mono); color: var(--faint); }
+.fit .bar { position: relative; height: 66px; border-radius: 16px; background: var(--card); border: 1px solid var(--line); overflow: hidden; }
+.fit .fill { position: absolute; inset: 0 auto 0 0; background: linear-gradient(90deg, #3ef0ff33, #9a6bff55); border-right: 3px solid var(--a); }
+.fit .fill.spark { background: linear-gradient(90deg, #ff5fd233, #9a6bff55); border-right-color: var(--c); }
+.fit .label { position: absolute; left: 20px; top: 50%; translate: 0 -50%; font: 600 26px var(--sans); color: var(--ink); white-space: nowrap; }
+.fit .label i { font-style: normal; color: var(--muted); font-weight: 500; }
+.rule { margin-top: 26px; font-size: 32px; }
+.rule b { color: var(--ink); }
+
+/* Speed vs size */
+.speed { display: grid; grid-template-columns: repeat(4, 1fr); gap: 26px; margin-top: 20px; }
+.speed .card h3 { font-size: 36px; margin-bottom: 4px; }
+.speed .card .spec { font: 600 22px var(--mono); color: var(--faint); margin-bottom: 18px; display: block; }
+.meter { margin: 10px 0 4px; }
+.meter span { display: block; font: 600 19px var(--mono); color: var(--faint); text-transform: uppercase; letter-spacing: .1em; margin-bottom: 6px; }
+.meter .track { height: 18px; border-radius: 9px; background: var(--bg-2); border: 1px solid var(--line); overflow: hidden; }
+.meter .track i { display: block; height: 100%; background: var(--grad); }
+.speed .card p { font-size: 25px; margin: 14px 0 0; }
+
+/* Picks table */
+table.picks { width: 100%; border-collapse: separate; border-spacing: 0; font-size: 27px; margin-top: 10px; }
+.picks th, .picks td { padding: 18px 22px; text-align: left; border-bottom: 1px solid var(--line); vertical-align: top; }
+.picks th { font: 700 20px var(--mono); letter-spacing: .12em; text-transform: uppercase; color: var(--faint); }
+.picks td:first-child { color: var(--ink); font-weight: 700; white-space: nowrap; }
+.picks td { color: var(--muted); }
+.picks td b { color: var(--ink); font-weight: 600; }
+
+/* Downsides */
+.downs { display: grid; grid-template-columns: repeat(3, 1fr); gap: 24px; }
+.downs .card { padding: 30px; }
+.downs .card h3 { font-size: 34px; }
+.downs .card p { font-size: 25px; margin: 0; }
+.downs .card .kicker { color: var(--warn); }
+
+/* Home pipeline (compact, static) */
+.home-flow { display: grid; grid-template-columns: repeat(5, 1fr); gap: 0; margin: 20px 0 30px; position: relative; }
+.home-flow .hop { text-align: center; position: relative; padding: 0 10px; }
+.home-flow .hop .dot { width: 120px; height: 120px; border-radius: 50%; margin: 0 auto 18px; display: grid; place-items: center; background: var(--card); border: 3px solid var(--a); font: 800 30px var(--mono); color: var(--a); box-shadow: 0 0 40px -10px var(--a); }
+.home-flow .hop:not(:last-child)::after { content: ""; position: absolute; top: 60px; left: calc(50% + 66px); right: calc(-50% + 66px); height: 3px; background: var(--grad); }
+.home-flow h3 { font-size: 30px; margin-bottom: 4px; }
+.home-flow p { font-size: 22px; margin: 0; font-family: var(--mono); color: var(--faint); }
+.say { font: 600 40px var(--sans); color: var(--ink); text-align: center; margin: 4px 0 0; }
+.say .q { color: var(--a); }
+
+/* Idea grid with difficulty */
+.ideas { display: grid; grid-template-columns: repeat(4, 1fr); gap: 22px; }
+.ideas .card { padding: 26px; }
+.ideas .card h3 { font-size: 30px; margin: 10px 0 8px; }
+.ideas .card p { font-size: 23px; margin: 0; }
+.lvl { display: inline-block; font: 700 17px var(--mono); letter-spacing: .12em; text-transform: uppercase; padding: 6px 12px; border-radius: 999px; border: 1px solid currentColor; }
+.lvl.b { color: var(--ok); } .lvl.i { color: var(--a); } .lvl.e { color: var(--c); }
+
+/* Start-here paths */
+.paths { display: grid; grid-template-columns: repeat(3, 1fr); gap: 34px; }
+.paths .card h3 { font-size: 40px; }
+.paths ol { margin: 10px 0 0; padding-left: 34px; }
+.paths li { font-size: 27px; margin-bottom: 12px; }
+.paths li b { color: var(--ink); font-weight: 600; }
+.clean-steps li { font-size: 31px; margin-bottom: 20px; padding-left: 8px; }
+.clean-steps li::marker { color: var(--a); font-weight: 800; }
+/* Slides that should sit in the middle of the screen, with room-sized text */
+.slide.vcenter.active { display: flex; flex-direction: column; justify-content: center; }
+.slide.vcenter > h2 { margin-bottom: 44px; }
+.takeaways .card { padding: 40px 30px; } .takeaways h3 { font-size: 38px; } .takeaways p { font-size: 29px; }
+.downs .card h3 { font-size: 40px; } .downs .card p { font-size: 29px; }
+.ideas .card h3 { font-size: 33px; } .ideas .card p { font-size: 26px; }
+.speed .card p { font-size: 29px; } .speed .card h3 { font-size: 40px; }
+table.picks { font-size: 31px; } .picks th { font-size: 21px; }
+.paths li { font-size: 31px; } .paths .card h3 { font-size: 44px; }
+.fit .row { grid-template-columns: 320px 1fr; } .fit .bar { height: 76px; } .fit .label { font-size: 29px; }
+.home-flow h3 { font-size: 33px; } .home-flow p { font-size: 24px; }
+.vs ul.clean li { font-size: 33px; }
+.picks th, .picks td { padding: 14px 20px; }
