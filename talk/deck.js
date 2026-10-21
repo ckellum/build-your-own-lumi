@@ -1,5 +1,5 @@
 // Lumi talk deck. Plain script (no modules) so it runs from file:// with no server.
-// Keys: → Space PageDown next · ← PageUp back · Home/End · P presenter view · F full screen.
+// Keys: → Space PageDown next · ← PageUp back · Home/End · P presenter view · F full screen. Touch: swipe or tap.
 (function () {
   const REPO = "ckellum.github.io/build-your-own-lumi";
   const slides = [...document.querySelectorAll(".slide")];
@@ -23,7 +23,7 @@
 
   function fit() {
     const scale = Math.min(innerWidth / 1920, innerHeight / 1080);
-    stage.style.transform = `scale(${scale})`;
+    stage.style.transform = `translate(-50%, -50%) scale(${scale})`;
   }
   addEventListener("resize", fit);
   fit();
@@ -136,6 +136,16 @@
     else if (k === "p" || k === "P") openPresenter();
     else if (k === "f" || k === "F") document.documentElement.requestFullscreen?.();
   }
+  // Phones and tablets: swipe left/right, or tap the right or left side of the screen.
+  let touchStart = null;
+  addEventListener("touchstart", (e) => { touchStart = e.touches.length === 1 ? { x: e.touches[0].clientX, y: e.touches[0].clientY } : null; }, { passive: true });
+  addEventListener("touchend", (e) => {
+    if (!touchStart || e.touches.length) return;
+    const end = e.changedTouches[0], dx = end.clientX - touchStart.x, dy = end.clientY - touchStart.y;
+    touchStart = null;
+    if (Math.abs(dx) > 40 && Math.abs(dx) > Math.abs(dy)) go(index + (dx < 0 ? 1 : -1));
+    else if (Math.abs(dx) < 10 && Math.abs(dy) < 10 && !e.target.closest("a, video")) go(index + (end.clientX > innerWidth / 3 ? 1 : -1));
+  });
   addEventListener("keydown", (e) => {
     if (e.target.closest && e.target.closest("video")) return;
     if ([" ", "PageDown", "PageUp", "ArrowDown", "ArrowUp"].includes(e.key)) e.preventDefault();
