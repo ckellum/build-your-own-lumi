@@ -309,58 +309,8 @@ A Mac sits in between: big shared memory, good speed, silent.">
   </div>
 </section>
 
-<!-- 19 · PICKS -->
-<section class="slide vcenter" data-section="3 · Your turn" data-title="Models to try" data-notes="[19:00–20:00] A cheat sheet. Current open models, October 2026, almost all Apache 2.0, so you can use them for nearly anything. For home control, look for models that do well at tool calling; Qwen is consistently strong there. For images, Gemma 4 and Qwen understand pictures. Don't pick from a leaderboard: try your own prompts. The site has the full list and a calculator.">
-  <h2 data-a>Models to try first.</h2>
-  <table class="picks" data-a>
-    <thead><tr><th>You have</th><th>Chat &amp; writing</th><th>Home &amp; tools</th><th>Coding</th><th>Images in</th></tr></thead>
-    <tbody>
-      <tr><td>8 GB GPU</td><td><b>Qwen3.5 9B</b>, Gemma 4 E4B</td><td><b>Qwen3 8B</b>, Qwen3.5 4B</td><td>Qwen3.5 9B</td><td>Gemma 4 E4B</td></tr>
-      <tr><td>12 GB GPU</td><td><b>Gemma 4 12B</b></td><td>Gemma 4 12B, Ministral 3 14B</td><td>Ministral 3 14B</td><td>Gemma 4 12B</td></tr>
-      <tr><td>16 GB GPU</td><td><b>gpt-oss-20b</b></td><td>gpt-oss-20b</td><td>gpt-oss-20b</td><td>Gemma 4 12B</td></tr>
-      <tr><td>Mac 32 GB</td><td><b>Gemma 4 26B</b>, gpt-oss-20b</td><td>gpt-oss-20b</td><td>gpt-oss-20b</td><td>Gemma 4 26B</td></tr>
-      <tr><td>Mac 48 GB+</td><td><b>Qwen3.6 35B-A3B</b></td><td>Qwen3.6 35B-A3B</td><td>Qwen3.6 35B-A3B</td><td>Qwen3.8 27B</td></tr>
-    </tbody>
-  </table>
-  <p style="margin-top:34px" data-a>Start with <b style="color:var(--ink)">LM Studio</b> (an app) or <b style="color:var(--ink)">Ollama</b> (one command). Speech: <b style="color:var(--ink)">Whisper</b> or <b style="color:var(--ink)">Parakeet</b> in, <b style="color:var(--ink)">Kokoro</b> or <b style="color:var(--ink)">Piper</b> out.</p>
-</section>
-
-<!-- 20 · DOWNSIDES -->
-<section class="slide vcenter" data-section="3 · Your turn" data-title="The honest downsides" data-notes="[20:00–21:00] The honest part. What fits at home trails the frontier by six to twelve months of progress. Small models know fewer facts and make more up, and squeezing them to 4-bit adds errors. Tool calling breaks more often: about 80 to 88 percent on hard home requests. Long inputs cost memory and get slow, and before the first word it has to read your whole prompt. And you maintain it: updates, drivers, heat, noise.
-None of that is a reason not to. It's a reason to pick the right jobs, and to check its work.">
-  <h2 data-a>The honest downsides.</h2>
-  <div class="downs">
-    <div class="card" data-a><span class="kicker">Weaker</span><h3>Reasoning</h3><p>Models that fit one gaming GPU trail the frontier by roughly 6–12 months.</p></div>
-    <div class="card" data-a><span class="kicker">Confident</span><h3>Made-up answers</h3><p>Fewer facts, more guessing. 4-bit squeezing adds errors. Check what matters.</p></div>
-    <div class="card" data-a><span class="kicker">Flaky</span><h3>Tool calling</h3><p>~80–88% of hard home requests right: great for lights, not for locks.</p></div>
-    <div class="card" data-a><span class="kicker">Slow</span><h3>Long inputs</h3><p>It reads your whole prompt before the first word. Long documents mean waiting.</p></div>
-    <div class="card" data-a><span class="kicker">Memory</span><h3>Short conversations</h3><p>A 128K-token window costs gigabytes; speed drops as the chat grows.</p></div>
-    <div class="card" data-a><span class="kicker">Upkeep</span><h3>It's yours to run</h3><p>Updates, drivers, the odd broken release. Heat and noise on a big GPU.</p></div>
-  </div>
-</section>
-
-<!-- 21 · HOME AUTOMATION -->
-<section class="slide vcenter" data-section="3 · Your turn" data-title="Home automation" data-notes="[21:00–22:30] The project I'd start with: talk to your house. It's the same relay race as Lumi. A wake word heard on the device itself. Speech to text. Home Assistant handles simple commands like 'turn off the lights' by itself, with no AI at all. Anything else goes to your local model, which calls Home Assistant's tools. And a voice answers.
-Run Home Assistant on a small always-on box, and the model on your gaming PC or Mac. Your voice, your cameras, your kids' questions never leave the house.
-On a tested leaderboard of home commands, good 8 to 20B models get about 80 to 88 percent of hard requests right, and up to 98 percent of simple ones. That's great for lights and music. It's why locks need a confirmation step.">
-  <h2 data-a>Talk to your house, <span class="grad">privately</span>.</h2>
-  <div class="home-flow" data-a>
-    <div class="hop"><div class="dot">1</div><h3>Wake word</h3><p>on the device</p></div>
-    <div class="hop"><div class="dot">2</div><h3>Speech → text</h3><p>Whisper</p></div>
-    <div class="hop"><div class="dot">3</div><h3>Simple? Done.</h3><p>no AI needed</p></div>
-    <div class="hop"><div class="dot">4</div><h3>Your model</h3><p>calls the tools</p></div>
-    <div class="hop"><div class="dot">5</div><h3>Text → voice</h3><p>Piper</p></div>
-  </div>
-  <p class="say" data-a><span class="q">“</span>Is anything still on upstairs?<span class="q">”</span></p>
-  <div class="cols three" style="margin-top:44px">
-    <div class="card" data-a><span class="kicker">Home Assistant</span><p>On a small always-on box: a Green, a Raspberry Pi 5 or a mini PC.</p></div>
-    <div class="card" data-a><span class="kicker">Your model</span><p>On the gaming PC or Mac you already have, via Ollama or llama.cpp.</p></div>
-    <div class="card" data-a><span class="kicker" style="color:var(--warn)">Not for locks</span><p>Good 8–20B models: ~80–88% of hard requests, up to 98% of simple ones. Confirm risky actions.</p></div>
-  </div>
-</section>
-
 <!-- 22 · HOME: WEEKEND PATH -->
-<section class="slide vcenter" data-section="3 · Your turn" data-title="A weekend project" data-notes="[22:30–23:30] This is a real weekend. Install Ollama and a tested model. Install Home Assistant. Add the Ollama integration and turn on 'prefer handling commands locally'. Expose five to ten devices with clear names, and no locks yet. Test by typing first, then talk to it from your phone, or Home Assistant's own little voice speaker.
+<section class="slide vcenter" data-section="3 · Your turn" data-title="A weekend project" data-notes="[19:00–21:00] The project I'd start with: talk to your house, privately. Home Assistant runs the house, and the local model on the PC or Mac you already have handles anything it can't. This is a real weekend. Install Ollama and a tested model. Install Home Assistant. Add the Ollama integration and turn on 'prefer handling commands locally'. Expose five to ten devices with clear names, and no locks yet. Test by typing first, then talk to it from your phone, or Home Assistant's own little voice speaker.
 And three guardrails: don't expose locks without a confirmation; never put your model server on the internet, it has no password; and treat calendar text and emails as untrusted, because researchers have already used hidden instructions in a calendar invite to open a home's window shutters.">
   <h2 data-a>A weekend project.</h2>
   <div class="cols two" style="grid-template-columns:1.15fr .85fr;gap:46px">
@@ -377,7 +327,7 @@ And three guardrails: don't expose locks without a confirmation; never put your 
 </section>
 
 <!-- 23 · MORE IDEAS -->
-<section class="slide vcenter" data-section="3 · Your turn" data-title="More things to build" data-notes="[23:30–24:30] More ideas, by difficulty. Green you can do tonight: install an app. Private chat. Transcribe meetings and voice memos with MacWhisper or Buzz. Chat with your own documents in AnythingLLM.
+<section class="slide vcenter" data-section="3 · Your turn" data-title="More things to build" data-notes="[21:00–22:00] More ideas, by difficulty. Green you can do tonight: install an app. Private chat. Transcribe meetings and voice memos with MacWhisper or Buzz. Chat with your own documents in AnythingLLM.
 Blue takes a weekend: search your photo library by describing it with Immich, a coding helper in your editor, a camera that tells you what it saw. Pink is for builders: agents with tools over MCP, and a voice assistant like Lumi.
 All of them are on the site with links and what hardware they need.">
   <h2 data-a>More things you can build.</h2>
@@ -393,24 +343,8 @@ All of them are on the site with links and what hardware they need.">
   </div>
 </section>
 
-<!-- 24 · START THIS WEEKEND -->
-<section class="slide vcenter" data-section="3 · Your turn" data-title="Start this weekend" data-notes="[24:30–26:00] Wherever you are, there's a next step.
-Never used AI: try a free Claude, ChatGPT or Gemini on something real, and learn to check its facts. Then install LM Studio and see the same thing on your own computer.
-Use ChatGPT or Claude every day: run your first local model, ask it your usual prompts, and do one private task you'd never upload. Then turn off the Wi-Fi.
-Already run local models: build something. A local-first assistant with a frontier fallback. Or use a frontier coding assistant to build a local project, like Lumi.">
-  <h2 data-a>Start this weekend.</h2>
-  <div class="paths">
-    <div class="card top" data-a><span class="kicker">Never used AI</span><h3>Start in the cloud</h3>
-      <ol><li><b>Free Claude, ChatGPT or Gemini</b> on something real</li><li>Give context, ask follow-ups, <b>check facts</b></li><li>Install <b>LM Studio</b> and try one small model</li></ol></div>
-    <div class="card top" data-a><span class="kicker">Use AI every day</span><h3>Go local</h3>
-      <ol><li>Run a <b>local model</b> that fits</li><li>Ask it your usual prompts and compare</li><li>One <b>private task</b>, then turn off Wi-Fi</li></ol></div>
-    <div class="card top" data-a><span class="kicker">Already local</span><h3>Build something</h3>
-      <ol><li>Home Assistant with your model</li><li><b>Local first</b>, frontier for hard questions</li><li>Use a coding assistant to <b>build your own</b></li></ol></div>
-  </div>
-</section>
-
 <!-- 25 · THE SITE -->
-<section class="slide" data-section="3 · Your turn" data-title="The site" data-notes="[26:00–27:00] The talk is the trailer; the site is the whole thing, and every page has a beginner, intermediate and expert setting.
+<section class="slide" data-section="3 · Your turn" data-title="The site" data-notes="[22:00–23:00] The talk is the trailer; the site is the whole thing, and every page has a beginner, intermediate and expert setting.
 A calculator: pick your GPU or Mac and see what fits and how fast. Local versus frontier, with real prices. The full home automation guide with guardrails. Things to build. A FAQ that explains every term I used today. All fourteen lessons from this week. A hand-picked list of the best free videos and courses. And the nine-step guide to build your own Lumi.">
   <div class="cols two" style="align-items:center;grid-template-columns:1.1fr .9fr">
     <div class="media" style="aspect-ratio:16/10" data-a><img src="img/site-explore.png" alt=""></div>
@@ -428,7 +362,7 @@ A calculator: pick your GPU or Mac and see what fits and how fast. Local versus 
 </section>
 
 <!-- 26 · CLOSE -->
-<section class="slide" data-title="Thank you + QR" data-notes="[27:00–30:00] Thank you. Scan the code: everything's there, beginner to expert, and it stays up after today. Questions?">
+<section class="slide" data-title="Thank you + QR" data-notes="[23:00–30:00] Thank you. Scan the code: everything's there, beginner to expert, and it stays up after today. Questions?">
   <div class="title-grid">
     <div>
       <span class="kicker" data-a>Explore · build · share</span>
