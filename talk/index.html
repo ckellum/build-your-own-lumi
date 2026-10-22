@@ -95,9 +95,8 @@ Two rules shaped everything: voice only, and everything local. Your voice never 
   </div>
 </section>
 
-
 <!-- 4 · PIPELINE -->
-<section class="slide" data-section="1 · Meet Lumi" data-anim="pipeline" data-title="How she works" data-notes="[4:30–6:00] The whole system on one slide. Let the pulse travel. Beginners: it's a relay race, each runner does one job and hands off.
+<section class="slide" data-section="1 · Meet Lumi" data-anim="pipeline" data-title="How she works" data-notes="[3:00–4:30] The whole system on one slide. Let the pulse travel. Beginners: it's a relay race, each runner does one job and hands off.
 Scanner → microphone → Parakeet turns speech into text → a local language model writes the answer → Kokoro turns it into a voice → the screen shows her face, captions and maps.
 Three AI models, one computer, no internet needed. Keep this picture in mind: the home-automation version later is the same relay race.">
   <h2 data-a>One relay race. Three AI models. One box.</h2>
@@ -116,7 +115,7 @@ Three AI models, one computer, no internet needed. Keep this picture in mind: th
 </section>
 
 <!-- 5 · BUILT WITH AI -->
-<section class="slide vcenter" data-section="1 · Meet Lumi" data-title="Built with AI" data-notes="[6:00–7:30] The numbers. Four weeks from the first written design on September 15 to ready, then tuned all through the summit. One person and an AI coding agent, Claude Code. Over eleven hundred automated tests, which is why I could keep changing her during the summit itself.
+<section class="slide vcenter" data-section="1 · Meet Lumi" data-title="Built with AI" data-notes="[4:30–6:00] The numbers. Four weeks from the first written design on September 15 to ready, then tuned all through the summit. One person and an AI coding agent, Claude Code. Over eleven hundred automated tests, which is why I could keep changing her during the summit itself.
 The split matters most: AI wrote the code. I made every decision that needed taste, judgement, or a person.">
   <h2 data-a>One person + an AI coding agent.</h2>
   <div class="cols four" style="margin-top:30px">
@@ -145,14 +144,14 @@ The split matters most: AI wrote the code. I made every decision that needed tas
 </section>
 
 <!-- 7 · LESSONS: INTRO -->
-<section class="slide center" data-section="2 · Lessons learned" data-title="Lessons learned" data-notes="[8:00] Everything worked on my desk. Then she met the real world: a crowd, an air conditioner, a stage, and a reboot. Six stories, about a minute each. Experts, the details are on the site.">
+<section class="slide center" data-section="2 · Lessons learned" data-title="Lessons learned" data-notes="[6:30] Everything worked on my desk. Then she met the real world: a crowd, an air conditioner, a stage, and a reboot. Six stories, about a minute each. Experts, the details are on the site.">
   <span class="kicker" data-a>Part 2</span>
   <h1 data-a style="font-size:120px">It worked on my desk.</h1>
   <p class="big" data-a>Then she met a crowd, an air conditioner,<br>a stage, and a reboot.</p>
 </section>
 
 <!-- 8 · STORY 1 -->
-<section class="slide" data-section="2 · Lessons learned" data-title="Story 1: the 21-second hello" data-notes="[8:30] The first answer took 21.6 seconds. The model was re-reading a huge cheat sheet, every room, session and restaurant, for every visitor. Fix: keep that cheat sheet identical for everyone, warm it up at startup, and save the model's cache at the right place. First answers now take about half a second.
+<section class="slide" data-section="2 · Lessons learned" data-title="Story 1: the 21-second hello" data-notes="[7:00] The first answer took 21.6 seconds. The model was re-reading a huge cheat sheet, every room, session and restaurant, for every visitor. Fix: keep that cheat sheet identical for everyone, warm it up at startup, and save the model's cache at the right place. First answers now take about half a second.
 Lesson for anyone: speed comes from not doing the same work twice.">
   <div class="story">
     <div><div class="num grad" data-a>01</div><h2 data-a>The 21-second hello</h2><p class="big" data-a>Nobody waits 21 seconds at a kiosk.</p></div>
@@ -165,7 +164,7 @@ Lesson for anyone: speed comes from not doing the same work twice.">
 </section>
 
 <!-- 9 · STORY 2 -->
-<section class="slide" data-section="2 · Lessons learned" data-title="Story 2: the room is part of the system" data-notes="[9:30] Quiet office: perfect. Busy hallway: she answered strangers. We recorded 75 seconds of real crowd noise and replayed it through her hearing code while tuning. She now listens to how loud the room is all the time, and you have to be clearly louder than the room.
+<section class="slide" data-section="2 · Lessons learned" data-title="Story 2: the room is part of the system" data-notes="[8:00] Quiet office: perfect. Busy hallway: she answered strangers. We recorded 75 seconds of real crowd noise and replayed it through her hearing code while tuning. She now listens to how loud the room is all the time, and you have to be clearly louder than the room.
 Then, on day one, the air conditioning kicked on. The background noise doubled. Because her thresholds follow the room, she kept working; the fix was a mic filter and talking closer.
 Lesson: measure the real place, not your desk.">
   <div class="story">
@@ -179,7 +178,7 @@ Lesson: measure the real place, not your desk.">
 </section>
 
 <!-- 10 · STORY 3 -->
-<section class="slide" data-section="2 · Lessons learned" data-title="Story 3: two AIs on one stage" data-notes="[10:30] At Monday's rehearsal, another AI assistant answered questions through the room speakers, and Lumi answered it back. Two AIs talking over each other on stage.
+<section class="slide" data-section="2 · Lessons learned" data-title="Story 3: two AIs on one stage" data-notes="[9:00] At Monday's rehearsal, another AI assistant answered questions through the room speakers, and Lumi answered it back. Two AIs talking over each other on stage.
 Two fixes. A rule in her instructions: if it isn't the presenter talking to you, say nothing. And a loudness fingerprint: an AI through the speakers is loud for 30 to 57 percent of the time; a person at a mic, 13 percent at most. She ignores the speakers.
 She also thought out loud and repeated herself on stage. Clear instructions fixed that: two to four conversational sentences, never think out loud.
 Lesson: rules for the model, and a check in code for the cases it will still miss.">
@@ -194,7 +193,7 @@ Lesson: rules for the model, and a check in code for the cases it will still mis
 </section>
 
 <!-- 11 · STORY 4 -->
-<section class="slide" data-section="2 · Lessons learned" data-title="Story 4: power-offs" data-notes="[11:30] Twice, under heavy load, the whole computer simply powered off. No logs, nothing. A fast heat spike the operating system never saw. Fix: cap the GPU clock at boot, better airflow, and keep test load to one request at a time. It now runs about 10 degrees cooler.
+<section class="slide" data-section="2 · Lessons learned" data-title="Story 4: power-offs" data-notes="[10:00] Twice, under heavy load, the whole computer simply powered off. No logs, nothing. A fast heat spike the operating system never saw. Fix: cap the GPU clock at boot, better airflow, and keep test load to one request at a time. It now runs about 10 degrees cooler.
 Lesson: the hardware is part of the system too.">
   <div class="story">
     <div><div class="num grad" data-a>04</div><h2 data-a>The computer that turned itself off</h2><p class="big" data-a>Twice. No logs. No warning.</p></div>
@@ -207,7 +206,7 @@ Lesson: the hardware is part of the system too.">
 </section>
 
 <!-- 12 · STORY 5 -->
-<section class="slide" data-section="2 · Lessons learned" data-title="Story 5: confidently wrong" data-notes="[12:30] Two stories about trusting the process. First: lip sync broke on every reply longer than one sentence, and the bug passed eleven separate reviews. Only a review of the whole thing caught it.
+<section class="slide" data-section="2 · Lessons learned" data-title="Story 5: confidently wrong" data-notes="[11:00] Two stories about trusting the process. First: lip sync broke on every reply longer than one sentence, and the bug passed eleven separate reviews. Only a review of the whole thing caught it.
 Second: the AI told me to switch a setting on the microphone off. The sound got ten times louder, it clipped, and she stopped understanding anyone. We measured, found it, and switched it back.
 Lesson: AI is a great builder and a confident guesser. Measure, and review the whole.">
   <div class="story">
@@ -221,7 +220,7 @@ Lesson: AI is a great builder and a confident guesser. Measure, and review the w
 </section>
 
 <!-- 13 · STORY 6 -->
-<section class="slide" data-section="2 · Lessons learned" data-title="Story 6: every restart is a new day" data-notes="[13:30] Reboots. After one, the speaker came back at 0% volume: she talked, nobody heard. After another, the USB speaker failed and she restarted 27 times in a row. On the first day of the summit, the desktop came back on a different display number and her screen wouldn't start.
+<section class="slide" data-section="2 · Lessons learned" data-title="Story 6: every restart is a new day" data-notes="[12:00] Reboots. After one, the speaker came back at 0% volume: she talked, nobody heard. After another, the USB speaker failed and she restarted 27 times in a row. On the first day of the summit, the desktop came back on a different display number and her screen wouldn't start.
 Fix each time: set everything at startup, wait out a missing device instead of crashing, and look for what's actually there.
 Lesson: rehearse the reboot, not just the demo.">
   <div class="story">
@@ -235,7 +234,7 @@ Lesson: rehearse the reboot, not just the demo.">
 </section>
 
 <!-- 14 · TAKEAWAYS -->
-<section class="slide vcenter" data-section="2 · Lessons learned" data-title="Five lessons" data-notes="[14:30–15:30] If you remember nothing else from part two, remember these five. They apply to anything you build with AI, not just a kiosk. Number three is why the VIP shows are scripted: the moments that matter don't get improvised.">
+<section class="slide vcenter" data-section="2 · Lessons learned" data-title="Five lessons" data-notes="[13:00–14:00] If you remember nothing else from part two, remember these five. They apply to anything you build with AI, not just a kiosk. Number three is why the VIP shows are scripted: the moments that matter don't get improvised.">
   <h2 data-a>Five lessons for anything you build.</h2>
   <div class="takeaways">
     <div class="card top" data-a><div class="step grad">1</div><h3>Measure the real place</h3><p>Your desk is not the hallway.</p></div>
@@ -247,14 +246,14 @@ Lesson: rehearse the reboot, not just the demo.">
 </section>
 
 <!-- 15 · PART 3 -->
-<section class="slide center" data-section="3 · Your turn" data-title="Your turn" data-notes="[15:30] Part three: you. Lumi's brain is an 88-gigabyte model on a 128-gigabyte machine. Most of you have a gaming GPU with 8 to 16 gigabytes, or a Mac. Good news: that's enough to do a lot. And for the hard stuff, there's the frontier.">
+<section class="slide center" data-section="3 · Your turn" data-title="Your turn" data-notes="[14:00] Part three: you. Lumi's brain is an 88-gigabyte model on a 128-gigabyte machine. Most of you have a gaming GPU with 8 to 16 gigabytes, or a Mac. Good news: that's enough to do a lot. And for the hard stuff, there's the frontier.">
   <span class="kicker" data-a>Part 3</span>
   <h1 data-a style="font-size:120px">Your <span class="grad">turn</span>.</h1>
   <p class="big" data-a>Lumi's brain is an 88 GB model.<br>Most of you have 8–16 GB, or a Mac. Here's what that gets you.</p>
 </section>
 
 <!-- 16 · LOCAL VS FRONTIER -->
-<section class="slide vcenter" data-section="3 · Your turn" data-title="Local vs frontier" data-notes="[16:00–17:30] This isn't 'local beats cloud'. Both have their place.
+<section class="slide vcenter" data-section="3 · Your turn" data-title="Local vs frontier" data-notes="[14:30–16:00] This isn't 'local beats cloud'. Both have their place.
 Frontier models, Claude, GPT, Gemini, are clearly better at hard reasoning, coding agents that work for an hour, reliable tool use, long documents and current knowledge.
 Local wins on privacy, offline, no per-use cost, control, and it works forever. The best open models are only months behind the frontier, but those are huge; what fits at home is a lot smaller.
 Lumi is both: built with a frontier coding assistant, run entirely locally. Frontier to build, local to run.">
@@ -269,7 +268,7 @@ Lumi is both: built with a frontier coding assistant, run entirely locally. Fron
 </section>
 
 <!-- 17 · WHAT FITS -->
-<section class="slide vcenter" data-section="3 · Your turn" data-title="What fits" data-notes="[17:30–19:00] Memory decides what fits. The rule of thumb: at 4-bit, the usual download, about 0.6 gigabytes per billion parameters, plus a little for the conversation.
+<section class="slide vcenter" data-section="3 · Your turn" data-title="What fits" data-notes="[16:00–17:30] Memory decides what fits. The rule of thumb: at 4-bit, the usual download, about 0.6 gigabytes per billion parameters, plus a little for the conversation.
 8 gigabytes runs a 9-billion-parameter model like Qwen3.5 9B or Gemma 4. 12 gets you Gemma 4 12B or Ministral 14B. 16 gets you gpt-oss-20b, OpenAI's open model. A 32-gig Mac runs Gemma 4 26B or gpt-oss-20b; 64 gigs gets you into the 30-billion class. A 128-gig box like Lumi's runs gpt-oss-120b, or her 88-gig model.
 Look how small 8 gigs is on this scale. And yet it's enough for a good assistant. The calculator on the site does this for your exact machine.">
   <h2 data-a>Memory decides <span class="grad">what fits</span>.</h2>
@@ -285,7 +284,7 @@ Look how small 8 gigs is on this scale. And yet it's enough for a good assistant
 </section>
 
 <!-- 18 · SPEED VS SIZE -->
-<section class="slide vcenter" data-section="3 · Your turn" data-title="Spark vs GPU vs Mac" data-notes="[19:00–20:30] The second number: memory speed. To write every word, the computer reads the whole active model from memory. So memory speed decides how fast it talks.
+<section class="slide vcenter" data-section="3 · Your turn" data-title="Spark vs GPU vs Mac" data-notes="[17:30–19:00] The second number: memory speed. To write every word, the computer reads the whole active model from memory. So memory speed decides how fast it talks.
 A gaming card is fast but small. An RTX 5090 reads memory six and a half times faster than the Spark: on an 8B model, about 150 tokens a second against 38.
 The Spark is the opposite: huge but modest speed. It runs models no gaming card can hold, several at once, which is exactly what Lumi needs: three models loaded all day.
 A Mac sits in between: big shared memory, good speed, silent.">
@@ -311,7 +310,7 @@ A Mac sits in between: big shared memory, good speed, silent.">
 </section>
 
 <!-- 19 · PICKS -->
-<section class="slide vcenter" data-section="3 · Your turn" data-title="Models to try" data-notes="[20:30–21:30] A cheat sheet. Current open models, October 2026, almost all Apache 2.0, so you can use them for nearly anything. For home control, look for models that do well at tool calling; Qwen is consistently strong there. For images, Gemma 4 and Qwen understand pictures. Don't pick from a leaderboard: try your own prompts. The site has the full list and a calculator.">
+<section class="slide vcenter" data-section="3 · Your turn" data-title="Models to try" data-notes="[19:00–20:00] A cheat sheet. Current open models, October 2026, almost all Apache 2.0, so you can use them for nearly anything. For home control, look for models that do well at tool calling; Qwen is consistently strong there. For images, Gemma 4 and Qwen understand pictures. Don't pick from a leaderboard: try your own prompts. The site has the full list and a calculator.">
   <h2 data-a>Models to try first.</h2>
   <table class="picks" data-a>
     <thead><tr><th>You have</th><th>Chat &amp; writing</th><th>Home &amp; tools</th><th>Coding</th><th>Images in</th></tr></thead>
@@ -327,7 +326,7 @@ A Mac sits in between: big shared memory, good speed, silent.">
 </section>
 
 <!-- 20 · DOWNSIDES -->
-<section class="slide vcenter" data-section="3 · Your turn" data-title="The honest downsides" data-notes="[21:30–22:30] The honest part. What fits at home trails the frontier by six to twelve months of progress. Small models know fewer facts and make more up, and squeezing them to 4-bit adds errors. Tool calling breaks more often: about 80 to 88 percent on hard home requests. Long inputs cost memory and get slow, and before the first word it has to read your whole prompt. And you maintain it: updates, drivers, heat, noise.
+<section class="slide vcenter" data-section="3 · Your turn" data-title="The honest downsides" data-notes="[20:00–21:00] The honest part. What fits at home trails the frontier by six to twelve months of progress. Small models know fewer facts and make more up, and squeezing them to 4-bit adds errors. Tool calling breaks more often: about 80 to 88 percent on hard home requests. Long inputs cost memory and get slow, and before the first word it has to read your whole prompt. And you maintain it: updates, drivers, heat, noise.
 None of that is a reason not to. It's a reason to pick the right jobs, and to check its work.">
   <h2 data-a>The honest downsides.</h2>
   <div class="downs">
@@ -341,7 +340,7 @@ None of that is a reason not to. It's a reason to pick the right jobs, and to ch
 </section>
 
 <!-- 21 · HOME AUTOMATION -->
-<section class="slide vcenter" data-section="3 · Your turn" data-title="Home automation" data-notes="[22:30–24:00] The project I'd start with: talk to your house. It's the same relay race as Lumi. A wake word heard on the device itself. Speech to text. Home Assistant handles simple commands like 'turn off the lights' by itself, with no AI at all. Anything else goes to your local model, which calls Home Assistant's tools. And a voice answers.
+<section class="slide vcenter" data-section="3 · Your turn" data-title="Home automation" data-notes="[21:00–22:30] The project I'd start with: talk to your house. It's the same relay race as Lumi. A wake word heard on the device itself. Speech to text. Home Assistant handles simple commands like 'turn off the lights' by itself, with no AI at all. Anything else goes to your local model, which calls Home Assistant's tools. And a voice answers.
 Run Home Assistant on a small always-on box, and the model on your gaming PC or Mac. Your voice, your cameras, your kids' questions never leave the house.
 On a tested leaderboard of home commands, good 8 to 20B models get about 80 to 88 percent of hard requests right, and up to 98 percent of simple ones. That's great for lights and music. It's why locks need a confirmation step.">
   <h2 data-a>Talk to your house, <span class="grad">privately</span>.</h2>
@@ -361,7 +360,7 @@ On a tested leaderboard of home commands, good 8 to 20B models get about 80 to 8
 </section>
 
 <!-- 22 · HOME: WEEKEND PATH -->
-<section class="slide vcenter" data-section="3 · Your turn" data-title="A weekend project" data-notes="[24:00–25:00] This is a real weekend. Install Ollama and a tested model. Install Home Assistant. Add the Ollama integration and turn on 'prefer handling commands locally'. Expose five to ten devices with clear names, and no locks yet. Test by typing first, then talk to it from your phone, or Home Assistant's own little voice speaker.
+<section class="slide vcenter" data-section="3 · Your turn" data-title="A weekend project" data-notes="[22:30–23:30] This is a real weekend. Install Ollama and a tested model. Install Home Assistant. Add the Ollama integration and turn on 'prefer handling commands locally'. Expose five to ten devices with clear names, and no locks yet. Test by typing first, then talk to it from your phone, or Home Assistant's own little voice speaker.
 And three guardrails: don't expose locks without a confirmation; never put your model server on the internet, it has no password; and treat calendar text and emails as untrusted, because researchers have already used hidden instructions in a calendar invite to open a home's window shutters.">
   <h2 data-a>A weekend project.</h2>
   <div class="cols two" style="grid-template-columns:1.15fr .85fr;gap:46px">
@@ -378,7 +377,7 @@ And three guardrails: don't expose locks without a confirmation; never put your 
 </section>
 
 <!-- 23 · MORE IDEAS -->
-<section class="slide vcenter" data-section="3 · Your turn" data-title="More things to build" data-notes="[25:00–26:00] More ideas, by difficulty. Green you can do tonight: install an app. Private chat. Transcribe meetings and voice memos with MacWhisper or Buzz. Chat with your own documents in AnythingLLM.
+<section class="slide vcenter" data-section="3 · Your turn" data-title="More things to build" data-notes="[23:30–24:30] More ideas, by difficulty. Green you can do tonight: install an app. Private chat. Transcribe meetings and voice memos with MacWhisper or Buzz. Chat with your own documents in AnythingLLM.
 Blue takes a weekend: search your photo library by describing it with Immich, a coding helper in your editor, a camera that tells you what it saw. Pink is for builders: agents with tools over MCP, and a voice assistant like Lumi.
 All of them are on the site with links and what hardware they need.">
   <h2 data-a>More things you can build.</h2>
@@ -395,7 +394,7 @@ All of them are on the site with links and what hardware they need.">
 </section>
 
 <!-- 24 · START THIS WEEKEND -->
-<section class="slide vcenter" data-section="3 · Your turn" data-title="Start this weekend" data-notes="[26:00–27:30] Wherever you are, there's a next step.
+<section class="slide vcenter" data-section="3 · Your turn" data-title="Start this weekend" data-notes="[24:30–26:00] Wherever you are, there's a next step.
 Never used AI: try a free Claude, ChatGPT or Gemini on something real, and learn to check its facts. Then install LM Studio and see the same thing on your own computer.
 Use ChatGPT or Claude every day: run your first local model, ask it your usual prompts, and do one private task you'd never upload. Then turn off the Wi-Fi.
 Already run local models: build something. A local-first assistant with a frontier fallback. Or use a frontier coding assistant to build a local project, like Lumi.">
@@ -411,7 +410,7 @@ Already run local models: build something. A local-first assistant with a fronti
 </section>
 
 <!-- 25 · THE SITE -->
-<section class="slide" data-section="3 · Your turn" data-title="The site" data-notes="[27:30–28:30] The talk is the trailer; the site is the whole thing, and every page has a beginner, intermediate and expert setting.
+<section class="slide" data-section="3 · Your turn" data-title="The site" data-notes="[26:00–27:00] The talk is the trailer; the site is the whole thing, and every page has a beginner, intermediate and expert setting.
 A calculator: pick your GPU or Mac and see what fits and how fast. Local versus frontier, with real prices. The full home automation guide with guardrails. Things to build. A FAQ that explains every term I used today. All fourteen lessons from this week. A hand-picked list of the best free videos and courses. And the nine-step guide to build your own Lumi.">
   <div class="cols two" style="align-items:center;grid-template-columns:1.1fr .9fr">
     <div class="media" style="aspect-ratio:16/10" data-a><img src="img/site-explore.png" alt=""></div>
@@ -429,7 +428,7 @@ A calculator: pick your GPU or Mac and see what fits and how fast. Local versus 
 </section>
 
 <!-- 26 · CLOSE -->
-<section class="slide" data-title="Thank you + QR" data-notes="[28:30–30:00] Thank you. Scan the code: everything's there, beginner to expert, and it stays up after today. Questions?">
+<section class="slide" data-title="Thank you + QR" data-notes="[27:00–30:00] Thank you. Scan the code: everything's there, beginner to expert, and it stays up after today. Questions?">
   <div class="title-grid">
     <div>
       <span class="kicker" data-a>Explore · build · share</span>
